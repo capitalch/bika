@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { BasicCounter } from "./basic-counter/basic-counter";
+import { HookCounter } from "./hook-counter/hook-counter";
 import { RecoilCounter } from "./recoil-counter/recoil-counter";
 import { ZustandCounter } from "./zustand-counter/zustand-counter";
 
@@ -12,6 +13,7 @@ function ComponentLoader() {
   return (
     <div>
       <div>{meta.current.component}</div>
+      <button onClick={loadHook}>Load hook</button>
       <button onClick={loadBasic}>Load basic</button>
       <button onClick={loadZustand}>Load Zustand</button>
       <button onClick={loadRecoil}>Load recoil</button>
@@ -30,6 +32,11 @@ function ComponentLoader() {
 
   function loadRecoil() {
     meta.current.component = <RecoilCounter />;
+    setRefresh({});
+  }
+
+  function loadHook() {
+    meta.current.component = <HookCounter />;
     setRefresh({});
   }
 
