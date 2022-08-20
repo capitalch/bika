@@ -1,0 +1,38 @@
+import { useRef, useState } from "react";
+import { BasicCounter } from "./basic-counter/basic-counter";
+import { RecoilCounter } from "./recoil-counter/recoil-counter";
+import { ZustandCounter } from "./zustand-counter/zustand-counter";
+
+function ComponentLoader() {
+  const [, setRefresh] = useState({});
+  const meta: any = useRef({
+    component: <></>,
+  });
+
+  return (
+    <div>
+      <div>{meta.current.component}</div>
+      <button onClick={loadBasic}>Load basic</button>
+      <button onClick={loadZustand}>Load Zustand</button>
+      <button onClick={loadRecoil}>Load recoil</button>
+    </div>
+  );
+
+  function loadBasic() {
+    meta.current.component = <BasicCounter />;
+    setRefresh({});
+  }
+
+  function loadZustand() {
+    meta.current.component = <ZustandCounter />;
+    setRefresh({});
+  }
+
+  function loadRecoil() {
+    meta.current.component = <RecoilCounter />;
+    setRefresh({});
+  }
+
+  //   setRefresh({})
+}
+export { ComponentLoader };
