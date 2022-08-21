@@ -3,6 +3,7 @@ import { BasicCounter } from "./components/basic-counter/basic-counter";
 import { ComponentLoader } from "./components/component-loader";
 import { ZustandCounter } from "./components/zustand-counter/zustand-counter";
 import { RecoilRoot } from "recoil";
+import { Container } from "./check-hook-renders/container";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
     // <ZustandCounter />
     <RecoilRoot>
       <ComponentLoader />
+      <Container />
     </RecoilRoot>
   );
 }
