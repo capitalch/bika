@@ -1,5 +1,5 @@
 ## Account in cloudjiffy
-goyaldinesh@yahoo.com: idea8958
+goyaldinesh@yahoo.com
 
 # 15-08-2022 Discussion
 1. Git hub awareness
@@ -35,3 +35,4 @@ goyaldinesh@yahoo.com: idea8958
 ## Reports screens: 1 week
 
 ## Accounts interface: 2 weeks
+### idea8958
