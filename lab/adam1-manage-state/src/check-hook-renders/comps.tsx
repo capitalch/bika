@@ -7,7 +7,7 @@ function Comp1() {
     const [, setRefresh] = useState({})
     const methods:any = useRecoilValue(atomicMethods)
     const { dummy }: any = useHook()
-    return (
+   return (
         <div>
             <div>This is comp1</div>
             <span>{dummy.name}</span>
@@ -17,7 +17,7 @@ function Comp1() {
     )
 
     function refreshHook(){
-        methods['hook:refresh']({})
+        methods['hook:refresh1']({})
     }
 }
 export { Comp1 }
