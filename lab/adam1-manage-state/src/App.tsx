@@ -3,7 +3,6 @@ import { BasicCounter } from "./components/basic-counter/basic-counter";
 import { ComponentLoader } from "./components/component-loader";
 import { ZustandCounter } from "./components/zustand-counter/zustand-counter";
 import { RecoilRoot } from "recoil";
-import { Container } from "./check-hook-renders/container";
 import { Experiment1 } from "./experiment-with-recoil.tsx/experiment1";
 
 function App() {
@@ -12,7 +11,6 @@ function App() {
     // <ZustandCounter />
     <RecoilRoot>
       <ComponentLoader />
-      <Container />
       <Experiment1 />
     </RecoilRoot>
   );
