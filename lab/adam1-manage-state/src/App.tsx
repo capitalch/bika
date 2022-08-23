@@ -4,6 +4,7 @@ import { ComponentLoader } from "./components/component-loader";
 import { ZustandCounter } from "./components/zustand-counter/zustand-counter";
 import { RecoilRoot } from "recoil";
 import { Experiment1 } from "./experiment-with-recoil.tsx/experiment1";
+import { ImmerExp } from "./immer-experiment/immer-exp";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
     <RecoilRoot>
       <ComponentLoader />
       <Experiment1 />
+      <ImmerExp />
     </RecoilRoot>
   );
 }

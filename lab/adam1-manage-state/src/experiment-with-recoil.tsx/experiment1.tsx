@@ -7,7 +7,7 @@ function Experiment1() {
   const experiment1Value = useRecoilValue(experiment1State)
   return (
     <div>
-      {/* <div>{getCount.count}</div>
+      {/* <div>{getCount.count}</div
       <button onClick={setCount}>Add</button> */}
       <input type="text" value={getRefNo} onChange={setRefNo} />
       <button onClick={showValue}>Show value</button>
