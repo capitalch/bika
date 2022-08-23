@@ -5,7 +5,9 @@ const experiment1State: any = atom({
   default: {
     count: 0,
     refNo: "",
+    userRefNo: ''
   },
+  // dangerouslyAllowMutability: true,
 });
 
 const addCount = selector({
@@ -16,9 +18,10 @@ const addCount = selector({
     set(experiment1State, { count: currState.count + 1 });
   },
 });
+
 const refNoSelector = selector({
   key: "3",
-  get: ({ get }:any) => {
+  get: ({ get }: any) => {
     return get(experiment1State).refNo;
   },
   set: ({ get, set }, e: any) => {
@@ -26,7 +29,17 @@ const refNoSelector = selector({
     // set(experiment1State,{...currState,{refNo:e.target.value}})
     set(experiment1State, { ...currState, ...{ refNo: e.target.value } });
   },
-
 });
 
-export { experiment1State, addCount, refNoSelector };
+const genericValueSelector = selector({
+  key: '4',
+  get: ({ get }: any) => {
+    return get(experiment1State)
+  },
+  set: ({ get, set }, obj) => {
+    const currState: any = get(experiment1State);
+    set(experiment1State, { ...currState, ...{ [obj.propName]: obj.e.target.value } })
+  }
+})
+
+export { experiment1State, addCount, genericValueSelector, refNoSelector };
