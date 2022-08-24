@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { BasicCounter } from "./basic-counter/basic-counter";
 import { HookCounter } from "./hook-counter/hook-counter";
+import { HookState } from "./hook-state/hookState";
 import { RecoilCounter } from "./recoil-counter/recoil-counter";
 import { ZustandCounter } from "./zustand-counter/zustand-counter";
 
@@ -17,6 +18,7 @@ function ComponentLoader() {
       <button onClick={loadBasic}>Load basic</button>
       <button onClick={loadZustand}>Load Zustand</button>
       <button onClick={loadRecoil}>Load recoil</button>
+      <button onClick={loadHookState}>Load Hookstate</button>
     </div>
   );
 
@@ -38,6 +40,11 @@ function ComponentLoader() {
   function loadHook() {
     meta.current.component = <HookCounter />;
     setRefresh({});
+  }
+
+  function loadHookState(){
+    meta.current.component = <HookState />
+    setRefresh({})
   }
 
   //   setRefresh({})
