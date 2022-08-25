@@ -10,8 +10,8 @@
             "request": "launch",
             "module": "flask",
             "env": {
-                "FLASK_APP": "main",
-                "FLASK_ENV": "development"
+                "FLASK_APP": "main.py",
+                "FLASK_DEBUG": "1"
             },
             "args": [
                 "run",

@@ -6,9 +6,9 @@ bika
 {
     "user":"webadmin",
     "password":"",
-    "host":"node112957-kater-server.cloudjiffy.net",
+    "host":"node113022-kater-db.cloudjiffy.net",
     "port":"11301",
-    "database":"bika-client"
+    "database":""
 }
 
 # 15-08-2022 Discussion
@@ -46,4 +46,4 @@ bika
 
 ## Accounts interface: 2 weeks
 ### idea8958
-### QQPoox91460
+### KTAgnn15797

@@ -5,8 +5,9 @@
 3. Deploy react app at server using graphQL query to fetch db record
 4. Create entities
 5. User authentication
-6. Error handling
+6. Error handling framework
 7. Deployment
+8. Basic api's creation
 																					7. logging
 
 # client side
