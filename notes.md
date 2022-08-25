@@ -1,6 +1,16 @@
 ## Account in cloudjiffy
 goyaldinesh@yahoo.com
 
+## bika database
+bika
+{
+    "user":"webadmin",
+    "password":"",
+    "host":"node112957-kater-server.cloudjiffy.net",
+    "port":"11301",
+    "database":"bika-client"
+}
+
 # 15-08-2022 Discussion
 1. Git hub awareness
 %. Niharika information
@@ -36,3 +46,4 @@ goyaldinesh@yahoo.com
 
 ## Accounts interface: 2 weeks
 ### idea8958
+### QQPoox91460
