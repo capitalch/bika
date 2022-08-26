@@ -5,16 +5,17 @@
 3. Deploy react app at server using graphQL query to fetch db record
 4. Create entities
 5. User authentication
-6. Error handling framework
+		6. Error handling framework
 7. Deployment
 8. Basic api's creation
-																					7. logging
+		7. logging
 
 # client side
 1. Container
 2. Material theme
 3. GraphQL
 4. Menu system and loading a component
+5. Error handling
 
 # Database
 1. Create tables for Kater
@@ -23,8 +24,13 @@
 # Research
 1. Check in database if without sequence auto increment id is possible
 
-# 25-08-2022:
+# 25-08-2022: 8 hrs
 1. logging investigation completed: 2 hrs
+2. Error management investigation completed: 4 hrs
+3. Meeting: 1 hr
+4. GraphQL: 1 hr
+5. Created Python virtual ENV
+6. Created database and app server in cloudjiffy
 
 # 24-08-2022: 5 hrs
 1. zeroed on Hookstate state management lib and finally tested it: 2 hrs
