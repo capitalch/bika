@@ -4,8 +4,6 @@ from flask import Blueprint, jsonify, request
 from ariadne.constants import PLAYGROUND_HTML
 
 graphQlArtifacts = Blueprint('graphQlArtifacts', __name__)
-
-
 @graphQlArtifacts.route('/graphql', methods=['GET'])
 def graphql_playground():
     return PLAYGROUND_HTML, 200
@@ -14,9 +12,6 @@ def graphql_playground():
 @graphQlArtifacts.route("/graphql", methods=["POST"])
 def graphql_server():
     data = request.get_json()
-
-    # Note: Passing the request to the context is optional.
-    # In Flask, the current request is always accessible as flask.request
     success, result = graphql_sync(
         schema,
         data,
@@ -37,6 +32,7 @@ def graphql_server():
 #     }
 #     scalar Generic
 # """)
+# or following
 
 type_defs = load_schema_from_path('graphql_container')
 
@@ -48,7 +44,7 @@ def resolve_kater(*_):
     return {}
 
 
-katerQuery = ObjectType('KaterQuery')  # QueryType()
+katerQuery = ObjectType('KaterQuery')
 
 
 @katerQuery.field("genericView")

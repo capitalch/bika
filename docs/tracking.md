@@ -1,7 +1,7 @@
 ## To do
 # Server side
-1. Implement GraphQL
-2. Implement Postgresql query framework
+		1. Implement GraphQL
+		2. Implement Postgresql query framework
 3. Deploy react app at server using graphQL query to fetch db record
 4. Create entities
 5. User authentication
@@ -16,6 +16,7 @@
 3. GraphQL
 4. Menu system and loading a component
 5. Error handling
+6. finalize forms and validations with formik and yup
 
 # Database
 1. Create tables for Kater
@@ -23,6 +24,12 @@
 
 # Research
 1. Check in database if without sequence auto increment id is possible
+
+# 27-08-2022
+1. Successful deployment of dev server and react client build at cloudjiffy and its configuration: 2 hrs
+
+# 26-08-2022: 4 hrs
+1. Successfully implemented Ariadne with GraphQL in Flask server: 4 hrs
 
 # 25-08-2022: 8 hrs
 1. logging investigation completed: 2 hrs

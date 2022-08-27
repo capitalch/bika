@@ -1,5 +1,3 @@
-# from http.client import HTTPException
-from msilib import schema
 from flask import Blueprint, Flask, jsonify, request
 import logging
 from werkzeug import exceptions
