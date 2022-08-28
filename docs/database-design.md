@@ -4,24 +4,26 @@
 	id(M smallInt), branchName, isActive
 
 2. HallM
-	id(M, smallInt), branchId, hallName, cancelChargeInPerc, descr, isActive
+	id(M, smallInt), branchId, hallName, cancelChargeInPerc, remarks, isActive
 
 3. CustomerM
-	id(A, int), custName, address1, address2, pin, primaryPhone, otherPhones, stateId, cityId, email, descr, jData, anniversaryDate, gstin, dateOfBirth, timestamp, custType(char I or B for individual or business), reference, jData,
+	id(A, int), custName, address1, address2, pin, primaryPhone, otherPhones, stateId, cityId, email, remarks, jData, anniversaryDate, gstin, dateOfBirth, timestamp, custType(char I or B for individual or business), reference, jData,
 
-4. DateTypeM
-	id(M, smallint), dateTypeName, descr
+4. DateTypeM (Populate by script) also interface
+	id(M, smallint), dateTypeName, remarks
+	e.g marriage normal, marriage premium, Tilak, Holiday, Normal
 
-5. DateTypeD
+5. DateTypeD 
 	id(A, int), mdate, dateTypeId
 
-6. EventTypeM
-	id(M, smallInt), eventTypeName, descr, percentAdvance
+6. EventTypeM (Populate by script) also interface
+	id(M, smallInt), eventTypeName, remarks, percentAdvance
+	e.g Marriage, Office party, Birthday, Get together
 
-7. StateM
+7. StateM (Populate by script) (Populate by script) also interface
 	id(M, tinyInt), stateName, stateCode, isActive
 
-8. CityM
+8. CityM (Populate by script) also interface
 	id(M, smallInt), stateId, cityName, isActive
 
 9. TableIdCounter
@@ -36,11 +38,11 @@
 12. Notes
 	id(A, int)branchId, notesDate, endDate, remarks, jData, isCompleted
 
-13. TimeSlotM
-	id(M, tinyInt), timeSlotName, descr, startTime, endTime
+13. TimeSlotM (Populate by script) also interface
+	id(M, tinyInt), timeSlotName, remarks, startTime, endTime
 
-14. UnitM
-	id(M, tinyInt), unitName, descr
+14. UnitM (Populate by script) also interface
+	id(M, tinyInt), unitName, remarks
 
 15. BookingNoCounter
 	id(A,int), branchId, lastBookingNo
@@ -49,47 +51,44 @@
 	id(A, int), tranDate, eventDate, hallId, custId, remarks, jData, timestamp  
 
 17. MenuM
-	id(A, int), menuName, descr, jData, timestamp, isActive
+	id(A, int), menuName, remarks, jData, timestamp, isActive
 
 18. DepartmentM
-	id(A, int), depName, descr, timestamp, branchId, isActive
+	id(A, int), depName, remarks, timestamp, branchId, isActive, isInternal, inchargeName, mobileNo
 
-19. RecipeM
-	id(A, int), recipeName, descr, ingredients, image, points, unitId, customSortId(tinyInt), jData, timestamp, menuId, departmentId, parentId, isActive
+19. MenuItemM
+	id(A, int), recipeName, remarks, ingredients, image, points, unitId, customSortId(tinyInt), jData, timestamp, menuId, departmentId, parentId, isActive
 
-20. BookingWeightM
-	id(M, tinyInt), weight, weightName
+20. BookingPriorityM (Populate by script)
+	id(M, tinyInt), priority, priorityName
 	light, medium, heavy
 
-22.	BookingActionM
+21.	BookingActionM (Populate by script)
 	id(M, tinyInt), actionName, remarks
 
-23.	BookingStatusM
+22.	BookingStatusM (Populate by script)
 	id(M, tinyInt), statusName, remarks
 	
-24. BookingMain
-	id(A, bigint), bookDate, custId, currentStatusId, isCancellable, cancellationCharge, commonRemarks, weightId, jData, timestamp, finalBillAmount
+23. BookingMain
+	id(A, bigint), bookDate, custId, currentStatusId, isCancellable, cancellationCharge, commonRemarks, weightId, jData, timestamp, finalBillAmount, custReferenceId, custGuaranterId, custRelationId
 
-25. BookingHall
-	id(A, bigint), bookingMainId, eventDate, eventTypeId, hallId, timeSlotId, lineemarks, menuId, pax, boardToRead, quotePriceRate, finalPriceRate
+24. BookingHall
+	id(A, bigint), bookingMainId, eventDate, eventTypeId, hallId, timeSlotId, startTime, endTime, lineRemarks, menuId, pax, boardToRead, quotedRate, finalRate
 
-26. BookingHallRecipe
-	id(A, bigInt), bookingHallId, recipeId, departmentId, points
+25. BookingHallFoodItem
+	id(A, bigInt), bookingHallId, recipeId, departmentId, points, remarks
 
-27. BookingReceipt
+26. BookingReceipt
 	id(A, BigInt), bookingHeaderId, tranDate, amount, dc, remarks
 
-28.	BookingBill
+27.	BookingBill 
 	id(A, BigInt), bookingHeaderId, tranDate, amount, remarks
 
-29. BookingActionTran
-	id(A, bigint), tranDate, remarks, bookingActionId, bookingStatusId, lineRemarks
+28. BookingAction
+	id(A, bigint), tranDate, bookingActionId, bookingStatusId, lineRemarks
 
-30. BookingLog
+29. BookingLog
 	id(A, BigInt), bookingMainId, jData, timestamp
-
-
-
 
 
 
