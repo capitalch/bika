@@ -32,9 +32,11 @@ Booking design:							10-10-2022
 																										# Research
 																										1. Check in database if without sequence auto increment id is possible. yes possible.
 
-# 18-08-2022
-1. Morning:		Database design continued, Whatsapp API research, Documentation: 						2 hrs
-2. Afternoon: 	
+# 28-08-2022
+1. Morning:		Database design continued, Whatsapp API research, Documentation	: 						2 hrs
+2. Afternoon: 	Database design													:						3 hrs
+3. Evening	:	Database design													:						1 hrs
+4. Meeting	:	Meeting on UI and database										:						2 hrs
 
 # 27-08-2022: 9 hrs
 1. Successful deployment of dev server and react client build at cloudjiffy and its configuration: 2 hrs
