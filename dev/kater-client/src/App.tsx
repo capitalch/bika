@@ -1,7 +1,7 @@
 import './App.scss'
 
 function App() {
-    return <div className="App">Kater client</div>
+    return <div data-id='abc' className="App">Kater client</div>
 }
 
 export default App

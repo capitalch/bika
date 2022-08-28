@@ -1,17 +1,24 @@
-## To do
+## Timeline
+Client, server, database setup:			31-08-2022
+Client / Server side framework ready:	10-09-2022
+All masters entry:						30-09-2022
+Booking design:							10-10-2022
+
+
+
 # Server side
 		1. Implement GraphQL
-		2. Implement Postgresql query framework
+2. Implement Postgresql query framework
 3. Deploy react app at server using graphQL query to fetch db record
 4. Create entities
 5. User authentication
-		6. Error handling framework
-7. Deployment
+																										6. Error handling framework
+																										7. Deployment
 8. Basic api's creation
-		7. logging
+																										7. logging
 
 # client side
-1. Container
+																										1. Container
 2. Material theme
 3. GraphQL
 4. Menu system and loading a component
@@ -22,14 +29,21 @@
 1. Create tables for Kater
 2. Create tables for authentication database
 
-# Research
-1. Check in database if without sequence auto increment id is possible
+																										# Research
+																										1. Check in database if without sequence auto increment id is possible. yes possible.
 
-# 27-08-2022
+# 18-08-2022
+1. Morning:		Database design continued, Whatsapp API research, Documentation: 						2 hrs
+2. Afternoon: 	
+
+# 27-08-2022: 9 hrs
 1. Successful deployment of dev server and react client build at cloudjiffy and its configuration: 2 hrs
+2. Successful implementation of logging: 2 hrs
+3. Implemented redirect and graphql at server: 1 hrs
+4. Database design: 4 hrs
 
 # 26-08-2022: 4 hrs
-1. Successfully implemented Ariadne with GraphQL in Flask server: 4 hrs
+1. Lab: Successfully implemented Ariadne with GraphQL in Flask server: 4 hrs
 
 # 25-08-2022: 8 hrs
 1. logging investigation completed: 2 hrs

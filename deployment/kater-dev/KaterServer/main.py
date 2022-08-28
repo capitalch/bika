@@ -1,12 +1,13 @@
-from flask import Blueprint, Flask, jsonify, request
-from werkzeug import exceptions
+from redirect import CORS, exceptions, Flask, jsonify, logger
+from core.core_routes import coreRoutes
 
-app = Flask(__name__)
-print('kater-server starting...')
+app = Flask(__name__,  template_folder="../build")
+CORS(app)
 
-@app.route("/")
-def hello():
-    return "<p>Hello</p>"
+app.register_blueprint(coreRoutes)
+
+logger.info('Started main..')
+
 
 @app.errorhandler(exceptions.HTTPException)
 def handle_http_exception(e):

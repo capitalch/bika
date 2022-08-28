@@ -1,0 +1,8 @@
+type Query {
+    kater: KaterQuery
+}
+
+type KaterQuery {
+    genericView: Generic
+}
+scalar Generic
