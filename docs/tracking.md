@@ -33,6 +33,7 @@ Booking design:							10-10-2022
 																										1. Check in database if without sequence auto increment id is possible. yes possible.
 # 29-08-2022: Mon: 
 1. Morning	: 	On material UI client side										:						.5 hrs
+2. Afternoon: 	Started client side implementation								:						1.5 hrs
 
 # 28-08-2022: 9 hrs
 1. Morning:		Database design continued, Whatsapp API research, Documentation	: 						2 hrs
