@@ -1,4 +1,0 @@
-function AppHeader(){
-
-}
-export {AppHeader}

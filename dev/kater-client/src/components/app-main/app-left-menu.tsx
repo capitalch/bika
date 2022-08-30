@@ -1,4 +1,0 @@
-function AppLeftMenu(){
-
-}
-export {AppLeftMenu}

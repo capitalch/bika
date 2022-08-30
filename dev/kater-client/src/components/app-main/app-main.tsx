@@ -1,41 +1,36 @@
-import { AppBar, Drawer, Toolbar } from '@mui/material'
 import {
     Box,
-    Button,
-    Container,
+    CssBaseline,
     useGlobalMediaQuery,
-    useMediaQuery,
-    useTheme,
+    useEffect,
+    useHookstate,
+    useState,
 } from '../../misc/redirect'
+import { AppMainCentral } from './app-main-central'
+import { AppMainHeader } from './app-main-header'
+import { appMainHookState } from './app-main-hookstate'
+import { AppMainLeftMenu } from './app-main-left-menu'
+
 function AppMain() {
-    const theme = useTheme()
-    const {
-        getCurrentMediaSize,
-        isEqualsXS,
-        isEqualsSM,
-        isEqualsMD,
-        isEqualsLG,
-        isEqualsXL,
-        isMediumSizeUp,
-        isLargeSizeUp,
-        isExtraLargeSizeUp,
-    } = useGlobalMediaQuery()
-    console.log(getCurrentMediaSize())
+    const appMainGlobalState = useHookstate(appMainHookState)
+
+    const { isExtraLargeSizeUp } = useGlobalMediaQuery()
+    const [open, setOpen]: any = useState(isExtraLargeSizeUp)
+
+
+    useEffect(() => {
+        appMainGlobalState.open.set(isExtraLargeSizeUp)
+    })
 
     return (
-        <Box>
-            <AppBar position="fixed" sx={{ marginRight: '1px', width: `${isExtraLargeSizeUp ? '90%' : '100%'}` }}>
-                <Toolbar sx={{display:'flex', justifyContent:'space-between'}}>
-                    <Button size="large" sx={{ color: 'whitesmoke' }}>
-                        Catering
-                    </Button>
-                    <Button size="large" sx={{ color: 'whitesmoke' }}>
-                        Catering
-                    </Button>
-                </Toolbar>
-            </AppBar>
-            {/* <Drawer  open={true}/> */}
+        <Box sx={{ display: 'flex' }}>
+            <CssBaseline />
+            <AppMainHeader open={open} setOpen={setOpen} />
+            <AppMainLeftMenu open={open} setOpen={setOpen} />
+            <AppMainCentral open={open} />
         </Box>
     )
 }
-export { AppMain }
+export { AppMain}
+
+

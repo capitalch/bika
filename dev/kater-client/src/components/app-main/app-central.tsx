@@ -1,4 +1,0 @@
-function AppCentral(){
-
-}
-export {AppCentral}
