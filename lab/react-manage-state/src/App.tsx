@@ -8,12 +8,12 @@ import { ImmerExp } from './immer-experiment/immer-exp'
 import { MaterialComp1 } from './material/material-comp1'
 import { CssVarsProvider } from '@mui/joy'
 import MiniDrawer from './material/mini-drawer'
+import PersistentDrawerLeft from './material/persistent-drawer-left'
 
 function App() {
     return (
         <div>           
-            <MiniDrawer />
-            <MaterialComp1 />
+            <PersistentDrawerLeft />
         </div>
         // <BasicCounter />
         // <ZustandCounter />

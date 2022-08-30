@@ -1,0 +1,4 @@
+function AppCentral(){
+
+}
+export {AppCentral}

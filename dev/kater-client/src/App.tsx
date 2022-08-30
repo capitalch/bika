@@ -2,7 +2,7 @@ import { createTheme, ThemeProvider } from '@mui/material'
 import { LicenseInfo } from '@mui/x-data-grid-pro'
 import { ConfirmProvider } from 'material-ui-confirm'
 import './App.scss'
-import { AppMain } from './components/app-main'
+import { AppMain } from './components/app-main/app-main'
 import { emit, filterOn } from './misc/redirect'
 
 function App() {
