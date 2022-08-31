@@ -1,5 +1,5 @@
 import { styled, Typography, useHookstate } from '../../misc/redirect'
-import { appMainHookState } from './app-main-hookstate'
+import { appMainHookState } from '../../hook-state/app-hookstate'
 
 const drawerWidth = 240
 const Main: any = styled('main', {

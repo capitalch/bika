@@ -8,8 +8,8 @@ import {
 } from '../../misc/redirect'
 import { AppMainCentral } from './app-main-central'
 import { AppMainHeader } from './app-main-header'
-import { appMainHookState } from './app-main-hookstate'
-import { AppMainLeftMenu } from './app-main-left-menu'
+import { appMainHookState } from '../../hook-state/app-hookstate'
+import { AppMainSideBar } from './app-main-side-bar'
 
 function AppMain() {
     const appMainGlobalState = useHookstate(appMainHookState)
@@ -26,7 +26,7 @@ function AppMain() {
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
             <AppMainHeader open={open} setOpen={setOpen} />
-            <AppMainLeftMenu open={open} setOpen={setOpen} />
+            <AppMainSideBar open={open} setOpen={setOpen} />
             <AppMainCentral open={open} />
         </Box>
     )
