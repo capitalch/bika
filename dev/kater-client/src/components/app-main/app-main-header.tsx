@@ -82,10 +82,10 @@ function AppMainHeader({ open, setOpen }: any) {
     )
 
     function handleCateringClick() {
-        appMainGlobalState.cateringMenu.set(cateringMenu)
+        appMainGlobalState.selectedMenu.set(cateringMenu)
     }
 
-    function handleLoginClick() {}
+    function handleLoginClick() { }
 
     function handleDrawerOpen() {
         // setOpen(true)
@@ -100,53 +100,53 @@ const cateringMenu = {
             name: 'home',
             label: 'Home',
             path: 'home',
-            breadCrumb:'Home',
+            breadCrumb: 'Home',
             componentName: 'appHome',
-            iconName:'',
+            iconName: '',
             controlId: 1,
         },
         {
             name: 'masters',
             label: 'Masters',
             path: 'masters',
-            breadCrumb:'Masters',
-            iconName:'',
+            breadCrumb: 'Masters',
+            iconName: '',
             controlId: 2,
             children: [
                 {
                     name: 'misc',
                     label: 'Misc',
                     path: 'mastesrs-misc',
-                    breadCrumb:'Masters > Misc',
+                    breadCrumb: 'Masters > Misc',
                     componentName: 'miscMasters',
-                    iconName:'',
+                    iconName: '',
                     controlId: 3,
                 },
                 {
                     name: 'globalSettings',
                     label: 'Global settings',
-                    path: 'masters-globalSettings', 
-                    breadCrumb:'Masters > Global settings',                   
+                    path: 'masters-globalSettings',
+                    breadCrumb: 'Masters > Global settings',
                     componentName: '',
-                    iconName:'',
+                    iconName: '',
                     controlId: 0,
                 },
                 {
                     name: 'branchSettings',
                     label: 'Branch settings',
                     path: 'masters-branchSettings',
-                    breadCrumb:'Masters > Branch settings',                  
+                    breadCrumb: 'Masters > Branch settings',
                     componentName: '',
-                    iconName:'',
+                    iconName: '',
                     controlId: 0,
                 },
                 {
                     name: 'companyInfo',
                     label: 'Company info',
-                    path:'masters-companyInfo',
-                    breadCrumb:'masters > Company info',
+                    path: 'masters-companyInfo',
+                    breadCrumb: 'masters > Company info',
                     componentName: '',
-                    iconName:'',
+                    iconName: '',
                     controlId: 0,
                 }
             ],
@@ -155,10 +155,17 @@ const cateringMenu = {
             name: 'reports',
             label: 'Reports',
             path: 'reports',
-            breadCrumb:'Reports',
-            iconName:'',
+            breadCrumb: 'Reports',
+            iconName: '',
             controlId: 4,
-            children: [{}],
+            children: [{
+                name: 'report1',
+                label: 'Report1',
+                path: 'reports-report1',
+                breadCrumb: 'Reports > Report1',
+                iconName: '',
+                controlId: 4,
+            }],
         },
     ],
 }

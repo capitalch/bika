@@ -35,7 +35,7 @@ Booking design:							10-10-2022
 # 31-08-2022:
 1. Morning	: Working on Navigation header and side bar 						:						2 hrs
 2. Afternoon: Side navigation bar 												:						1.5 hrs
-3. Evening	:
+3. Evening	: Side navigation menu implementation								:						2.0 hrs
 4. Night	:
 
 # 30-08-2022: 8 hrs

@@ -15,6 +15,7 @@ import {
     styled,
     Typography,
     useHookstate,
+    useState,
     useTheme,
 } from '../../misc/redirect'
 import { appMainHookState } from '../../hook-state/app-hookstate'
@@ -30,8 +31,12 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }))
 
 function AppMainSideBar({ open, setOpen }: any) {
+    const [, setRefresh] = useState({})
     const theme = useTheme()
     const appMainGlobalState = useHookstate(appMainHookState)
+    const menu = appMainGlobalState.selectedMenu.get()
+
+    const [openArray, setOpenArray]: any = useState(Array(menu.children.length).fill(false))
     return (
         <Drawer
             sx={{
@@ -70,40 +75,74 @@ function AppMainSideBar({ open, setOpen }: any) {
                 </IconButton>
             </DrawerHeader>
             <Divider />
-            <List>{getListItems(appMainGlobalState.cateringMenu.get())}</List>
+            <MenuList root={menu} />
+            {/* <List>{getListItems(appMainGlobalState.selectedMenu.get())}</List> */}
         </Drawer>
     )
 
-    function getListItems(root:any) {
-        const listItems: any[] = []
-        root?.children?.forEach((item: any, index: number) => {
-            const listItem = (
-                <ListItem divider key={index} disablePadding>
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <InboxIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={item?.label || 'Missing'} />
-                    </ListItemButton>
-                </ListItem>                
-            )
+    function MenuList({ root }: any) {
+        return (<List>
+            {getListItems(root)}
+        </List>)
 
-            const collapse = item.children && (
-                <Collapse
-                    key={index + 100}
-                    // in={meta.current.openArray[index]}
-                    timeout="auto"
-                    unmountOnExit>
-                    <Divider />
-                    <List component="div" disablePadding>
-                        {getListItems(item)}
-                    </List>
-                </Collapse>
-            )
-            listItems.push(listItem)
-            collapse && listItems.push(collapse)
-        })
-        
+        function getListItems(first: any, isNested = false) {
+            const listItems: any[] = []
+            first?.children?.forEach((item: any, index: number) => {
+                const listItem = (
+                    <ListItem divider key={index} disablePadding>
+                        <ListItemButton onClick={
+                            () => {
+                                setOpenArray((old: any[]) => {
+                                    old[index] = true
+                                    return ([...old])
+                                })
+                            }
+                        }>
+                            <ListItemIcon>
+                                <InboxIcon />
+                            </ListItemIcon>
+                            <ListItemText primary={item?.label || 'Missing'} />
+                        </ListItemButton>
+                    </ListItem>
+                )
+                listItems.push(listItem)
+                if (item.children) {
+                    const nestedItem =
+                        <Collapse key={index + 100} in={openArray[index]} timeout='auto' unmountOnExit>
+                            {/* <Divider /> */}
+                            <List component='div'>
+                                {getListItems(item)}
+                            </List>
+                        </Collapse>
+                    listItems.push(nestedItem)
+                }
+            })
+            return (listItems)
+        }
+    }
+
+    function getListItems(root: any) {
+        const listItems: any[] = []
+        fillItems(root)
+        function fillItems(first: any, isNested = false) {
+            first?.children?.forEach((item: any, index: number) => {
+                const listItem = (
+                    <ListItem divider key={index} disablePadding>
+                        <ListItemButton>
+                            <ListItemIcon>
+                                <InboxIcon />
+                            </ListItemIcon>
+                            <ListItemText primary={item?.label || 'Missing'} />
+                        </ListItemButton>
+                    </ListItem>
+                )
+                listItems.push(listItem)
+                if (item.children) {
+                    fillItems(item, true)
+                }
+            })
+        }
+
 
         return listItems
     }
@@ -114,36 +153,36 @@ function AppMainSideBar({ open, setOpen }: any) {
 }
 export { AppMainSideBar }
 
-{
-    /* <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map(
-                    (text, index) => (
-                        <ListItem key={text} disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    {index % 2 === 0 ? (
-                                        <InboxIcon />
-                                    ) : (
-                                        <MailIcon />
-                                    )}
-                                </ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItemButton>
-                        </ListItem>
-                    )
-                )}
-            </List>
-            <Divider />
-            <List>
-                {['All mail', 'Trash', 'Spam'].map((text, index) => (
+
+/* <List>
+            {['Inbox', 'Starred', 'Send email', 'Drafts'].map(
+                (text, index) => (
                     <ListItem key={text} disablePadding>
                         <ListItemButton>
                             <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                                {index % 2 === 0 ? (
+                                    <InboxIcon />
+                                ) : (
+                                    <MailIcon />
+                                )}
                             </ListItemIcon>
                             <ListItemText primary={text} />
                         </ListItemButton>
                     </ListItem>
-                ))}
-            </List> */
-}
+                )
+            )}
+        </List>
+        <Divider />
+        <List>
+            {['All mail', 'Trash', 'Spam'].map((text, index) => (
+                <ListItem key={text} disablePadding>
+                    <ListItemButton>
+                        <ListItemIcon>
+                            {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                        </ListItemIcon>
+                        <ListItemText primary={text} />
+                    </ListItemButton>
+                </ListItem>
+            ))}
+        </List> */
+

@@ -3,6 +3,6 @@ import { hookstate } from '../misc/redirect'
 
 const appMainHookState = hookstate({
     open: false,
-    cateringMenu:cateringMenu
+    selectedMenu:cateringMenu
 })
 export { appMainHookState }
