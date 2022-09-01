@@ -1,10 +1,8 @@
-import { createTheme, Theme, ThemeProvider } from '@mui/material'
-import { brown, red } from '@mui/material/colors'
+import { createTheme, ThemeProvider } from '@mui/material'
 import { LicenseInfo } from '@mui/x-data-grid-pro'
 import { ConfirmProvider } from 'material-ui-confirm'
 import './App.scss'
-import { AppMain } from './components/app-main/app-main'
-// import { emit, filterOn } from './misc/redirect'
+import { AppMain } from './components/app-main'
 
 declare module '@mui/material/Button' {
     interface ButtonPropsVariantOverrides {

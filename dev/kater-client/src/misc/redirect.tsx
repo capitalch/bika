@@ -39,6 +39,8 @@ export {
     ListItemButton,
     ListItemIcon,
     ListItemText,
+    MenuItem,
+    MenuList,
     Toolbar,
     Typography,
     useMediaQuery,

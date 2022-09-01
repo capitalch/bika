@@ -32,9 +32,13 @@ Booking design:							10-10-2022
 																										# Research
 																										1. Check in database if without sequence auto increment id is possible. yes possible.
 																										
+# 01-09-2022
+1. Morning	: Bug fixing side menu												: 						2 hrs
+2. Afternoon: Component loading in side bar on click							:						2 hrs
+3. Evening	:
 
 ## August: 73 hrs
-# 31-08-2022: 7 hrs
+# 31-08-2022: Wed: 7 hrs
 1. Morning	: Working on Navigation header and side bar 						:						2 hrs
 2. Afternoon: Side navigation bar 												:						2 hrs
 3. Evening	: Side navigation menu implementation								:						2 hrs
