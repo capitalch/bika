@@ -7,7 +7,6 @@ import {
     MuiAppBar,
     styled,
     Toolbar,
-    Typography,
     useHookstate,
 } from '../../misc/redirect'
 import { appMainHookState } from '../../hook-state/app-hookstate'
@@ -101,8 +100,8 @@ const cateringMenu = {
             label: 'Home',
             path: 'home',
             breadCrumb: 'Home',
-            componentName: 'appHome',
-            iconName: '',
+            componentName: 'cateringHome',
+            iconName: 'home',
             controlId: 1,
         },
         {
@@ -110,7 +109,7 @@ const cateringMenu = {
             label: 'Masters',
             path: 'masters',
             breadCrumb: 'Masters',
-            iconName: '',
+            iconName: 'masters',
             controlId: 2,
             children: [
                 {
@@ -119,7 +118,7 @@ const cateringMenu = {
                     path: 'mastesrs-misc',
                     breadCrumb: 'Masters > Misc',
                     componentName: 'miscMasters',
-                    iconName: '',
+                    iconName: 'misc',
                     controlId: 3,
                 },
                 {
@@ -128,7 +127,7 @@ const cateringMenu = {
                     path: 'masters-globalSettings',
                     breadCrumb: 'Masters > Global settings',
                     componentName: '',
-                    iconName: '',
+                    iconName: 'globalSettings',
                     controlId: 0,
                 },
                 {
@@ -137,7 +136,7 @@ const cateringMenu = {
                     path: 'masters-branchSettings',
                     breadCrumb: 'Masters > Branch settings',
                     componentName: '',
-                    iconName: '',
+                    iconName: 'branchSettings',
                     controlId: 0,
                 },
                 {
@@ -146,7 +145,7 @@ const cateringMenu = {
                     path: 'masters-companyInfo',
                     breadCrumb: 'masters > Company info',
                     componentName: '',
-                    iconName: '',
+                    iconName: 'companyInfo',
                     controlId: 0,
                 }
             ],
@@ -156,14 +155,14 @@ const cateringMenu = {
             label: 'Reports',
             path: 'reports',
             breadCrumb: 'Reports',
-            iconName: '',
+            iconName: 'reports',
             controlId: 4,
             children: [{
                 name: 'report1',
                 label: 'Report1',
                 path: 'reports-report1',
                 breadCrumb: 'Reports > Report1',
-                iconName: '',
+                iconName: 'reports1',
                 controlId: 4,
             }],
         },

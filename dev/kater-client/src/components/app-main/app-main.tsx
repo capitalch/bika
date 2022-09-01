@@ -13,7 +13,6 @@ import { AppMainSideBar } from './app-main-side-bar'
 
 function AppMain() {
     const appMainGlobalState = useHookstate(appMainHookState)
-
     const { isExtraLargeSizeUp } = useGlobalMediaQuery()
     const [open, setOpen]: any = useState(isExtraLargeSizeUp)
 

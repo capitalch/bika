@@ -1,9 +1,12 @@
 import { styled, Typography, useHookstate } from '../../misc/redirect'
 import { appMainHookState } from '../../hook-state/app-hookstate'
+import { CateringHome } from '../../entities/catering/components/catering_home'
 
 const drawerWidth = 240
-const Main: any = styled('main', {
-})(({ theme, open }: any) => ({
+const Main: any = styled(
+    'main',
+    {}
+)(({ theme, open }: any) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
     transition: theme.transitions.create('margin', {
@@ -28,13 +31,24 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
 }))
-function AppMainCentral({open}: any) {  
-    const appMainGlobalState = useHookstate(appMainHookState)  
+function AppMainCentral({ open }: any) {
+    const appMainGlobalState = useHookstate(appMainHookState)
+    const currentComponentName:string = appMainGlobalState.currentComponentName.get()
     return (
-        // <Main open={open}>
         <Main open={appMainGlobalState.open.get()}>
             <DrawerHeader />
-            <Typography paragraph>
+            {componentMapping[currentComponentName]}
+        </Main>
+    )
+}
+export { AppMainCentral }
+
+const componentMapping:any = {
+    cateringHome: <CateringHome />
+}
+
+{
+    /* <Typography paragraph>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                 do eiusmod tempor incididunt ut labore et dolore magna
                 aliqua. Rhoncus dolor purus non enim praesent elementum
@@ -66,8 +80,5 @@ function AppMainCentral({open}: any) {
                 elementum nisi quis eleifend. Commodo viverra maecenas
                 accumsan lacus vel facilisis. Nulla posuere sollicitudin
                 aliquam ultrices sagittis orci a.
-            </Typography>
-        </Main>
-    )
+            </Typography> */
 }
-export { AppMainCentral }

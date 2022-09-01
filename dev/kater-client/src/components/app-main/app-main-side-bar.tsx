@@ -1,24 +1,41 @@
 import {
+    ArrowDropDownIcon,
+    ArrowDropUpIcon,
     ChevronLeftIcon,
     ChevronRightIcon,
+    ClickAwayListener,
     Collapse,
     Divider,
     Drawer,
     IconButton,
+    immer,
     InboxIcon,
     List,
     ListItem,
     ListItemButton,
     ListItemIcon,
     ListItemText,
-    MailIcon,
     styled,
     Typography,
+    useGlobalMediaQuery,
     useHookstate,
+    useRef,
     useState,
     useTheme,
 } from '../../misc/redirect'
+
+import {
+    BusinessIcon,
+    HomeIcon,
+    MiscellaneousServicesIcon,
+    ReportIcon,
+    SettingsIcon,
+    SettingsApplicationsIcon,
+    SummarizeIcon,
+    ViewListIcon,
+} from '../../misc/redirect'
 import { appMainHookState } from '../../hook-state/app-hookstate'
+import { CateringHome } from '../../entities/catering/components/catering_home'
 
 const drawerWidth = 240
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -31,12 +48,17 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }))
 
 function AppMainSideBar({ open, setOpen }: any) {
-    const [, setRefresh] = useState({})
     const theme = useTheme()
+    const [, setRefresh] = useState({})
+    const { isExtraLargeSizeUp } = useGlobalMediaQuery()
     const appMainGlobalState = useHookstate(appMainHookState)
     const menu = appMainGlobalState.selectedMenu.get()
-
-    const [openArray, setOpenArray]: any = useState(Array(menu.children.length).fill(false))
+    // const meta:any = useRef({
+    //     openArray:Array(menu.children.length).fill(false)
+    // })
+    const [openArray, setOpenArray]: any = useState(
+        Array(menu.children.length).fill(false)
+    )
     return (
         <Drawer
             sx={{
@@ -49,6 +71,7 @@ function AppMainSideBar({ open, setOpen }: any) {
             }}
             variant="persistent"
             anchor="left"
+            transitionDuration={300}
             open={appMainGlobalState.open.get()}>
             <DrawerHeader
                 sx={{
@@ -76,113 +99,136 @@ function AppMainSideBar({ open, setOpen }: any) {
             </DrawerHeader>
             <Divider />
             <MenuList root={menu} />
-            {/* <List>{getListItems(appMainGlobalState.selectedMenu.get())}</List> */}
         </Drawer>
     )
 
+    function getArrowUpDownIcon(item: any, index: number) {
+        let ret = undefined
+        if (item.children) {
+            ret =
+                openArray[index] === true ? (
+                    // meta.current.openArray[index] === true ? (
+                    <ArrowDropUpIcon />
+                ) : (
+                    <ArrowDropDownIcon />
+                )
+        }
+        return ret
+    }
+
     function MenuList({ root }: any) {
-        return (<List>
-            {getListItems(root)}
-        </List>)
+        // const [, setRefresh] = useState({})
+        return (
+            <ClickAwayListener
+                mouseEvent="onMouseDown"
+                touchEvent="onTouchStart"
+                onClickAway={handleDrawerCloseIfRequired}>
+                <List>{getListItems(root)}</List>
+            </ClickAwayListener>
+        )
 
         function getListItems(first: any, isNested = false) {
             const listItems: any[] = []
             first?.children?.forEach((item: any, index: number) => {
                 const listItem = (
                     <ListItem divider key={index} disablePadding>
-                        <ListItemButton onClick={
-                            () => {
-                                setOpenArray((old: any[]) => {
-                                    old[index] = true
-                                    return ([...old])
-                                })
-                            }
-                        }>
+                        <ListItemButton
+                            onClick={() => {
+                                const newArr = immer(
+                                    openArray,
+                                    (draft: any[]) => {
+                                        const temp = draft[index]
+                                        draft.fill(false)
+                                        draft[index] = !temp
+                                    }
+                                )
+                                setOpenArray(newArr)
+
+                                if (!item.children) {
+                                    appMainGlobalState.currentComponentName.set(item.componentName)
+                                    handleDrawerCloseIfRequired()
+                                }
+                                // setRefresh({})
+                            }}>
                             <ListItemIcon>
-                                <InboxIcon />
+                                {item.iconName ? (
+                                    iconMapping[item.iconName]
+                                ) : (
+                                    <InboxIcon />
+                                )}
                             </ListItemIcon>
                             <ListItemText primary={item?.label || 'Missing'} />
+                            {getArrowUpDownIcon(item, index)}
                         </ListItemButton>
                     </ListItem>
                 )
                 listItems.push(listItem)
                 if (item.children) {
-                    const nestedItem =
-                        <Collapse key={index + 100} in={openArray[index]} timeout='auto' unmountOnExit>
+                    const nestedItem = (
+                        <Collapse
+                            key={index + 100}
+                            in={openArray[index]}
+                            timeout="auto"
+                            // orientation='vertical'
+                            // easing='10000'
+                            // component='div'
+                            unmountOnExit>
                             {/* <Divider /> */}
-                            <List component='div'>
+                            <List
+                                disablePadding
+                                component="div"
+                                sx={{ pl: theme.spacing(2), pt: 0 }}>
                                 {getListItems(item)}
                             </List>
                         </Collapse>
+                    )
                     listItems.push(nestedItem)
                 }
             })
-            return (listItems)
+            return listItems
         }
     }
 
-    function getListItems(root: any) {
-        const listItems: any[] = []
-        fillItems(root)
-        function fillItems(first: any, isNested = false) {
-            first?.children?.forEach((item: any, index: number) => {
-                const listItem = (
-                    <ListItem divider key={index} disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                <InboxIcon />
-                            </ListItemIcon>
-                            <ListItemText primary={item?.label || 'Missing'} />
-                        </ListItemButton>
-                    </ListItem>
-                )
-                listItems.push(listItem)
-                if (item.children) {
-                    fillItems(item, true)
-                }
-            })
+    function handleDrawerCloseIfRequired() {
+        if (!isExtraLargeSizeUp) {
+            if (appMainGlobalState.open.get()) {
+                appMainGlobalState.open.set(false)
+            }
         }
-
-
-        return listItems
     }
 
+    function handleClickAway() {}
     function handleDrawerClose() {
         appMainGlobalState.open.set(false)
     }
 }
 export { AppMainSideBar }
 
+const iconMapping: any = {
+    home: <HomeIcon />,
+    masters: <ViewListIcon />,
+    misc: <MiscellaneousServicesIcon />,
+    globalSettings: <SettingsIcon />,
+    branchSettings: <SettingsApplicationsIcon />,
+    companyInfo: <BusinessIcon />,
+    reports: <ReportIcon />,
+    reports1: <SummarizeIcon />,
+}
 
-/* <List>
-            {['Inbox', 'Starred', 'Send email', 'Drafts'].map(
-                (text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? (
-                                    <InboxIcon />
-                                ) : (
-                                    <MailIcon />
-                                )}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItemButton>
-                    </ListItem>
-                )
-            )}
-        </List>
-        <Divider />
-        <List>
-            {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                <ListItem key={text} disablePadding>
-                    <ListItemButton>
-                        <ListItemIcon>
-                            {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                        </ListItemIcon>
-                        <ListItemText primary={text} />
-                    </ListItemButton>
-                </ListItem>
-            ))}
-        </List> */
 
+
+// const temp = openArray[index]
+// const newArr: any[] = [...openArray].fill(false)
+// newArr[index] = !temp
+// setOpenArray(newArr)
+// setOpenArray((old:any[])=>{
+//     const temp = old[index]
+//     const newArr:any[] = [...old].fill(false)
+//     newArr[index] = !temp
+//     return(newArr)
+// })
+//
+// const temp = meta.current.openArray[index]
+// meta.current.openArray.fill(false)
+// meta.current.openArray[index] = !temp
+// setRefresh({})

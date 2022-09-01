@@ -32,11 +32,13 @@ Booking design:							10-10-2022
 																										# Research
 																										1. Check in database if without sequence auto increment id is possible. yes possible.
 																										
-# 31-08-2022:
+
+## August: 73 hrs
+# 31-08-2022: 7 hrs
 1. Morning	: Working on Navigation header and side bar 						:						2 hrs
-2. Afternoon: Side navigation bar 												:						1.5 hrs
-3. Evening	: Side navigation menu implementation								:						2.0 hrs
-4. Night	:
+2. Afternoon: Side navigation bar 												:						2 hrs
+3. Evening	: Side navigation menu implementation								:						2 hrs
+4. Night	: Side navigation menu implementation and icons						:						1 hrs
 
 # 30-08-2022: 8 hrs
 1. Morning	: Navigation system design finalized								:						2 hrs
@@ -45,7 +47,7 @@ Booking design:							10-10-2022
 4. Night	: Global css styling and Header styling								:						2 hrs
 
 # 29-08-2022: Mon: 4 hrs
-1. Morning	: 	researched on material UI client side							:						.5 hrs
+1. Morning	: 	researched on material UI client side							:						0.5 hrs
 2. Afternoon: 	Started client side container implementation					:						1.5 hrs
 3. Night	:	Continued with client side implementation						:						2 hrs
 
