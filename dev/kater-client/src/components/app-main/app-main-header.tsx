@@ -8,8 +8,8 @@ import {
     styled,
     Toolbar,
     useHookstate,
-} from '../misc/redirect'
-import { appMainHookState } from '../hook-state/app-hookstate'
+} from '../../misc/redirect'
+import { appMainHookState } from '../../hook-state/app-hookstate'
 import { cateringMenu } from './app-main-header-catering-menu'
 
 const drawerWidth = 240

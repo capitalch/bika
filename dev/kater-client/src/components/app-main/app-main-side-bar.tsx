@@ -20,9 +20,9 @@ import {
     useHookstate,
     useState,
     useTheme,
-} from '../misc/redirect'
+} from '../../misc/redirect'
 
-import { appMainHookState } from '../hook-state/app-hookstate'
+import { appMainHookState } from '../../hook-state/app-hookstate'
 import { iconMapping } from './app-main-side-bar-icons-mapping'
 
 const drawerWidth = 240

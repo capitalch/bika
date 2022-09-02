@@ -1,3 +1,12 @@
+## to do
+1. Formulate login
+2. On successful login show central and side bar
+3. Server side implementation of login
+4. Implement Super admin, Admin user
+5. Formulate masters entry
+5. Validate DB design
+
+
 ## Timeline
 Client, server, database setup:			31-08-2022
 Client / Server side framework ready:	10-09-2022
@@ -32,12 +41,13 @@ Booking design:							10-10-2022
 																										# Research
 																										1. Check in database if without sequence auto increment id is possible. yes possible.
 																										
-# 02-09-2022: Fri:
+# 02-09-2022: Fri: 9 hrs
 1. Morning	: Further refined side bar 											:						1 hrs
 2. Morning	: Reorganized, bug fix and cleanup									:						1 hrs
 3. Afternoon: Database creation													:						2 hrs
 4. Evening	: Meeting 															:						1 hrs
 5. Evening	: Database creation													:						2 hrs
+6. Night	: UI login 															:						2 hrs
 
 # 01-09-2022: Thurs: 7 hrs
 1. Morning	: Bug fixing side menu												: 						2 hrs

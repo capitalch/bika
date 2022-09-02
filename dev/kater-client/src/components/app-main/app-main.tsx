@@ -4,10 +4,10 @@ import {
     useGlobalMediaQuery,
     useEffect,
     useHookstate,
-} from '../misc/redirect'
+} from '../../misc/redirect'
 import { AppMainCentral } from './app-main-central'
 import { AppMainHeader } from './app-main-header'
-import { appMainHookState } from '../hook-state/app-hookstate'
+import { appMainHookState } from '../../hook-state/app-hookstate'
 import { AppMainSideBar } from './app-main-side-bar'
 
 function AppMain() {
