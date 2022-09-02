@@ -1,3 +1,4 @@
+// Unique controlId is super important. It is used in several places
 const cateringMenu = {
     children: [
         {
@@ -16,10 +17,19 @@ const cateringMenu = {
             breadCrumb: 'Masters',
             iconName: 'masters',
             controlId: 2,
-            children: [
+            children: [ 
+                {
+                    name: 'companyInfo',
+                    label: 'Company info',
+                    path: 'masters-companyInfo',
+                    breadCrumb: 'masters > Company info',
+                    componentName: '',
+                    iconName: 'companyInfo',
+                    controlId: 6,
+                },               
                 {
                     name: 'misc',
-                    label: 'Misc',
+                    label: 'Misc masters',
                     path: 'mastesrs-misc',
                     breadCrumb: 'Masters > Misc',
                     componentName: 'miscMasters',
@@ -44,15 +54,6 @@ const cateringMenu = {
                     iconName: 'branchSettings',
                     controlId: 5,
                 },
-                {
-                    name: 'companyInfo',
-                    label: 'Company info',
-                    path: 'masters-companyInfo',
-                    breadCrumb: 'masters > Company info',
-                    componentName: '',
-                    iconName: 'companyInfo',
-                    controlId: 6,
-                }
             ],
         },
         {

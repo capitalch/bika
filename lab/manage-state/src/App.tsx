@@ -12,16 +12,17 @@ import PersistentDrawerLeft from './material/persistent-drawer-left'
 
 function App() {
     return (
-        <div>           
-            <PersistentDrawerLeft />
+        <div>
+            {/* <PersistentDrawerLeft /> */}
+            <ComponentLoader />
+            
+            {/* <RecoilRoot>
+                <ComponentLoader />
+                <Experiment1 />
+                <ImmerExp />
+                {' '}
+            </RecoilRoot> */}
         </div>
-        // <BasicCounter />
-        // <ZustandCounter />
-        // <RecoilRoot>
-        //   <ComponentLoader />
-        //   <Experiment1 />
-        //   <ImmerExp />
-        // </RecoilRoot>
     )
 }
 

@@ -1,4 +1,4 @@
-import { CateringHome } from "../entities/catering/components/catering_home"
+import { CateringHome } from "../modules/catering/components/catering_home"
 
 const componentMapping:any = {
     cateringHome: <CateringHome />
