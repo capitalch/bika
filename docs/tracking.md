@@ -34,7 +34,10 @@ Booking design:							10-10-2022
 																										
 # 02-09-2022: Fri:
 1. Morning	: Further refined side bar 											:						1 hrs
-2. Morning	: 
+2. Morning	: Reorganized, bug fix and cleanup									:						1 hrs
+3. Afternoon: Database creation													:						2 hrs
+4. Evening	: Meeting 															:						1 hrs
+5. Evening	: Database creation													:						2 hrs
 
 # 01-09-2022: Thurs: 7 hrs
 1. Morning	: Bug fixing side menu												: 						2 hrs
