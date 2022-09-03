@@ -25,7 +25,7 @@ const cateringMenu = {
                     breadCrumb: 'masters > Company info',
                     componentName: '',
                     iconName: 'companyInfo',
-                    controlId: 6,
+                    controlId: 3,
                 },               
                 {
                     name: 'misc',
@@ -34,7 +34,7 @@ const cateringMenu = {
                     breadCrumb: 'Masters > Misc',
                     componentName: 'miscMasters',
                     iconName: 'misc',
-                    controlId: 3,
+                    controlId: 4,
                 },
                 {
                     name: 'globalSettings',
@@ -43,7 +43,7 @@ const cateringMenu = {
                     breadCrumb: 'Masters > Global settings',
                     componentName: '',
                     iconName: 'globalSettings',
-                    controlId: 4,
+                    controlId: 5,
                 },
                 {
                     name: 'branchSettings',
@@ -52,7 +52,7 @@ const cateringMenu = {
                     breadCrumb: 'Masters > Branch settings',
                     componentName: '',
                     iconName: 'branchSettings',
-                    controlId: 5,
+                    controlId: 6,
                 },
             ],
         },

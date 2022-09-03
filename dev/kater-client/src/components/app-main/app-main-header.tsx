@@ -10,7 +10,8 @@ import {
     useHookstate,
 } from '../../misc/redirect'
 import { appMainHookState } from '../../hook-state/app-hookstate'
-import { cateringMenu } from './app-main-header-catering-menu'
+import { cateringMenu } from './app-main-catering-menu'
+import { UserLogin } from '../../modules/authentication/user-login'
 
 const drawerWidth = 240
 const AppBar: any = styled(
@@ -73,6 +74,7 @@ function AppMainHeader() {
                     </Button>
                 </Box>
             </Toolbar>
+            <UserLogin />
         </AppBar>
     )
 

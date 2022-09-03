@@ -5,23 +5,26 @@ import {
     DialogContent,
     DialogTitle,
     IconButton,
+    Typography,
     useState,
     useTheme,
 } from '../../misc/redirect'
 
 function BasicMaterialDialog({ meta }: any) {
-
+    const [,setRefresh] = useState({})
+// const Content = JSON.parse(JSON.stringify(meta.dialogConfig.content.get())) 
+const Content = meta.current.dialogConfig.content
     return (
-        <Dialog open={meta.dialogConfig.showDialog.get()}>
+        <Dialog open={meta.current.dialogConfig.showDialog}>
             <DialogTitle
                 sx={{
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
                 }}>
-                <Box>{meta.dialogConfig.title.get()}</Box>
+                <Typography sx={{fontWeight:'bold'}}>{meta.current.dialogConfig.title}</Typography>
                 <IconButton
-                    sx={{ mr: -2.5 }}
+                    sx={{ mr: -1.8 }}
                     size="small"
                     color="default"
                     onClick={handleClose}
@@ -29,11 +32,16 @@ function BasicMaterialDialog({ meta }: any) {
                     <CloseIcon />
                 </IconButton>
             </DialogTitle>
+            <DialogContent>
+                {/* {meta.dialogConfig.content} */}
+                <Content />
+            </DialogContent>
         </Dialog>
     )
 
     function handleClose() {
-        meta.dialogConfig.showDialog.set(false)
+        meta.current.dialogConfig.showDialog = false
+        setRefresh({})
     }
 }
 export { BasicMaterialDialog }

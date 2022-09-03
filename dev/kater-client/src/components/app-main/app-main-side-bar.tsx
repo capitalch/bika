@@ -108,7 +108,7 @@ function AppMainSideBar() {
             first?.children?.forEach((item: any, index: number) => {
                 const listItem = (
                     <MenuItem
-                        key={item.controlId}
+                        key={item.controlId + index} // In absence of index duplicate key warning appears
                         divider
                         disableGutters
                         sx={{ pt: 0, pb: 0 }}
@@ -145,7 +145,7 @@ function AppMainSideBar() {
                             }
                             timeout="auto"
                             unmountOnExit>
-                            <List
+                            <List                                
                                 disablePadding
                                 component="div"
                                 sx={{ pl: theme.spacing(2), pt: 0 }}>
