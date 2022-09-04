@@ -5,6 +5,7 @@ import axios from 'axios'
 import _ from 'lodash'
 import immer from 'immer'
 import messages from './messages.json'
+
 export { styled } from '@mui/material/styles'
 export {
     ArrowDropDown as ArrowDropDownIcon,
@@ -18,8 +19,6 @@ export {
     Menu as MenuIcon,
     MiscellaneousServices as MiscellaneousServicesIcon,
     MoveToInbox as InboxIcon,
-    Person as PersonIcon,
-    Password as PasswordIcon,
     Report as ReportIcon,
     Settings as SettingsIcon,
     SettingsApplications as SettingsApplicationsIcon,

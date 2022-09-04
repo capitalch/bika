@@ -1,0 +1,77 @@
+// Unique controlId is super important. It is used in several places
+const cateringMenu = {
+    children: [
+        {
+            name: 'home',
+            label: 'Home',
+            path: 'home',
+            breadCrumb: 'Home',
+            componentName: 'cateringHome',
+            iconName: 'home',
+            controlId: 1,
+        },
+        {
+            name: 'masters',
+            label: 'Masters',
+            path: 'masters',
+            breadCrumb: 'Masters',
+            iconName: 'masters',
+            controlId: 2,
+            children: [ 
+                {
+                    name: 'companyInfo',
+                    label: 'Company info',
+                    path: 'masters-companyInfo',
+                    breadCrumb: 'masters > Company info',
+                    componentName: '',
+                    iconName: 'companyInfo',
+                    controlId: 3,
+                },               
+                {
+                    name: 'misc',
+                    label: 'Misc masters',
+                    path: 'mastesrs-misc',
+                    breadCrumb: 'Masters > Misc',
+                    componentName: 'miscMasters',
+                    iconName: 'misc',
+                    controlId: 4,
+                },
+                {
+                    name: 'globalSettings',
+                    label: 'Global settings',
+                    path: 'masters-globalSettings',
+                    breadCrumb: 'Masters > Global settings',
+                    componentName: '',
+                    iconName: 'globalSettings',
+                    controlId: 5,
+                },
+                {
+                    name: 'branchSettings',
+                    label: 'Branch settings',
+                    path: 'masters-branchSettings',
+                    breadCrumb: 'Masters > Branch settings',
+                    componentName: '',
+                    iconName: 'branchSettings',
+                    controlId: 6,
+                },
+            ],
+        },
+        {
+            name: 'reports',
+            label: 'Reports',
+            path: 'reports',
+            breadCrumb: 'Reports',
+            iconName: 'reports',
+            controlId: 7,
+            children: [{
+                name: 'report1',
+                label: 'Report1',
+                path: 'reports-report1',
+                breadCrumb: 'Reports > Report1',
+                iconName: 'reports1',
+                controlId: 8,
+            }],
+        },
+    ],
+}
+export { cateringMenu }

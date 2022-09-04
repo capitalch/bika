@@ -21,7 +21,7 @@
 				e.g Marriage, Office party, Birthday, Get together
 
 			7. StateM (Populate by script) (Populate by script) also interface
-				id(M, tinyInt), stateName, stateCode, isActive
+				id(M, tinyInt), stateName, stateCode, gstCode, isActive
 
 			8. CityM (Populate by script) also interface
 				id(M, smallInt), stateId, cityName, isActive
@@ -75,8 +75,8 @@
 			24. BookingHall
 				id(A, bigint), bookingMainId, eventDate, eventTypeId, hallId, timeSlotId, startTime, endTime, lineRemarks, menuId, pax, boardToRead, quotedRate, finalRate
 
-			25. BookingHallFoodItem
-				id(A, bigInt), bookingHallId, foodItemId, departmentId, points, remarks
+			25. BookingHallMenuItemX
+				id(A, bigInt), bookingHallId, menuItemId, departmentId, points, remarks
 
 			26. BookingReceipt
 				id(A, BigInt), bookingMainId, tranDate, amount, dc, remarks
@@ -84,7 +84,7 @@
 			27.	BookingBill 
 				id(A, BigInt), bookingMainId, tranDate, amount, remarks
 
-			28. BookingAction
+			28. BookingActionD
 				id(A, bigint), tranDate, bookingActionId, bookingStatusId, lineRemarks
 
 			29. BookingLog

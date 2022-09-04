@@ -1,3 +1,12 @@
+## UI masters grouping
+1. Discrete->States, Cities, Units of measurement, 
+2. Customers
+3. Branch->Branches, Halls, Departments
+4. Food items->Menu, Menu items
+5. Company info
+6. Types->Date types, Event types, Time slots, 
+7. Booking->Booking actions, Booking status
+
 ## to do
 1. Formulate login
 2. On successful login show central and side bar
@@ -40,7 +49,17 @@ Booking design:							10-10-2022
 
 																										# Research
 																										1. Check in database if without sequence auto increment id is possible. yes possible.
-																										
+# 04-09-2022: Sun:
+1. Morning	: UI login / logout													:						2 hrs
+2. Afternoon: UI login / logout completed										:						2 hrs
+3. Afternoon: Database validations												:						1 hrs
+4. Evening	: States and Cities insert											:						1 hrs
+5. Evening	: Planning for masters insert										:						1 hrs
+
+# 03-09-2022: Sat: 8 HRS
+1. Morning	: UI login 															:						2 hrs
+2. Afternoon: UI login															:						2 hrs
+3. Evening	: UI login 															:						4 hrs																										
 # 02-09-2022: Fri: 9 hrs
 1. Morning	: Further refined side bar 											:						1 hrs
 2. Morning	: Reorganized, bug fix and cleanup									:						1 hrs

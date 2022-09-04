@@ -2,7 +2,7 @@ from redirect import CORS, exceptions, Flask, jsonify, logger
 from core.core_routes import coreRoutes
 from graphql_main.graphql_setup import graphqlSetup
 
-app = Flask(__name__,  template_folder="../build")
+app = Flask(__name__,  template_folder="../build") # React build
 CORS(app)
 
 app.register_blueprint(coreRoutes)
