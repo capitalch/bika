@@ -33,6 +33,7 @@ def resolve_kater(*_):
 @katerQuery.field("genericView")
 def resolve_people(*_):
     return [
+
         {"firstName": "Sushant", "lastName": "Agrawal", "age": 58},
         {"firstName": "Prashant", "lastName": "Agrawal", "age": 58}
     ]
