@@ -1,8 +1,9 @@
-import { Box, Typography, useEffect } from '../../../misc/redirect'
+import { appMainHookState, Box, Typography, useEffect, useHookstate } from '../../../misc/redirect'
 import { useQuery, gql } from '@apollo/client'
 import { graphqlService } from '../../../misc/graphql-service'
 
 function CateringHome() {
+
     const query = gql`
         query {
             kater {
@@ -19,7 +20,7 @@ function CateringHome() {
 
     async function fetchData() {
         const { queryGraphql } = graphqlService()
-        const ret = await queryGraphql(query)
+        const ret = await queryGraphql('abcd', query)
         console.log(ret)
     }
     return (

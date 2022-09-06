@@ -1,0 +1,8 @@
+type Mutation {
+    kater: KaterMutation
+}
+
+type KaterMutation {
+    genericUpdateMaster: Generic
+}
+scalar Generic

@@ -31,7 +31,7 @@ def resolve_kater(*_):
     return {}
 
 @katerQuery.field("genericView")
-def resolve_people(*_):
+def resolve_people(parent, info):
     # d=1/0
     return [
 
