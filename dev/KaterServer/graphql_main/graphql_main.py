@@ -1,14 +1,14 @@
 from redirect import Blueprint, graphql_sync, gql, load_schema_from_path, make_executable_schema, ObjectType, PLAYGROUND_HTML, QueryType, request
 from redirect import jsonify
 
-graphqlSetup = Blueprint('graphqlSetup', __name__)
+graphqlMain = Blueprint('graphqlSetup', __name__)
 
-@graphqlSetup.route('/graphql', methods=['GET'])
+@graphqlMain.route('/graphql', methods=['GET'])
 def graphql_playground():
     return PLAYGROUND_HTML, 200
 
 
-@graphqlSetup.route("/graphql", methods=["POST"])
+@graphqlMain.route("/graphql", methods=["POST"])
 def graphql_server():
     data = request.get_json()
     success, result = graphql_sync(
@@ -32,7 +32,9 @@ def resolve_kater(*_):
 
 @katerQuery.field("genericView")
 def resolve_people(*_):
+    # d=1/0
     return [
+
         {"firstName": "Sushant", "lastName": "Agrawal", "age": 58},
         {"firstName": "Prashant", "lastName": "Agrawal", "age": 58}
     ]

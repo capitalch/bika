@@ -49,12 +49,21 @@ Booking design:							10-10-2022
 
 																										# Research
 																										1. Check in database if without sequence auto increment id is possible. yes possible.
-# 04-09-2022: Sun:
+# 06-09-2022: Tue
+1. Afternoon: Completed error handling and logging at server					:						1 hrs
+
+# 05-09-2022: Mon: 4 hrs
+1. Morning	: Graphql client side 												:						2 hrs
+2. Afternoon: Graphql client													:						1 hrs
+3. Night	: Error handling at server											:						1 hrs
+
+# 04-09-2022: Sun: 9 hrs
 1. Morning	: UI login / logout													:						2 hrs
 2. Afternoon: UI login / logout completed										:						2 hrs
 3. Afternoon: Database validations												:						1 hrs
 4. Evening	: States and Cities insert											:						1 hrs
 5. Evening	: Planning for masters insert										:						1 hrs
+6. Night	: Completed login / logout, started graphql client					:						2 hrs
 
 # 03-09-2022: Sat: 8 HRS
 1. Morning	: UI login 															:						2 hrs

@@ -4,14 +4,16 @@ import {
     Box,
     Button,
     IconButton,
+    LogoutIcon,
     MenuIcon,
     MuiAppBar,
+    PersonIcon,
     styled,
     Toolbar,
     Typography,
     useHookstate,
     useTheme,
-    UserLoginWelcome
+    UserLoginWelcome,
 } from '../../misc/redirect'
 import { cateringMenu } from './app-main-catering-menu'
 
@@ -58,7 +60,7 @@ function AppMainHeader() {
                         display: 'flex',
                         justifyContent: 'space-between',
                         width: '100%',
-                        alignItems: 'center'
+                        alignItems: 'center',
                     }}>
                     <Button
                         color="inherit"
@@ -67,7 +69,7 @@ function AppMainHeader() {
                         onClick={handleCateringClick}>
                         Catering
                     </Button>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    {/* <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <Typography sx={{ mr: theme.spacing(1) }} variant='body2' component='span'>{appMainGlobalState.appUser.uid.get()}</Typography>
                         <Button
                             color="inherit"
@@ -77,7 +79,23 @@ function AppMainHeader() {
                             onClick={handleLoginClick}>
                             {appMainGlobalState.appUser.isLoggedIn.get() ? 'Welcome' : 'Login'}
                         </Button>
-                    </Box>
+                    </Box> */}
+                    <IconButton onClick={handleLogoutClick}>
+                        {appMainGlobalState.appUser.isLoggedIn.get() ? (
+                            <LogoutIcon
+                                sx={{
+                                    color: theme.palette.common.white,
+                                }}
+                            />
+                        ) : (
+                            <PersonIcon
+                                sx={{ color: theme.palette.common.white }}
+                            />
+                        )}
+                        <ArrowDropDownIcon
+                            sx={{ color: theme.palette.common.white }}
+                        />
+                    </IconButton>
                 </Box>
             </Toolbar>
             <UserLoginWelcome />
@@ -88,7 +106,7 @@ function AppMainHeader() {
         appMainGlobalState.selectedMenu.set(cateringMenu)
     }
 
-    function handleLoginClick() { 
+    function handleLogoutClick() {
         appMainGlobalState.dialog.showDialog.set(true)
     }
 
