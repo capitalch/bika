@@ -2,7 +2,6 @@ import {
     appMainHookState,
     Box,
     CssBaseline,
-    // entireHookState,
     useGlobalMediaQuery,
     useEffect,
     useHookstate,

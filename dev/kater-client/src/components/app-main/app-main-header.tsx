@@ -3,7 +3,6 @@ import {
     ArrowDropDownIcon,
     Box,
     Button,
-    // entireHookState,
     IconButton,
     MenuIcon,
     MuiAppBar,
@@ -14,9 +13,7 @@ import {
     useTheme,
     UserLoginWelcome
 } from '../../misc/redirect'
-// import { appMainHookState, entireHookState } from '../../hook-state/app-hookstate'
 import { cateringMenu } from './app-main-catering-menu'
-// import { UserLogin } from '../../modules/authentication/user-login'
 
 const drawerWidth = 240
 const AppBar: any = styled(
@@ -39,7 +36,6 @@ const AppBar: any = styled(
 
 function AppMainHeader() {
     const appMainGlobalState = useHookstate(appMainHookState)
-    // const entireGlobalState = useHookstate(entireHookState)
     const theme = useTheme()
     return (
         <AppBar position="fixed" open={appMainGlobalState.open.get()}>
