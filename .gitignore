@@ -107,3 +107,4 @@ dist
 **/env/
 **/__pycache__/
 *.log
+.env

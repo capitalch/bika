@@ -17,6 +17,7 @@ export {
     Clear as ClearIcon,
     CloseSharp as CloseIcon,
     Home as HomeIcon,
+    Logout as LogoutIcon,
     Mail as MailIcon,
     Menu as MenuIcon,
     MiscellaneousServices as MiscellaneousServicesIcon,

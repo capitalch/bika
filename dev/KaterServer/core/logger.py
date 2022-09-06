@@ -6,7 +6,7 @@ currentMonth = datetime.now().strftime("%b")
 currentYear = datetime.now().year
 logFormatStr = '%(asctime)s  %(levelname)s - %(message)s'
 logging.basicConfig(
-    filename=f'logs/{currentMonth}-{currentYear}.log', format=logFormatStr, level=logging.DEBUG)
+    filename=f'logs/{currentMonth}-{currentYear}.log', format=logFormatStr, level=logging.WARNING)
 
 logger = logging
 logger.info('logger initiated')

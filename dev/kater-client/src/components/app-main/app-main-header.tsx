@@ -5,6 +5,7 @@ import {
     Button,
     // entireHookState,
     IconButton,
+    LogoutIcon,
     MenuIcon,
     MuiAppBar,
     PersonIcon,
@@ -84,8 +85,20 @@ function AppMainHeader() {
                         </Button>
                     </Box> */}
                     <IconButton onClick={handleLogoutClick}>
-                        <PersonIcon sx={{color:theme.palette.common.white}} />
-                        <ArrowDropDownIcon sx={{color:theme.palette.common.white,}} />
+                        {appMainGlobalState.appUser.isLoggedIn.get() ? (
+                            <LogoutIcon
+                                sx={{
+                                    color: theme.palette.common.white,
+                                }}
+                            />
+                        ) : (
+                            <PersonIcon
+                                sx={{ color: theme.palette.common.white }}
+                            />
+                        )}
+                        <ArrowDropDownIcon
+                            sx={{ color: theme.palette.common.white }}
+                        />
                     </IconButton>
                 </Box>
             </Toolbar>
