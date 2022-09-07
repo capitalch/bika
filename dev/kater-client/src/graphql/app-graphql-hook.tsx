@@ -4,11 +4,12 @@ import {
     InMemoryCache,
     HttpLink,
 } from '@apollo/client'
-import { urlJoin, } from './redirect'
+import { appMainHookState, urlJoin, useHookstate, } from '../misc/redirect'
 
-function graphqlService() {
-
-    function getClient(token: string) {
+function useAppGraphql() {
+    const appMainGlobalState = useHookstate(appMainHookState)
+    function getClient() {
+        const token = appMainGlobalState.appUser.token.get()
         const url: any =
             (process.env.NODE_ENV === 'development')
                 ? process.env.REACT_APP_LOCAL_SERVER_URL
@@ -39,8 +40,8 @@ function graphqlService() {
         return client
     }
 
-    async function queryGraphql(token: string, q: any) {
-        const client = getClient(token)
+    async function queryGraphql(q: any) {
+        const client = getClient()
         let ret: any
         try {
             ret = await client.query({
@@ -54,4 +55,4 @@ function graphqlService() {
 
     return { queryGraphql }
 }
-export { graphqlService }
+export { useAppGraphql }

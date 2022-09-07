@@ -8,7 +8,7 @@ CORS(app)
 app.register_blueprint(coreRoutes)
 app.register_blueprint(graphqlMain)
 hostNameAndIP = getSourceComputer()[2] # getting third value from the tuple
-logger.info('Started main..')
+logger.info('Started server..')
 
 @app.errorhandler(GenericException)
 def handle_generic_exception(e):    

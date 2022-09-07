@@ -1,8 +1,9 @@
 type Query {
-    kater: KaterQuery
+    appServer: AppServerQuery
 }
 
-type KaterQuery {
+type AppServerQuery {
+    doLogin(credentials: String): Generic
     genericView: Generic
 }
 scalar Generic

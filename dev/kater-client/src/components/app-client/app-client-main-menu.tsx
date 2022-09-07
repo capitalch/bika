@@ -1,5 +1,5 @@
 // Unique controlId is super important. It is used in several places
-const cateringMenu = {
+const mainMenu = {
     children: [
         {
             name: 'home',
@@ -74,4 +74,4 @@ const cateringMenu = {
         },
     ],
 }
-export { cateringMenu }
+export { mainMenu }

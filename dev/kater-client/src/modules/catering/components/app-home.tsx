@@ -1,12 +1,11 @@
-import { appMainHookState, Box, Typography, useEffect, useHookstate } from '../../../misc/redirect'
+import { appMainHookState, Box, Typography, useAppGraphql, useEffect, useHookstate } from '../../../misc/redirect'
 import { useQuery, gql } from '@apollo/client'
-import { graphqlService } from '../../../misc/graphql-service'
 
-function CateringHome() {
-
+function AppHome() {
+    const { queryGraphql } = useAppGraphql()
     const query = gql`
         query {
-            kater {
+            appServer {
                 genericView
             }
         }
@@ -18,9 +17,8 @@ function CateringHome() {
         fetchData()
     }, [])
 
-    async function fetchData() {
-        const { queryGraphql } = graphqlService()
-        const ret = await queryGraphql('abcd', query)
+    async function fetchData() {        
+        const ret = await queryGraphql(query)
         console.log(ret)
     }
     return (
@@ -29,7 +27,7 @@ function CateringHome() {
         </Box>
     )
 }
-export { CateringHome }
+export { AppHome }
 {
     /* <PDFViewer>
 <PdfComp />

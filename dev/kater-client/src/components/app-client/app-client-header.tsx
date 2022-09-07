@@ -10,12 +10,11 @@ import {
     PersonIcon,
     styled,
     Toolbar,
-    Typography,
     useHookstate,
     useTheme,
     UserLoginWelcome,
 } from '../../misc/redirect'
-import { cateringMenu } from './app-main-catering-menu'
+import { mainMenu } from './app-client-main-menu'
 
 const drawerWidth = 240
 const AppBar: any = styled(
@@ -36,7 +35,7 @@ const AppBar: any = styled(
     }),
 }))
 
-function AppMainHeader() {
+function AppClientHeader() {
     const appMainGlobalState = useHookstate(appMainHookState)
     const theme = useTheme()
     return (
@@ -103,7 +102,7 @@ function AppMainHeader() {
     )
 
     function handleCateringClick() {
-        appMainGlobalState.selectedMenu.set(cateringMenu)
+        appMainGlobalState.selectedMenu.set(mainMenu)
     }
 
     function handleLogoutClick() {
@@ -119,4 +118,4 @@ function AppMainHeader() {
         }
     }
 }
-export { AppMainHeader }
+export { AppClientHeader }

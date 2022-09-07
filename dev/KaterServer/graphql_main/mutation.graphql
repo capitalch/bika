@@ -1,8 +1,7 @@
 type Mutation {
-    kater: KaterMutation
+    appServer: AppServerMutation
 }
 
-type KaterMutation {
+type AppServerMutation {
     genericUpdateMaster: Generic
 }
-scalar Generic

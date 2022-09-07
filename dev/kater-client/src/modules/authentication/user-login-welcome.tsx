@@ -2,6 +2,7 @@ import { CSSProperties } from '@mui/styled-engine'
 import { BasicMaterialDialog } from '../../components/common/basic-material-dialog'
 import { appMainHookState } from '../../hook-state/app-hookstate'
 import {
+    appGraphqlStrings,
     Box,
     Button,
     ClearIcon,
@@ -20,6 +21,7 @@ import {
     PersonIcon,
     TextField,
     Typography,
+    useAppGraphql,
     useEffect,
     useHookstate,
     useTheme,
@@ -45,6 +47,7 @@ export { UserLoginWelcome }
 
 function LoginContent() {
     const theme = useTheme()
+    const { queryGraphql } = useAppGraphql()
     const appMainGlobalState = useHookstate(appMainHookState)
     const { checkPwdError, checkUidError } = globalValidators()
     const userLocalState = useHookstate({
@@ -156,8 +159,9 @@ function LoginContent() {
         return styles
     }
 
-    function handleSubmit() {
+    async function handleSubmit() {
         appMainGlobalState.isLoading.set(true)
+        const ret = await queryGraphql(appGraphqlStrings['login']('abcd'))
         setTimeout(() => {
             appMainGlobalState.isLoading.set(false)
             appMainGlobalState.appUser.uid.set('demoUser')
