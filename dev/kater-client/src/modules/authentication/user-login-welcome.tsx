@@ -7,18 +7,15 @@ import {
     appGraphqlStrings,
     Box,
     Button,
-    ClearIcon,
     CloseIcon,
     globalValidators,
     IconButton,
-    immer,
     InputAdornment,
     List,
     ListItem,
     ListItemButton,
     ListItemIcon,
     ListItemText,
-    MenuItem,
     PasswordIcon,
     PersonIcon,
     TextField,
@@ -182,8 +179,8 @@ function LoginContent() {
             userLocalState.pwdError.get().length === 0
         ) {
             appMainGlobalState.isLoading.set(true)
-            const utcTime = new Date().getUTCDate()
-            const privateKey: any = process.env.REACT_APP_JWT_KEY
+            const utcTime = (new Date()).toISOString()
+            const privateKey: any = process.env.REACT_APP_LOGIN_TIME_KEY
             const encrypted = Cryptojs.HmacSHA1(utcTime, privateKey).toString()
             // const token = jwt.sign({data:utcTime},privateKey,{expiresIn:'10sec'})
             // appMainGlobalState.appUser.token.set(token)
@@ -195,6 +192,7 @@ function LoginContent() {
                 cred: credentials,
                 time: encrypted,
             }
+            // const escaped = encodeURI(JSON.stringify(payload))
             const queryString = appGraphqlStrings['login']
             const ret = await queryGraphql(queryString(payload))
             setTimeout(() => {

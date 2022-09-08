@@ -53,6 +53,10 @@ function useAppGraphql() {
         return ret
     }
 
+    function objectToStringEncoded(obj:any){
+
+    }
+
     return { queryGraphql }
 }
 export { useAppGraphql }
