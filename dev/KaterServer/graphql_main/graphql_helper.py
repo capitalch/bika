@@ -1,3 +1,4 @@
 # from redirect import request
 def context_value(request):
-    return
+    if (request.json['operationName'] == 'login'):
+        return

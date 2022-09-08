@@ -1,6 +1,8 @@
 import { CSSProperties } from '@mui/styled-engine'
+// import { buffer } from 'node:stream/consumers'
 import { BasicMaterialDialog } from '../../components/common/basic-material-dialog'
 import { appMainHookState } from '../../hook-state/app-hookstate'
+
 import {
     appGraphqlStrings,
     Box,
@@ -26,6 +28,8 @@ import {
     useHookstate,
     useTheme,
 } from '../../misc/redirect'
+import { Buffer } from 'buffer'
+const Cryptojs = require('crypto-js')
 
 function UserLoginWelcome() {
     const appMainGlobalState = useHookstate(appMainHookState)
@@ -51,14 +55,20 @@ function LoginContent() {
     const appMainGlobalState = useHookstate(appMainHookState)
     const { checkPwdError, checkUidError } = globalValidators()
     const userLocalState = useHookstate({
-        uid: '',
-        pwd: '',
+        uid: 'demo',
+        pwd: 'demo123#',
         uidError: '',
         pwdError: '',
+        serverError: '',
     })
     useEffect(() => {
         appMainGlobalState.dialog.title.set('User login')
     })
+    const isSubmitDisabled =
+        userLocalState.uid.get().length === 0 ||
+        userLocalState.pwd.get().length === 0 ||
+        userLocalState.uidError.get().length > 0 ||
+        userLocalState.pwdError.get().length > 0
     return (
         <Box sx={getStyles()}>
             <Typography component="div" sx={{ mb: theme.spacing(0.3) }}>
@@ -73,10 +83,12 @@ function LoginContent() {
 
             {/* uid */}
             <TextField
+                id="uid1"
                 autoComplete="off"
                 size="small"
                 autoFocus
                 required
+                // defaultValue="demo"
                 onChange={(e: any) => {
                     userLocalState.uidError.set(
                         checkUidError(e.target.value) ?? ''
@@ -113,7 +125,9 @@ function LoginContent() {
 
             {/* pwd */}
             <TextField
-                autoComplete="off"
+                id="pwd1"
+                autoComplete="new-password"
+                // defaultValue="demoUser1!"
                 size="small"
                 type="password"
                 error={userLocalState.pwdError.get().length > 0}
@@ -142,7 +156,8 @@ function LoginContent() {
                 size="large"
                 variant="contained"
                 sx={{ mt: theme.spacing(2) }}
-                onClick={handleSubmit}>
+                onClick={handleSubmit}
+                disabled={isSubmitDisabled}>
                 Submit
             </Button>
         </Box>
@@ -160,15 +175,36 @@ function LoginContent() {
     }
 
     async function handleSubmit() {
-        appMainGlobalState.isLoading.set(true)
-        const ret = await queryGraphql(appGraphqlStrings['login']('abcd'))
-        setTimeout(() => {
-            appMainGlobalState.isLoading.set(false)
-            appMainGlobalState.appUser.uid.set('demoUser')
-            // entireGlobalState.appUser.uid.set(userLocalState.uid.get())
-            appMainGlobalState.dialog.showDialog.set(false)
-            appMainGlobalState.appUser.isLoggedIn.set(true)
-        }, 100)
+        checkUidError(userLocalState.uid.get())
+        checkPwdError(userLocalState.pwd.get())
+        if (
+            userLocalState.uidError.get().length === 0 &&
+            userLocalState.pwdError.get().length === 0
+        ) {
+            appMainGlobalState.isLoading.set(true)
+            const utcTime = new Date().getUTCDate()
+            const privateKey: any = process.env.REACT_APP_JWT_KEY
+            const encrypted = Cryptojs.HmacSHA1(utcTime, privateKey).toString()
+            // const token = jwt.sign({data:utcTime},privateKey,{expiresIn:'10sec'})
+            // appMainGlobalState.appUser.token.set(token)
+            const cred = userLocalState.uid
+                .get()
+                .concat(':', userLocalState.pwd.get())
+            const credentials = Buffer.from(cred).toString('base64')
+            const payload = {
+                cred: credentials,
+                time: encrypted,
+            }
+            const queryString = appGraphqlStrings['login']
+            const ret = await queryGraphql(queryString(payload))
+            setTimeout(() => {
+                appMainGlobalState.isLoading.set(false)
+                appMainGlobalState.appUser.uid.set('demoUser')
+                // entireGlobalState.appUser.uid.set(userLocalState.uid.get())
+                appMainGlobalState.dialog.showDialog.set(false)
+                appMainGlobalState.appUser.isLoggedIn.set(true)
+            }, 100)
+        }
     }
 
     function handlePwdClear() {

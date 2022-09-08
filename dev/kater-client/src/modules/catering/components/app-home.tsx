@@ -14,7 +14,7 @@ function AppHome() {
     // console.log(data)
     // console.log(process.env.NODE_ENV)
     useEffect(() => {
-        fetchData()
+        // fetchData()
     }, [])
 
     async function fetchData() {        

@@ -1,8 +1,9 @@
-from redirect import Blueprint, graphql_sync, gql, load_schema_from_path, make_executable_schema, ObjectType, PLAYGROUND_HTML, QueryType, request
+from redirect import Blueprint, graphql_sync, gql, json, load_schema_from_path, make_executable_schema, ObjectType, PLAYGROUND_HTML, QueryType, request
 from redirect import jsonify
 from .graphql_helper import context_value
 
 graphqlMain = Blueprint('graphqlSetup', __name__)
+
 
 @graphqlMain.route('/graphql', methods=['GET'])
 def graphql_playground():
@@ -22,18 +23,23 @@ def graphql_server():
     return jsonify(result), status_code
 
 
-type_defs = load_schema_from_path('graphql_main') # Types of all queries and fields are defined in query.graphql file
+# Types of all queries and fields are defined in query.graphql file
+type_defs = load_schema_from_path('graphql_main')
 
-query = QueryType() # or query = ObjectType('Query')
+query = QueryType()  # or query = ObjectType('Query')
 appServerQuery = ObjectType('AppServerQuery')
+
 
 @query.field('appServer')
 def resolve_server(*_):
     return {}
 
+
 @appServerQuery.field("doLogin")
 def resolve_doLogin(parent, info, credentials):
-    return('success')
+    # j = json.loads(credentials)
+    return ('success',200)
+
 
 @appServerQuery.field("genericView")
 def resolve_people(parent, info):
@@ -44,7 +50,8 @@ def resolve_people(parent, info):
         {"firstName": "Prashant", "lastName": "Agrawal", "age": 58}
     ]
 
-schema = make_executable_schema(type_defs,appServerQuery, query)
+
+schema = make_executable_schema(type_defs, appServerQuery, query)
 
 # Graphql process
 # Step 1: Define all type in file .graphql. load the file using load_schema_from_path
