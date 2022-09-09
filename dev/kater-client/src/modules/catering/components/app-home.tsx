@@ -1,4 +1,4 @@
-import { appMainHookState, Box, Typography, useAppGraphql, useEffect, useHookstate } from '../../../misc/redirect'
+import { appHookState, Box, Typography, useAppGraphql, useEffect, useHookstate } from '../../../misc/redirect'
 import { useQuery, gql } from '@apollo/client'
 
 function AppHome() {
@@ -14,7 +14,7 @@ function AppHome() {
     // console.log(data)
     // console.log(process.env.NODE_ENV)
     useEffect(() => {
-        // fetchData()
+        fetchData()
     }, [])
 
     async function fetchData() {        

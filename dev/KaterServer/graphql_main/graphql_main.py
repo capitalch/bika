@@ -38,7 +38,7 @@ def resolve_server(*_):
 @appServerQuery.field("doLogin")
 def resolve_doLogin(parent, info, credentials):
     cred = unquote(credentials)
-    credObj = demjson.decode(cred)
+    # credObj = demjson.decode(cred)
     return 'success'
 
 

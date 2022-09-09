@@ -1,4 +1,4 @@
-import { appMainHookState } from '../../hook-state/app-hookstate'
+import { appHookState } from '../../hook-state/app-hookstate'
 import {
     CloseIcon,
     Dialog,
@@ -9,10 +9,10 @@ import {
     useHookstate,
 } from '../../misc/redirect'
 
-function BasicMaterialDialog({ Content, isClosable }: any) {
-    const appMainGlobalState = useHookstate(appMainHookState)
+function AppMaterialDialog({ Content, isClosable }: any) {
+    const appGlobalState = useHookstate(appHookState)
     return (
-        <Dialog open={appMainGlobalState.dialog.showDialog.get()}>
+        <Dialog open={appGlobalState.dialog.showDialog.get()}>
             <DialogTitle
                 sx={{
                     display: 'flex',
@@ -20,7 +20,7 @@ function BasicMaterialDialog({ Content, isClosable }: any) {
                     alignItems: 'center',
                 }}>
                 <Typography sx={{ fontWeight: 'bold' }}>
-                    {appMainGlobalState.dialog.title.get()}
+                    {appGlobalState.dialog.title.get()}
                 </Typography>
                 {isClosable && (
                     <IconButton
@@ -40,7 +40,7 @@ function BasicMaterialDialog({ Content, isClosable }: any) {
     )
 
     function handleClose() {
-        appMainGlobalState.dialog.showDialog.set(false)
+        appGlobalState.dialog.showDialog.set(false)
     }
 }
-export { BasicMaterialDialog }
+export { AppMaterialDialog }

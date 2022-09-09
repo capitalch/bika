@@ -12,17 +12,20 @@ logger.info('Started server..')
 
 @app.errorhandler(GenericException)
 def handle_generic_exception(e):    
-    logger.error(f'Error code:{e.code} - {e.description}, Called from: {hostNameAndIP}')
-    return jsonify(code=e.code, name=e.name, description=e.description), 500
+    logger.error(f'Error code:{e.code} - {e.message}, Called from: {hostNameAndIP}')
+    return jsonify(code=e.code, name=e.name, message=e.message), e.code
 
 @app.errorhandler(exceptions.HTTPException)
 def handle_http_exception(e):
-    logger.error(f'Error code:{e.code} - {e.description}, Called from: {hostNameAndIP}')
-    return jsonify(code=e.code, name=e.name, description=e.description), e.code
+    logger.error(f'Error code:{e.code} - {e.message}, Called from: {hostNameAndIP}')
+    return jsonify(code=e.code, name=e.name, message=e.message), e.code
 
 @app.errorhandler(Exception)
 def handle_http_exception(e):
-    logger.error(f'Error code:{e.code} - {e.description}, Called from: {hostNameAndIP}')
-    return jsonify(code=e.code, name=e.name, description=e.description), e.code
+    code = getattr(e, 'code', 999)
+    name = getattr(e, 'name', 'unknown')
+    message = getattr(e, 'message', 'There was unknown error at server')
+    logger.error(f'Error code:{code} - {message}, Called from: {hostNameAndIP}')
+    return jsonify(code=code, name=name, message=message), 500
 
 

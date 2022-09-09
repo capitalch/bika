@@ -4,12 +4,13 @@ import {
     InMemoryCache,
     HttpLink,
 } from '@apollo/client'
-import { appMainHookState, urlJoin, useHookstate, } from '../misc/redirect'
+import { servicesVersion } from 'typescript'
+import { appHookState, messages, urlJoin, useHookstate, } from '../misc/redirect'
 
 function useAppGraphql() {
-    const appMainGlobalState = useHookstate(appMainHookState)
+    const appGlobalState = useHookstate(appHookState)
     function getClient() {
-        const token = appMainGlobalState.appUser.token.get()
+        const token = appGlobalState.appUser.token.get()
         const url: any =
             (process.env.NODE_ENV === 'development')
                 ? process.env.REACT_APP_LOCAL_SERVER_URL
@@ -19,7 +20,7 @@ function useAppGraphql() {
             uri: urlJoin(url, 'graphql')
         })
 
-        const authLink = new ApolloLink((operation:any,forward:any)=>{
+        const authLink = new ApolloLink((operation: any, forward: any) => {
             operation.setContext({
                 headers: {
                     authorization: token ? `Bearer ${token}` : '',
@@ -48,12 +49,15 @@ function useAppGraphql() {
                 query: q,
             })
         } catch (error: any) {
+            const serverErrorMessage = error?.networkError?.result?.message
+            const mess = serverErrorMessage || messages.errFetch
+            appGlobalState.errorMessage.merge({ show: true, message: mess })
             console.log(error)
         }
         return ret
     }
 
-    function objectToStringEncoded(obj:any){
+    function objectToStringEncoded(obj: any) {
 
     }
 

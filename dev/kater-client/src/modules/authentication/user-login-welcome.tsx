@@ -1,7 +1,7 @@
 import { CSSProperties } from '@mui/styled-engine'
 // import { buffer } from 'node:stream/consumers'
-import { BasicMaterialDialog } from '../../components/common/basic-material-dialog'
-import { appMainHookState } from '../../hook-state/app-hookstate'
+import { AppMaterialDialog } from '../../components/common/app-material-dialog'
+import { appHookState } from '../../hook-state/app-hookstate'
 
 import {
     appGraphqlStrings,
@@ -29,15 +29,15 @@ import { Buffer } from 'buffer'
 const Cryptojs = require('crypto-js')
 
 function UserLoginWelcome() {
-    const appMainGlobalState = useHookstate(appMainHookState)
+    const appGlobalState = useHookstate(appHookState)
     useEffect(() => {
-        appMainGlobalState.dialog.showDialog.set(
-            !appMainGlobalState.appUser.isLoggedIn.get()
+        appGlobalState.dialog.showDialog.set(
+            !appGlobalState.appUser.isLoggedIn.get()
         )
     })
-    const isLoggedIn = appMainGlobalState.appUser.isLoggedIn.get()
+    const isLoggedIn = appGlobalState.appUser.isLoggedIn.get()
     return (
-        <BasicMaterialDialog
+        <AppMaterialDialog
             isClosable={isLoggedIn ? true : false}
             Content={isLoggedIn ? WelcomeContent : LoginContent}
         />
@@ -49,7 +49,7 @@ export { UserLoginWelcome }
 function LoginContent() {
     const theme = useTheme()
     const { queryGraphql } = useAppGraphql()
-    const appMainGlobalState = useHookstate(appMainHookState)
+    const appGlobalState = useHookstate(appHookState)
     const { checkPwdError, checkUidError } = globalValidators()
     const userLocalState = useHookstate({
         uid: 'demo',
@@ -59,7 +59,7 @@ function LoginContent() {
         serverError: '',
     })
     useEffect(() => {
-        appMainGlobalState.dialog.title.set('User login')
+        appGlobalState.dialog.title.set('User login')
     })
     const isSubmitDisabled =
         userLocalState.uid.get().length === 0 ||
@@ -178,29 +178,30 @@ function LoginContent() {
             userLocalState.uidError.get().length === 0 &&
             userLocalState.pwdError.get().length === 0
         ) {
-            appMainGlobalState.isLoading.set(true)
+            appGlobalState.isLoading.set(true)
             const utcTime = (new Date()).toISOString()
             const privateKey: any = process.env.REACT_APP_LOGIN_TIME_KEY || ''
             const encrypted = Cryptojs.HmacSHA1(utcTime, privateKey).toString()
+            appGlobalState.appUser.token.set(encrypted)
             // const token = jwt.sign({data:utcTime},privateKey,{expiresIn:'10sec'})
-            // appMainGlobalState.appUser.token.set(token)
+            // appGlobalState.appUser.token.set(token)
             const cred = userLocalState.uid
                 .get()
                 .concat(':', userLocalState.pwd.get())
             const credentials = Buffer.from(cred).toString('base64')
-            const payload = {
-                cred: credentials,
-                time: encrypted,
-            }
+            // const payload = {
+            //     cred: credentials,
+            //     time: encrypted,
+            // }
             // const escaped = encodeURI(JSON.stringify(payload))
             const queryString = appGraphqlStrings['login']
-            const ret = await queryGraphql(queryString(payload))
+            const ret = await queryGraphql(queryString(credentials))
             setTimeout(() => {
-                appMainGlobalState.isLoading.set(false)
-                appMainGlobalState.appUser.uid.set('demoUser')
+                appGlobalState.isLoading.set(false)
+                appGlobalState.appUser.uid.set('demoUser')
                 // entireGlobalState.appUser.uid.set(userLocalState.uid.get())
-                appMainGlobalState.dialog.showDialog.set(false)
-                appMainGlobalState.appUser.isLoggedIn.set(true)
+                appGlobalState.dialog.showDialog.set(false)
+                appGlobalState.appUser.isLoggedIn.set(true)
             }, 100)
         }
     }
@@ -216,10 +217,10 @@ function LoginContent() {
 
 function WelcomeContent() {
     const theme = useTheme()
-    const appMainGlobalState = useHookstate(appMainHookState)
+    const appGlobalState = useHookstate(appHookState)
     useEffect(() => {
-        appMainGlobalState.dialog.title.set(
-            `Welcome ${appMainGlobalState.appUser.uid.get()}`
+        appGlobalState.dialog.title.set(
+            `Welcome ${appGlobalState.appUser.uid.get()}`
         )
     })
     return (
@@ -280,14 +281,14 @@ function WelcomeContent() {
         //     old.isLoggedIn.set(false)
         //     old.uid.set('')
         // })
-        appMainGlobalState.appUser.merge({
+        appGlobalState.appUser.merge({
             isLoggedIn: false,
             uid: '',
         })
         // entireGlobalState.appUser.isLoggedIn.set(false)
         // entireGlobalState.appUser.uid.set('')
 
-        appMainGlobalState.open.set(false)
-        // appMainGlobalState.dialog.showDialog.set(false)
+        appGlobalState.open.set(false)
+        // appGlobalState.dialog.showDialog.set(false)
     }
 }

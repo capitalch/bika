@@ -21,7 +21,7 @@ import {
     useTheme,
 } from '../../misc/redirect'
 
-import { appMainHookState } from '../../hook-state/app-hookstate'
+import { appHookState } from '../../hook-state/app-hookstate'
 import { iconMapping } from './app-client-side-bar-icons-mapping'
 
 const drawerWidth = 240
@@ -37,12 +37,12 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 function AppClientSideBar() {
     const theme = useTheme()
     const { isExtraLargeSizeUp } = useGlobalMediaQuery()
-    const appMainGlobalState = useHookstate(appMainHookState)
+    const appGlobalState = useHookstate(appHookState)
     const sideBarLocalState = useHookstate({
         selectedControlId: 0,
         expandedControlId: 0,
     })
-    const menu = appMainGlobalState.selectedMenu.get()
+    const menu = appGlobalState.selectedMenu.get()
 
     return (
         <Drawer
@@ -62,7 +62,7 @@ function AppClientSideBar() {
             variant="persistent"
             anchor="left"
             transitionDuration={300}
-            open={appMainGlobalState.open.get()}>
+            open={appGlobalState.open.get()}>
             <DrawerHeader
                 sx={{
                     display: 'flex',
@@ -174,14 +174,14 @@ function AppClientSideBar() {
 
     function handleDrawerCloseIfRequired() {
         if (!isExtraLargeSizeUp) {
-            if (appMainGlobalState.open.get()) {
-                appMainGlobalState.open.set(false)
+            if (appGlobalState.open.get()) {
+                appGlobalState.open.set(false)
             }
         }
     }
 
     function handleDrawerClose() {
-        appMainGlobalState.open.set(false)
+        appGlobalState.open.set(false)
     }
 
     function handleListItemButtonclick(item: any) {
@@ -193,7 +193,7 @@ function AppClientSideBar() {
             sideBarLocalState.expandedControlId.set(expandedControlId)
         } else {
             sideBarLocalState.selectedControlId.set(item.controlId)
-            appMainGlobalState.currentComponentName.set(item.componentName)
+            appGlobalState.currentComponentName.set(item.componentName)
             handleDrawerCloseIfRequired()
         }
     }

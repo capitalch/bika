@@ -97,7 +97,7 @@ function AppClientHeader() {
                     </IconButton>
                 </Box>
             </Toolbar>
-            <UserLoginWelcome />
+            {/* <UserLoginWelcome /> */}
         </AppBar>
     )
 

@@ -27,6 +27,7 @@ export {
     Report as ReportIcon,
     Settings as SettingsIcon,
     SettingsApplications as SettingsApplicationsIcon,
+
     Summarize as SummarizeIcon,
     ViewList as ViewListIcon,
 } from '@mui/icons-material'
@@ -60,7 +61,7 @@ export {
     useTheme,
 } from '@mui/material'
 export { _, axios, immer, messages, moment, MuiAppBar, urlJoin }
-export { useEffect, useLayoutEffect, useRef, useState } from 'react'
+export { Suspense, useEffect, useLayoutEffect, useRef, useState } from 'react'
 export const {
     debounceEmit,
     debounceFilterOn,

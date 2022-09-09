@@ -19,7 +19,7 @@ function useAppGraphql() {
             uri: urlJoin(url, 'graphql')
         })
 
-        const authLink = new ApolloLink((operation:any,forward:any)=>{
+        const authLink = new ApolloLink((operation: any, forward: any) => {
             operation.setContext({
                 headers: {
                     authorization: token ? `Bearer ${token}` : '',
@@ -43,20 +43,12 @@ function useAppGraphql() {
     async function queryGraphql(q: any) {
         const client = getClient()
         let ret: any
-        try {
-            ret = await client.query({
-                query: q,
-            })
-        } catch (error: any) {
-            console.log(error)
-        }
+        ret = await client.query({
+            query: q,
+        })
         return ret
     }
 
-    function objectToStringEncoded(obj:any){
-
-    }
-
-    return { queryGraphql }
+    return { queryGraphql, getClient }
 }
 export { useAppGraphql }

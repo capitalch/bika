@@ -1,5 +1,5 @@
 import {
-    appMainHookState,
+    appHookState,
     ArrowDropDownIcon,
     Box,
     Button,
@@ -36,10 +36,10 @@ const AppBar: any = styled(
 }))
 
 function AppClientHeader() {
-    const appMainGlobalState = useHookstate(appMainHookState)
+    const appGlobalState = useHookstate(appHookState)
     const theme = useTheme()
     return (
-        <AppBar position="fixed" open={appMainGlobalState.open.get()}>
+        <AppBar position="fixed" open={appGlobalState.open.get()}>
             <Toolbar>
                 <IconButton
                     color="inherit"
@@ -48,7 +48,7 @@ function AppClientHeader() {
                     edge="start"
                     sx={{
                         mr: 2,
-                        ...(appMainGlobalState.open.get() && {
+                        ...(appGlobalState.open.get() && {
                             display: 'none',
                         }),
                     }}>
@@ -69,18 +69,18 @@ function AppClientHeader() {
                         Catering
                     </Button>
                     {/* <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography sx={{ mr: theme.spacing(1) }} variant='body2' component='span'>{appMainGlobalState.appUser.uid.get()}</Typography>
+                        <Typography sx={{ mr: theme.spacing(1) }} variant='body2' component='span'>{appGlobalState.appUser.uid.get()}</Typography>
                         <Button
                             color="inherit"
                             variant="menuButton"
                             size="small"
                             endIcon={<ArrowDropDownIcon />}
                             onClick={handleLoginClick}>
-                            {appMainGlobalState.appUser.isLoggedIn.get() ? 'Welcome' : 'Login'}
+                            {appGlobalState.appUser.isLoggedIn.get() ? 'Welcome' : 'Login'}
                         </Button>
                     </Box> */}
                     <IconButton onClick={handleLogoutClick}>
-                        {appMainGlobalState.appUser.isLoggedIn.get() ? (
+                        {appGlobalState.appUser.isLoggedIn.get() ? (
                             <LogoutIcon
                                 sx={{
                                     color: theme.palette.common.white,
@@ -102,19 +102,19 @@ function AppClientHeader() {
     )
 
     function handleCateringClick() {
-        appMainGlobalState.selectedMenu.set(mainMenu)
+        appGlobalState.selectedMenu.set(mainMenu)
     }
 
     function handleLogoutClick() {
-        appMainGlobalState.dialog.showDialog.set(true)
+        appGlobalState.dialog.showDialog.set(true)
     }
 
     function handleDrawerOpen() {
         // Drawer can only be opened if user logged in
-        if (appMainGlobalState.appUser.isLoggedIn.get()) {
-            appMainGlobalState.open.set(true)
+        if (appGlobalState.appUser.isLoggedIn.get()) {
+            appGlobalState.open.set(true)
         } else {
-            appMainGlobalState.dialog.showDialog.set(true)
+            appGlobalState.dialog.showDialog.set(true)
         }
     }
 }
