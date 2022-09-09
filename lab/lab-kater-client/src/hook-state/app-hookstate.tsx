@@ -1,9 +1,9 @@
-import { cateringMenu } from '../components/app-main/app-main-catering-menu'
+import { mainMenu } from '../components/app-client/app-client-main-menu'
 import { hookstate } from '../misc/redirect'
 
 const appMainHookState = hookstate({
     open: false, // drawer open or close
-    selectedMenu: cateringMenu,
+    selectedMenu: mainMenu,
     currentComponentName: 'cateringHome',
     isLoading: false,
     dialog: {

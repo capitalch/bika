@@ -18,12 +18,11 @@ import {
     Typography,
     useGlobalMediaQuery,
     useHookstate,
-    useState,
     useTheme,
 } from '../../misc/redirect'
 
 import { appMainHookState } from '../../hook-state/app-hookstate'
-import { iconMapping } from './app-main-side-bar-icons-mapping'
+import { iconMapping } from './app-client-side-bar-icons-mapping'
 
 const drawerWidth = 240
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -35,7 +34,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     justifyContent: 'flex-end',
 }))
 
-function AppMainSideBar() {
+function AppClientSideBar() {
     const theme = useTheme()
     const { isExtraLargeSizeUp } = useGlobalMediaQuery()
     const appMainGlobalState = useHookstate(appMainHookState)
@@ -200,4 +199,4 @@ function AppMainSideBar() {
     }
 }
 
-export { AppMainSideBar }
+export { AppClientSideBar }

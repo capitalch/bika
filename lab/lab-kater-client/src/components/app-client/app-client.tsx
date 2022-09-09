@@ -6,10 +6,10 @@ import {
     useEffect,
     useHookstate,
 } from '../../misc/redirect'
-import { AppMainCentral } from './app-main-central'
-import { AppMainHeader } from './app-main-header'
-import { AppMainSideBar } from './app-main-side-bar'
-import { AppMainLoadingIndicator } from './app-main-loading-indicator'
+import { AppClientCentral } from './app-client-central'
+import { AppClientHeader } from './app-client-header'
+import { AppClientSideBar } from './app-client-side-bar'
+import { AppClientLoadingIndicator } from './app-client-loading-indicator'
 import {
     ApolloClient,
     InMemoryCache,
@@ -17,7 +17,7 @@ import {
     gql,
 } from '@apollo/client'
 
-function AppMain() {
+function AppClient() {
     const appMainGlobalState = useHookstate(appMainHookState)
     const { isExtraLargeSizeUp } = useGlobalMediaQuery()
 
@@ -27,21 +27,21 @@ function AppMain() {
             appMainGlobalState.open.set(isExtraLargeSizeUp)
     })
 
-    const client = new ApolloClient({
-        uri: 'http://localhost:5000/graphql',
-        cache: new InMemoryCache(),
-    })
+    // const client = new ApolloClient({
+    //     uri: 'http://localhost:5000/graphql',
+    //     cache: new InMemoryCache(),
+    // })
 
     return (
-        <ApolloProvider client={client}>
+        // <ApolloProvider client={client}>
             <Box sx={{ display: 'flex' }}>
                 <CssBaseline />
-                <AppMainHeader />
-                <AppMainSideBar />
-                <AppMainCentral />
-                <AppMainLoadingIndicator />
+                <AppClientHeader />
+                <AppClientSideBar />
+                <AppClientCentral />
+                <AppClientLoadingIndicator />
             </Box>
-        </ApolloProvider>
+        // </ApolloProvider>
     )
 }
-export { AppMain }
+export { AppClient }

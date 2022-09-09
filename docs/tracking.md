@@ -49,6 +49,9 @@ Booking design:							10-10-2022
 
 																										# Research
 																										1. Check in database if without sequence auto increment id is possible. yes possible.
+# 07-09-2022 - 09-09-2022
+1. Research over new technology in React
+
 # 06-09-2022: Tue
 1. Afternoon: Completed error handling and logging at server					:						1 hrs
 

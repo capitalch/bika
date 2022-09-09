@@ -4,22 +4,33 @@ import {
     InMemoryCache,
     HttpLink,
 } from '@apollo/client'
-import { urlJoin } from './redirect'
+import { appMainHookState, urlJoin, useHookstate, } from '../misc/redirect'
 
-function graphqlService() {
+function useAppGraphql() {
+    const appMainGlobalState = useHookstate(appMainHookState)
     function getClient() {
-        const url:any =
+        const token = appMainGlobalState.appUser.token.get()
+        const url: any =
             (process.env.NODE_ENV === 'development')
                 ? process.env.REACT_APP_LOCAL_SERVER_URL
                 : window.location.href
 
         const link = new HttpLink({
-            uri: urlJoin(url,'graphql')
+            uri: urlJoin(url, 'graphql')
+        })
+
+        const authLink = new ApolloLink((operation:any,forward:any)=>{
+            operation.setContext({
+                headers: {
+                    authorization: token ? `Bearer ${token}` : '',
+                },
+            })
+            return forward(operation)
         })
 
         const client = new ApolloClient({
             cache: new InMemoryCache(),
-            link: link,
+            link: authLink.concat(link),
             defaultOptions: {
                 query: {
                     fetchPolicy: 'network-only',
@@ -42,6 +53,10 @@ function graphqlService() {
         return ret
     }
 
+    function objectToStringEncoded(obj:any){
+
+    }
+
     return { queryGraphql }
 }
-export { graphqlService }
+export { useAppGraphql }
