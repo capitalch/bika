@@ -180,7 +180,7 @@ function LoginContent() {
         ) {
             appMainGlobalState.isLoading.set(true)
             const utcTime = (new Date()).toISOString()
-            const privateKey: any = process.env.REACT_APP_LOGIN_TIME_KEY
+            const privateKey: any = process.env.REACT_APP_LOGIN_TIME_KEY || ''
             const encrypted = Cryptojs.HmacSHA1(utcTime, privateKey).toString()
             // const token = jwt.sign({data:utcTime},privateKey,{expiresIn:'10sec'})
             // appMainGlobalState.appUser.token.set(token)
