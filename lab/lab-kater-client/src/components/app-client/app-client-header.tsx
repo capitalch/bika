@@ -3,7 +3,6 @@ import {
     ArrowDropDownIcon,
     Box,
     Button,
-    // entireHookState,
     IconButton,
     LogoutIcon,
     MenuIcon,
@@ -11,14 +10,11 @@ import {
     PersonIcon,
     styled,
     Toolbar,
-    Typography,
     useHookstate,
     useTheme,
     UserLoginWelcome,
 } from '../../misc/redirect'
-// import { appMainHookState, entireHookState } from '../../hook-state/app-hookstate'
-import { cateringMenu } from './app-main-catering-menu'
-// import { UserLogin } from '../../modules/authentication/user-login'
+import { mainMenu } from './app-client-main-menu'
 
 const drawerWidth = 240
 const AppBar: any = styled(
@@ -39,9 +35,8 @@ const AppBar: any = styled(
     }),
 }))
 
-function AppMainHeader() {
+function AppClientHeader() {
     const appMainGlobalState = useHookstate(appMainHookState)
-    // const entireGlobalState = useHookstate(entireHookState)
     const theme = useTheme()
     return (
         <AppBar position="fixed" open={appMainGlobalState.open.get()}>
@@ -107,7 +102,7 @@ function AppMainHeader() {
     )
 
     function handleCateringClick() {
-        appMainGlobalState.selectedMenu.set(cateringMenu)
+        appMainGlobalState.selectedMenu.set(mainMenu)
     }
 
     function handleLogoutClick() {
@@ -123,4 +118,4 @@ function AppMainHeader() {
         }
     }
 }
-export { AppMainHeader }
+export { AppClientHeader }

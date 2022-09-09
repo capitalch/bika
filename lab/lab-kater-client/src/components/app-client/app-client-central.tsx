@@ -1,6 +1,6 @@
 import { styled, useHookstate } from '../../misc/redirect'
 import { appMainHookState } from '../../hook-state/app-hookstate'
-import { componentMapping } from './app-main-central-components-mapping'
+import { componentMapping } from './app-client-central-components-mapping'
 // import { UserLogin } from '../../modules/authentication/user-login'
 
 const drawerWidth = 240
@@ -32,7 +32,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
 }))
-function AppMainCentral({ open }: any) {
+function AppClientCentral({ open }: any) {
     const appMainGlobalState = useHookstate(appMainHookState)
     const currentComponentName:string = appMainGlobalState.currentComponentName.get()
     return (
@@ -43,5 +43,5 @@ function AppMainCentral({ open }: any) {
         </Main>
     )
 }
-export { AppMainCentral }
+export { AppClientCentral }
 

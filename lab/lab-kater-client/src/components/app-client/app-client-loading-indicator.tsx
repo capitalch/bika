@@ -2,7 +2,7 @@ import React from 'react'
 import { appMainHookState, } from '../../hook-state/app-hookstate'
 import { Backdrop, CircularProgress, useHookstate } from '../../misc/redirect'
 
-function AppMainLoadingIndicator() {
+function AppClientLoadingIndicator() {
     const appMainGlobalState = useHookstate(appMainHookState)
     return (
         <Backdrop sx={{ zIndex: 9999 }} open={appMainGlobalState.isLoading.get()}>
@@ -10,4 +10,4 @@ function AppMainLoadingIndicator() {
         </Backdrop>
     )
 }
-export { AppMainLoadingIndicator }
+export { AppClientLoadingIndicator }
