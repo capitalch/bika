@@ -179,12 +179,26 @@ function LoginContent() {
             userLocalState.pwdError.get().length === 0
         ) {
             appGlobalState.isLoading.set(true)
-            const utcTime = (new Date()).toISOString()
+            const utcTime = new Date().toISOString()
             const privateKey: any = process.env.REACT_APP_LOGIN_TIME_KEY || ''
-            const encrypted = Cryptojs.HmacSHA1(utcTime, privateKey).toString()
-            appGlobalState.appUser.token.set(encrypted)
-            // const token = jwt.sign({data:utcTime},privateKey,{expiresIn:'10sec'})
-            // appGlobalState.appUser.token.set(token)
+            let key = 'AAAAAAAAAAAAAAAA'
+            const text = 'This is a test'
+
+            key = Cryptojs.enc.Utf8.parse(key);
+            const encrypted2 = Cryptojs.AES.encrypt(text, key, {
+                mode: Cryptojs.mode.ECB,
+            }) 
+            // const encrypted1 = Cryptojs.AES.encrypt(text, key, {
+            //     mode: Cryptojs.mode.ECB,
+            // }) 
+            const enc = encrypted2.toString()
+            console.log(enc)
+            const decr = Cryptojs.AES.decrypt(encrypted2, key, {
+                mode: Cryptojs.mode.ECB,
+            }).toString(
+                Cryptojs.enc.Utf8
+            )
+            appGlobalState.appUser.token.set(enc)
             const cred = userLocalState.uid
                 .get()
                 .concat(':', userLocalState.pwd.get())
