@@ -7,7 +7,11 @@ function cryptoEncrypt(text: string) {
     const encrypted = Cryptojs.AES.encrypt(text, key, {
         mode: Cryptojs.mode.ECB,
     }).toString()
-    return(encrypted)
+    return (encrypted)
 }
 
-export { cryptoEncrypt }
+function getPayloadFromGraphqlObject(obj: any, payloadName: string) {
+    return (obj?.data?.appServer?.[payloadName])
+}
+
+export { cryptoEncrypt, getPayloadFromGraphqlObject }

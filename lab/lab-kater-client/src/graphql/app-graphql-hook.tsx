@@ -4,12 +4,12 @@ import {
     InMemoryCache,
     HttpLink,
 } from '@apollo/client'
-import { appMainHookState, urlJoin, useHookstate, } from '../misc/redirect'
+import { appHookState, messages, urlJoin, useHookstate, } from '../misc/redirect'
 
 function useAppGraphql() {
-    const appMainGlobalState = useHookstate(appMainHookState)
+    const appGlobalState = useHookstate(appHookState)
     function getClient() {
-        const token = appMainGlobalState.appUser.token.get()
+        const token = appGlobalState.loginInfo.token.get()
         const url: any =
             (process.env.NODE_ENV === 'development')
                 ? process.env.REACT_APP_LOCAL_SERVER_URL
@@ -43,12 +43,22 @@ function useAppGraphql() {
     async function queryGraphql(q: any) {
         const client = getClient()
         let ret: any
-        ret = await client.query({
-            query: q,
-        })
+        try {
+            ret = await client.query({
+                query: q,
+            })
+        } catch (error: any) {
+            if (error?.networkError?.statusCode === 1007) { //Token expired so reset
+                appGlobalState.loginInfo.merge({ isLoggedIn: false, token: '', userType: '', uid: '' })
+            }
+            error.message = error?.networkError?.result?.message || messages.errFetch || error.message
+            appGlobalState.errorMessage.merge({ show: true, message: error.message })
+            console.log(error)
+            throw (error)
+        }
         return ret
     }
 
-    return { queryGraphql, getClient }
+    return { queryGraphql }
 }
 export { useAppGraphql }

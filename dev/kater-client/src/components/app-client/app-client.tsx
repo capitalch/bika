@@ -23,7 +23,7 @@ function AppClient() {
 
     useEffect(() => {
         //By default if xl size and user already logged in then show side menu
-        if (appGlobalState.appUser.isLoggedIn.get())
+        if (appGlobalState.loginInfo.isLoggedIn.get())
             appGlobalState.open.set(isExtraLargeSizeUp)
     })
 

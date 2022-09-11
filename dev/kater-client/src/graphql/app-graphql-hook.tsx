@@ -9,7 +9,7 @@ import { appHookState, messages, urlJoin, useHookstate, } from '../misc/redirect
 function useAppGraphql() {
     const appGlobalState = useHookstate(appHookState)
     function getClient() {
-        const token = appGlobalState.appUser.token.get()
+        const token = appGlobalState.loginInfo.token.get()
         const url: any =
             (process.env.NODE_ENV === 'development')
                 ? process.env.REACT_APP_LOCAL_SERVER_URL
@@ -48,10 +48,13 @@ function useAppGraphql() {
                 query: q,
             })
         } catch (error: any) {
-            const serverErrorMessage = error?.networkError?.result?.message || error.message
-            const mess = serverErrorMessage || messages.errFetch
-            appGlobalState.errorMessage.merge({ show: true, message: mess })
+            if (error?.networkError?.statusCode === 1007) { //Token expired so reset
+                appGlobalState.loginInfo.merge({ isLoggedIn: false, token: '', userType: '', uid: '' })
+            }
+            error.message = error?.networkError?.result?.message || messages.errFetch || error.message
+            appGlobalState.errorMessage.merge({ show: true, message: error.message })
             console.log(error)
+            throw (error)
         }
         return ret
     }

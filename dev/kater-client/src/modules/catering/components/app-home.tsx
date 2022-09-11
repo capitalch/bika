@@ -1,10 +1,10 @@
-import { appHookState, Box, Typography, useAppGraphql, useEffect, useHookstate } from '../../../misc/redirect'
+import { appHookState, Box, Button, getPayloadFromGraphqlObject, Typography, useAppGraphql, useEffect, useHookstate } from '../../../misc/redirect'
 import { useQuery, gql } from '@apollo/client'
 
 function AppHome() {
     const { queryGraphql } = useAppGraphql()
     const query = gql`
-        query {
+        query getData {
             appServer {
                 genericView
             }
@@ -14,16 +14,18 @@ function AppHome() {
     // console.log(data)
     // console.log(process.env.NODE_ENV)
     useEffect(() => {
-        fetchData()
+        // fetchData()
     }, [])
 
-    async function fetchData() {        
+    async function fetchData() {
         const ret = await queryGraphql(query)
         console.log(ret)
     }
     return (
         <Box>
             <Typography component="div">Catering home</Typography>
+            <Button variant='contained' onClick={fetchData}>Fetch</Button>
+            <Typography component='div'></Typography>
         </Box>
     )
 }

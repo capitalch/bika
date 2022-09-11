@@ -1,7 +1,7 @@
 import { styled, useHookstate } from '../../misc/redirect'
-import { appMainHookState } from '../../hook-state/app-hookstate'
+import { appHookState } from '../../hook-state/app-hookstate'
 import { componentMapping } from './app-client-central-components-mapping'
-import { Comp1 } from '../../modules/catering/components/comp1'
+import { AppErrorMessage } from '../common/app-error-message'
 // import { UserLogin } from '../../modules/authentication/user-login'
 
 const drawerWidth = 240
@@ -34,14 +34,14 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     justifyContent: 'flex-end',
 }))
 function AppClientCentral({ open }: any) {
-    const appMainGlobalState = useHookstate(appMainHookState)
-    const currentComponentName:string = appMainGlobalState.currentComponentName.get()
+    const appGlobalState = useHookstate(appHookState)
+    const currentComponentName:string = appGlobalState.currentComponentName.get()
     return (
-        <Main open={appMainGlobalState.open.get()}>
+        <Main open={appGlobalState.open.get()}>
             <DrawerHeader />
             {/* <UserLogIn /> */}
-            {/* {componentMapping[currentComponentName]} */}
-            <Comp1 />
+            {componentMapping[currentComponentName]}
+            <AppErrorMessage />
         </Main>
     )
 }

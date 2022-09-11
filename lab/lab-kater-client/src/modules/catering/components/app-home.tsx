@@ -1,69 +1,147 @@
-import { appMainHookState, Box, CircularProgress, Suspense, Typography, useAppGraphql, useEffect, useHookstate, useRef, useState } from '../../../misc/redirect'
+import { appHookState, AppMaterialDialog, Box, Button, getPayloadFromGraphqlObject, TextField, Typography, useAppGraphql, useEffect, useHookstate, useTheme } from '../../../misc/redirect'
 import { useQuery, gql } from '@apollo/client'
-import { useWrapGraphql } from './wrap-graphql-hook'
-import { AppClientLoadingIndicator } from '../../../components/app-client/app-client-loading-indicator'
-import { ErrorBoundary } from 'react-error-boundary'
+
 function AppHome() {
-    const [, setRefresh] = useState({})
-    const { queryGraphql } = useAppGraphql()
-    const meta: any = useRef({
-        data: ''
-    })
-    const query = gql`
-        query {
-            appServer {
-                genericView
-            }
-        }
-    `
+    const appGlobalState = useHookstate(appHookState)
+    const theme = useTheme()
+    const logicMap:any = {
+        1: <Box1 />,
+        2: <Box2 />,
+        3: <Box3 />,
+        4: <Box4 />
+    }
     useEffect(() => {
-        fetchData()
+
     }, [])
+    appGlobalState.dialog.merge({ showDialog: true, title: 'Wizard' })
 
-    async function fetchData(): Promise<any> {
-        try {
-            const ret = await queryGraphql(query)
-            meta.current.data = ret.data.appServer.genericView[0].firstName
-            setRefresh({})
-            // console.log(ret)
-        } catch (err: any) {
-            console.log(err.message)
-        }
+    function WizardContent() {
+        const currPage = appGlobalState.wizard1.currentPage.get()
+        // const Content:any = logicMap[currPage]
+        return (<>{logicMap[currPage]}</>)
     }
-
-    return (<Box></Box>)
-}
-
-function MyApp() {
-    const { wrapGraphQL } = useWrapGraphql()
-    const query = () => gql`
-        query {
-            appServer {
-                genericView
-            }
-        }
-    `
-    const data = wrapGraphQL(query())
-
-    const Launches = ({ launches }: any) => {
-        return (
-            <div>
-                {JSON.stringify(launches.read())}
-            </div>
-        )
-    }
-
-    function Fallback() {
-        return (<div>Error</div>)
-    }
-
     return (
-        <Suspense fallback={<div><CircularProgress /></div>}>
-            <ErrorBoundary FallbackComponent={Fallback}>
-                <Launches launches={data} />
-            </ErrorBoundary>
-        </Suspense >
+        <AppMaterialDialog isClosable={true} Content={WizardContent} />
     )
 }
+export { AppHome }
 
-export { AppHome, MyApp }
+function Box1() {
+    const theme = useTheme()
+    const appGlobalState = useHookstate(appHookState)
+    return (<Box sx={{ width: theme.spacing(60), height: theme.spacing(40), display: 'flex', flexDirection: 'column' }}>
+        <Typography variant='h5'>Box1</Typography>
+        <Box>
+            <TextField size='small' variant='outlined'></TextField>
+            <TextField size='small' variant='outlined'></TextField>
+        </Box>
+        <Box>
+            <TextField size='small' variant='outlined'></TextField>
+            <TextField size='small' variant='outlined'></TextField>
+        </Box>
+        <Box sx={{ mt: 'auto', display: 'flex', justifyContent: 'space-between' }}>
+            <Button disabled={true} onClick={handlePrev} variant='contained'>Prev</Button>
+            <Button variant='contained' onClick={handleNext}>Next</Button>
+        </Box>
+    </Box>)
+    function handlePrev() {
+        const currPage = appGlobalState.wizard1.currentPage.get()
+        appGlobalState.wizard1.currentPage.set(currPage - 1)
+    }
+    function handleNext() {
+        const currPage = appGlobalState.wizard1.currentPage.get()
+        if (currPage < 4) {
+            appGlobalState.wizard1.currentPage.set(currPage + 1)
+        }
+    }
+}
+
+function Box2() {
+    const theme = useTheme()
+    const appGlobalState = useHookstate(appHookState)
+    return (<Box sx={{ width: theme.spacing(60), height: theme.spacing(40), display: 'flex', flexDirection: 'column' }}>
+        <Typography variant='h5'>Box2</Typography>
+        <Box>
+            <TextField size='small' variant='outlined'></TextField>
+            <TextField size='small' variant='outlined'></TextField>
+        </Box>
+        <Box>
+            <TextField size='small' variant='outlined'></TextField>
+            <TextField size='small' variant='outlined'></TextField>
+        </Box>
+        <Box sx={{ mt: 'auto', display: 'flex', justifyContent: 'space-between' }}>
+            <Button variant='contained' onClick={handlePrev}>Prev</Button>
+            <Button variant='contained' onClick={handleNext}>Next</Button>
+        </Box>
+    </Box>)
+    function handlePrev() {
+        const currPage = appGlobalState.wizard1.currentPage.get()
+        appGlobalState.wizard1.currentPage.set(currPage - 1)
+    }
+    function handleNext() {
+        const currPage = appGlobalState.wizard1.currentPage.get()
+        if (currPage < 4) {
+            appGlobalState.wizard1.currentPage.set(currPage + 1)
+        }
+    }
+}
+
+function Box3() {
+    const theme = useTheme()
+    const appGlobalState = useHookstate(appHookState)
+    return (<Box sx={{ width: theme.spacing(60), height: theme.spacing(40), display: 'flex', flexDirection: 'column' }}>
+        <Typography variant='h5'>Box3</Typography>
+        <Box>
+            <TextField size='small' variant='outlined'></TextField>
+            <TextField size='small' variant='outlined'></TextField>
+        </Box>
+        <Box>
+            <TextField size='small' variant='outlined'></TextField>
+            <TextField size='small' variant='outlined'></TextField>
+        </Box>
+        <Box sx={{ mt: 'auto', display: 'flex', justifyContent: 'space-between' }}>
+            <Button variant='contained' onClick={handlePrev}>Prev</Button>
+            <Button variant='contained' onClick={handleNext}>Next</Button>
+        </Box>
+    </Box>)
+    function handlePrev() {
+        const currPage = appGlobalState.wizard1.currentPage.get()
+        appGlobalState.wizard1.currentPage.set(currPage - 1)
+    }
+    function handleNext() {
+        const currPage = appGlobalState.wizard1.currentPage.get()
+        if (currPage < 4) {
+            appGlobalState.wizard1.currentPage.set(currPage + 1)
+        }
+    }
+}
+
+function Box4() {
+    const theme = useTheme()
+    const appGlobalState = useHookstate(appHookState)
+    return (<Box sx={{ width: theme.spacing(60), height: theme.spacing(40), display: 'flex', flexDirection: 'column' }}>
+        <Typography variant='h5'>Box4</Typography>
+        <Box>
+            <TextField size='small' variant='outlined'></TextField>
+            <TextField size='small' variant='outlined'></TextField>
+        </Box>
+        <Box>
+            <TextField size='small' variant='outlined'></TextField>
+            <TextField size='small' variant='outlined'></TextField>
+        </Box>
+        <Box sx={{ mt: 'auto', display: 'flex', justifyContent: 'space-between' }}>
+            <Button variant='contained' onClick={handlePrev}>Prev</Button>
+            <Button variant='contained' onClick={handleNext}>Next</Button>
+        </Box>
+    </Box>)
+    function handlePrev() {
+        const currPage = appGlobalState.wizard1.currentPage.get()
+        appGlobalState.wizard1.currentPage.set(currPage - 1)
+    }
+    function handleNext() {
+        const currPage = appGlobalState.wizard1.currentPage.get()
+        if (currPage < 4) {
+            appGlobalState.wizard1.currentPage.set(currPage + 1)
+        }
+    }
+}

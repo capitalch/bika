@@ -9,6 +9,7 @@ import {
     Button,
     CloseIcon,
     cryptoEncrypt,
+    getPayloadFromGraphqlObject,
     globalValidators,
     IconButton,
     InputAdornment,
@@ -17,6 +18,7 @@ import {
     ListItemButton,
     ListItemIcon,
     ListItemText,
+    messages,
     PasswordIcon,
     PersonIcon,
     TextField,
@@ -28,16 +30,16 @@ import {
 } from '../../misc/redirect'
 import { Buffer } from 'buffer'
 // import Cryptojs from 'crypto-js'
-const Cryptojs = require('crypto-js')
+// const Cryptojs = require('crypto-js')
 
 function UserLoginWelcome() {
     const appGlobalState = useHookstate(appHookState)
     useEffect(() => {
         appGlobalState.dialog.showDialog.set(
-            !appGlobalState.appUser.isLoggedIn.get()
+            !appGlobalState.loginInfo.isLoggedIn.get()
         )
     })
-    const isLoggedIn = appGlobalState.appUser.isLoggedIn.get()
+    const isLoggedIn = appGlobalState.loginInfo.isLoggedIn.get()
     return (
         <AppMaterialDialog
             isClosable={isLoggedIn ? true : false}
@@ -54,8 +56,8 @@ function LoginContent() {
     const appGlobalState = useHookstate(appHookState)
     const { checkPwdError, checkUidError } = globalValidators()
     const userLocalState = useHookstate({
-        uid: 'demo',
-        pwd: 'demo123#',
+        uid: 'superAdmin',
+        pwd: 'superAdmin@123',
         uidError: '',
         pwdError: '',
         serverError: '',
@@ -63,11 +65,13 @@ function LoginContent() {
     useEffect(() => {
         appGlobalState.dialog.title.set('User login')
     })
+
     const isSubmitDisabled =
         userLocalState.uid.get().length === 0 ||
         userLocalState.pwd.get().length === 0 ||
         userLocalState.uidError.get().length > 0 ||
         userLocalState.pwdError.get().length > 0
+
     return (
         <Box sx={getStyles()}>
             <Typography component="div" sx={{ mb: theme.spacing(0.3) }}>
@@ -87,18 +91,18 @@ function LoginContent() {
                 size="small"
                 autoFocus
                 required
-                // defaultValue="demo"
                 onChange={(e: any) => {
                     userLocalState.uidError.set(
                         checkUidError(e.target.value) ?? ''
                     )
                     userLocalState.uid.set(e.target.value)
+                    userLocalState.serverError.set('')
                 }}
                 value={userLocalState.uid.get()}
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
-                            <IconButton size="small" onClick={handleUidClear}>
+                            <IconButton size="small" onClick={handleUidClear} tabIndex={-1}>
                                 <CloseIcon />
                             </IconButton>
                         </InputAdornment>
@@ -133,7 +137,7 @@ function LoginContent() {
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
-                            <IconButton size="small" onClick={handlePwdClear}>
+                            <IconButton size="small" onClick={handlePwdClear} tabIndex={-1}>
                                 <CloseIcon />
                             </IconButton>
                         </InputAdornment>
@@ -147,6 +151,7 @@ function LoginContent() {
                 onChange={(e: any) => {
                     userLocalState.pwdError.set(checkPwdError(e.target.value))
                     userLocalState.pwd.set(e.target.value)
+                    userLocalState.serverError.set('')
                 }}
                 value={userLocalState.pwd.get()}></TextField>
 
@@ -159,6 +164,7 @@ function LoginContent() {
                 disabled={isSubmitDisabled}>
                 Submit
             </Button>
+            <Typography sx={{ mt: theme.spacing(1) }} variant='caption'>{userLocalState.serverError.get()}</Typography>
         </Box>
     )
 
@@ -181,30 +187,52 @@ function LoginContent() {
             userLocalState.pwdError.get().length === 0
         ) {
             appGlobalState.isLoading.set(true)
-            // const utcTime = new Date().toISOString()
             const utcTime = new Date().getTime().toString()
             const encryptedUtcTime = cryptoEncrypt(utcTime)
-            // console.log(encryptedUtcTime)
-            
-            appGlobalState.appUser.token.set(encryptedUtcTime)
+
+            appGlobalState.loginInfo.token.set(encryptedUtcTime)
             const cred = userLocalState.uid
                 .get()
                 .concat(':', userLocalState.pwd.get())
             const credentials = Buffer.from(cred).toString('base64')
-            // const payload = {
-            //     cred: credentials,
-            //     time: encrypted,
-            // }
-            // const escaped = encodeURI(JSON.stringify(payload))
+
             const queryString = appGraphqlStrings['login']
-            const ret = await queryGraphql(queryString(credentials))
-            setTimeout(() => {
+            try {
+                userLocalState.serverError.set('')
+                const ret = await queryGraphql(queryString(credentials))
+                if (ret) {
+                    const payload = getPayloadFromGraphqlObject(ret, 'doLogin')
+                    if (payload.isSuccess) {
+                        appGlobalState.loginInfo.merge({
+                            isLoggedIn: true,
+                            token: payload.token,
+                            uid: userLocalState.uid.get(),
+                            userType: payload.userType
+                        })
+                    } else {
+                        userLocalState.serverError.set(messages.messLoginFailed)
+                        resetAllStates()
+                    }
+                    console.log(payload)
+                } else {
+                    resetAllStates()
+                    userLocalState.serverError.set(messages.messConnectionError)
+                }
+
+            } catch (e: any) {
+                console.log(e.message)
+                resetAllStates()
+                userLocalState.serverError.set(e.message)
+            }
+            finally {
                 appGlobalState.isLoading.set(false)
-                appGlobalState.appUser.uid.set('demoUser')
-                // entireGlobalState.appUser.uid.set(userLocalState.uid.get())
-                appGlobalState.dialog.showDialog.set(false)
-                appGlobalState.appUser.isLoggedIn.set(true)
-            }, 100)
+            }
+            // setTimeout(() => {
+            //     appGlobalState.isLoading.set(false)
+            //     appGlobalState.loginInfo.uid.set('demoUser')
+            //     appGlobalState.dialog.showDialog.set(false)
+            //     appGlobalState.loginInfo.isLoggedIn.set(true)
+            // }, 100)
         }
     }
 
@@ -215,6 +243,17 @@ function LoginContent() {
     function handleUidClear() {
         userLocalState.uid.set('')
     }
+
+    function resetAllStates() {
+        userLocalState.merge({
+            uid: '',
+            pwd: '',
+            uidError: '',
+            pwdError: '',
+            // serverError: '',
+        })
+        appGlobalState.loginInfo.merge({ isLoggedIn: false, token: '', userType: '', uid: '' })
+    }
 }
 
 function WelcomeContent() {
@@ -222,7 +261,7 @@ function WelcomeContent() {
     const appGlobalState = useHookstate(appHookState)
     useEffect(() => {
         appGlobalState.dialog.title.set(
-            `Welcome ${appGlobalState.appUser.uid.get()}`
+            `Welcome ${appGlobalState.loginInfo.uid.get()}`
         )
     })
     return (
@@ -278,17 +317,17 @@ function WelcomeContent() {
     }
     // logout
     function handleSubmit() {
-        // const appUser = entireGlobalState.appUser.get()
-        // const user = immer(appUser,(old:any)=>{
+        // const loginInfo = entireGlobalState.loginInfo.get()
+        // const user = immer(loginInfo,(old:any)=>{
         //     old.isLoggedIn.set(false)
         //     old.uid.set('')
         // })
-        appGlobalState.appUser.merge({
+        appGlobalState.loginInfo.merge({
             isLoggedIn: false,
             uid: '',
         })
-        // entireGlobalState.appUser.isLoggedIn.set(false)
-        // entireGlobalState.appUser.uid.set('')
+        // entireGlobalState.loginInfo.isLoggedIn.set(false)
+        // entireGlobalState.loginInfo.uid.set('')
 
         appGlobalState.open.set(false)
         // appGlobalState.dialog.showDialog.set(false)

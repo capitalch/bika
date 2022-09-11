@@ -2,7 +2,7 @@ import { mainMenu } from '../components/app-client/app-client-main-menu'
 import { hookstate } from '../misc/redirect'
 
 const appHookState = hookstate({
-    appUser: {
+    loginInfo: {
         isLoggedIn: false,
         token: '',
         userType: '',

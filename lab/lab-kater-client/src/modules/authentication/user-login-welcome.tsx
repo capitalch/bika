@@ -1,13 +1,15 @@
 import { CSSProperties } from '@mui/styled-engine'
 // import { buffer } from 'node:stream/consumers'
-import { BasicMaterialDialog } from '../../components/common/basic-material-dialog'
-import { appMainHookState } from '../../hook-state/app-hookstate'
+import { AppMaterialDialog } from '../../components/common/app-material-dialog'
+import { appHookState } from '../../hook-state/app-hookstate'
 
 import {
     appGraphqlStrings,
     Box,
     Button,
     CloseIcon,
+    cryptoEncrypt,
+    getPayloadFromGraphqlObject,
     globalValidators,
     IconButton,
     InputAdornment,
@@ -16,6 +18,7 @@ import {
     ListItemButton,
     ListItemIcon,
     ListItemText,
+    messages,
     PasswordIcon,
     PersonIcon,
     TextField,
@@ -26,18 +29,19 @@ import {
     useTheme,
 } from '../../misc/redirect'
 import { Buffer } from 'buffer'
-const Cryptojs = require('crypto-js')
+// import Cryptojs from 'crypto-js'
+// const Cryptojs = require('crypto-js')
 
 function UserLoginWelcome() {
-    const appMainGlobalState = useHookstate(appMainHookState)
+    const appGlobalState = useHookstate(appHookState)
     useEffect(() => {
-        appMainGlobalState.dialog.showDialog.set(
-            !appMainGlobalState.appUser.isLoggedIn.get()
+        appGlobalState.dialog.showDialog.set(
+            !appGlobalState.loginInfo.isLoggedIn.get()
         )
     })
-    const isLoggedIn = appMainGlobalState.appUser.isLoggedIn.get()
+    const isLoggedIn = appGlobalState.loginInfo.isLoggedIn.get()
     return (
-        <BasicMaterialDialog
+        <AppMaterialDialog
             isClosable={isLoggedIn ? true : false}
             Content={isLoggedIn ? WelcomeContent : LoginContent}
         />
@@ -49,23 +53,25 @@ export { UserLoginWelcome }
 function LoginContent() {
     const theme = useTheme()
     const { queryGraphql } = useAppGraphql()
-    const appMainGlobalState = useHookstate(appMainHookState)
+    const appGlobalState = useHookstate(appHookState)
     const { checkPwdError, checkUidError } = globalValidators()
     const userLocalState = useHookstate({
-        uid: 'demo',
-        pwd: 'demo123#',
+        uid: 'superAdmin',
+        pwd: 'superAdmin@123',
         uidError: '',
         pwdError: '',
         serverError: '',
     })
     useEffect(() => {
-        appMainGlobalState.dialog.title.set('User login')
+        appGlobalState.dialog.title.set('User login')
     })
+
     const isSubmitDisabled =
         userLocalState.uid.get().length === 0 ||
         userLocalState.pwd.get().length === 0 ||
         userLocalState.uidError.get().length > 0 ||
         userLocalState.pwdError.get().length > 0
+
     return (
         <Box sx={getStyles()}>
             <Typography component="div" sx={{ mb: theme.spacing(0.3) }}>
@@ -85,18 +91,18 @@ function LoginContent() {
                 size="small"
                 autoFocus
                 required
-                // defaultValue="demo"
                 onChange={(e: any) => {
                     userLocalState.uidError.set(
                         checkUidError(e.target.value) ?? ''
                     )
                     userLocalState.uid.set(e.target.value)
+                    userLocalState.serverError.set('')
                 }}
                 value={userLocalState.uid.get()}
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
-                            <IconButton size="small" onClick={handleUidClear}>
+                            <IconButton size="small" onClick={handleUidClear} tabIndex={-1}>
                                 <CloseIcon />
                             </IconButton>
                         </InputAdornment>
@@ -131,7 +137,7 @@ function LoginContent() {
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
-                            <IconButton size="small" onClick={handlePwdClear}>
+                            <IconButton size="small" onClick={handlePwdClear} tabIndex={-1}>
                                 <CloseIcon />
                             </IconButton>
                         </InputAdornment>
@@ -145,6 +151,7 @@ function LoginContent() {
                 onChange={(e: any) => {
                     userLocalState.pwdError.set(checkPwdError(e.target.value))
                     userLocalState.pwd.set(e.target.value)
+                    userLocalState.serverError.set('')
                 }}
                 value={userLocalState.pwd.get()}></TextField>
 
@@ -157,6 +164,7 @@ function LoginContent() {
                 disabled={isSubmitDisabled}>
                 Submit
             </Button>
+            <Typography sx={{ mt: theme.spacing(1) }} variant='caption'>{userLocalState.serverError.get()}</Typography>
         </Box>
     )
 
@@ -178,30 +186,53 @@ function LoginContent() {
             userLocalState.uidError.get().length === 0 &&
             userLocalState.pwdError.get().length === 0
         ) {
-            appMainGlobalState.isLoading.set(true)
-            const utcTime = (new Date()).toISOString()
-            const privateKey: any = process.env.REACT_APP_LOGIN_TIME_KEY || ''
-            const encrypted = Cryptojs.HmacSHA1(utcTime, privateKey).toString()
-            // const token = jwt.sign({data:utcTime},privateKey,{expiresIn:'10sec'})
-            // appMainGlobalState.appUser.token.set(token)
+            appGlobalState.isLoading.set(true)
+            const utcTime = new Date().getTime().toString()
+            const encryptedUtcTime = cryptoEncrypt(utcTime)
+
+            appGlobalState.loginInfo.token.set(encryptedUtcTime)
             const cred = userLocalState.uid
                 .get()
                 .concat(':', userLocalState.pwd.get())
             const credentials = Buffer.from(cred).toString('base64')
-            const payload = {
-                cred: credentials,
-                time: encrypted,
-            }
-            // const escaped = encodeURI(JSON.stringify(payload))
+
             const queryString = appGraphqlStrings['login']
-            const ret = await queryGraphql(queryString(payload))
-            setTimeout(() => {
-                appMainGlobalState.isLoading.set(false)
-                appMainGlobalState.appUser.uid.set('demoUser')
-                // entireGlobalState.appUser.uid.set(userLocalState.uid.get())
-                appMainGlobalState.dialog.showDialog.set(false)
-                appMainGlobalState.appUser.isLoggedIn.set(true)
-            }, 100)
+            try {
+                userLocalState.serverError.set('')
+                const ret = await queryGraphql(queryString(credentials))
+                if (ret) {
+                    const payload = getPayloadFromGraphqlObject(ret, 'doLogin')
+                    if (payload.isSuccess) {
+                        appGlobalState.loginInfo.merge({
+                            isLoggedIn: true,
+                            token: payload.token,
+                            uid: userLocalState.uid.get(),
+                            userType: payload.userType
+                        })
+                    } else {
+                        userLocalState.serverError.set(messages.messLoginFailed)
+                        resetAllStates()
+                    }
+                    console.log(payload)
+                } else {
+                    resetAllStates()
+                    userLocalState.serverError.set(messages.messConnectionError)
+                }
+
+            } catch (e: any) {
+                console.log(e.message)
+                resetAllStates()
+                userLocalState.serverError.set(e.message)
+            }
+            finally {
+                appGlobalState.isLoading.set(false)
+            }
+            // setTimeout(() => {
+            //     appGlobalState.isLoading.set(false)
+            //     appGlobalState.loginInfo.uid.set('demoUser')
+            //     appGlobalState.dialog.showDialog.set(false)
+            //     appGlobalState.loginInfo.isLoggedIn.set(true)
+            // }, 100)
         }
     }
 
@@ -212,14 +243,25 @@ function LoginContent() {
     function handleUidClear() {
         userLocalState.uid.set('')
     }
+
+    function resetAllStates() {
+        userLocalState.merge({
+            uid: '',
+            pwd: '',
+            uidError: '',
+            pwdError: '',
+            // serverError: '',
+        })
+        appGlobalState.loginInfo.merge({ isLoggedIn: false, token: '', userType: '', uid: '' })
+    }
 }
 
 function WelcomeContent() {
     const theme = useTheme()
-    const appMainGlobalState = useHookstate(appMainHookState)
+    const appGlobalState = useHookstate(appHookState)
     useEffect(() => {
-        appMainGlobalState.dialog.title.set(
-            `Welcome ${appMainGlobalState.appUser.uid.get()}`
+        appGlobalState.dialog.title.set(
+            `Welcome ${appGlobalState.loginInfo.uid.get()}`
         )
     })
     return (
@@ -275,19 +317,37 @@ function WelcomeContent() {
     }
     // logout
     function handleSubmit() {
-        // const appUser = entireGlobalState.appUser.get()
-        // const user = immer(appUser,(old:any)=>{
+        // const loginInfo = entireGlobalState.loginInfo.get()
+        // const user = immer(loginInfo,(old:any)=>{
         //     old.isLoggedIn.set(false)
         //     old.uid.set('')
         // })
-        appMainGlobalState.appUser.merge({
+        appGlobalState.loginInfo.merge({
             isLoggedIn: false,
             uid: '',
         })
-        // entireGlobalState.appUser.isLoggedIn.set(false)
-        // entireGlobalState.appUser.uid.set('')
+        // entireGlobalState.loginInfo.isLoggedIn.set(false)
+        // entireGlobalState.loginInfo.uid.set('')
 
-        appMainGlobalState.open.set(false)
-        // appMainGlobalState.dialog.showDialog.set(false)
+        appGlobalState.open.set(false)
+        // appGlobalState.dialog.showDialog.set(false)
     }
 }
+
+
+// const privateKey: any = process.env.REACT_APP_LOGIN_TIME_KEY || ''
+// const key = Cryptojs.enc.Utf8.parse(privateKey)
+// let key = 'AAAAAAAAAAAAAAAA'
+// const text = 'This is a test'
+
+// key = Cryptojs.enc.Utf8.parse(key);
+// const encrypted2 = Cryptojs.AES.encrypt(text, key, {
+//     mode: Cryptojs.mode.ECB,
+// })
+// const enc = encrypted2.toString()
+
+// const decr = Cryptojs.AES.decrypt(encryptedUtcTime, key, {
+//     mode: Cryptojs.mode.ECB,
+// }).toString(
+//     Cryptojs.enc.Utf8
+// )

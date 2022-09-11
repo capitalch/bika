@@ -28,7 +28,7 @@
         "jwt": {
             "secret": "secret",
             "algorithm": "HS256",
-            "expiryInSeconds": 1200
+            "expiryInWeeks": 1
         }
     },
     "comments": "Super admin uid:password is superAdmin:superAdmin@123"

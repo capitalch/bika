@@ -1,5 +1,5 @@
 import {
-    appMainHookState,
+    appHookState,
     Box,
     CssBaseline,
     useGlobalMediaQuery,
@@ -9,7 +9,7 @@ import {
 import { AppClientCentral } from './app-client-central'
 import { AppClientHeader } from './app-client-header'
 import { AppClientSideBar } from './app-client-side-bar'
-import { AppClientLoadingIndicator } from './app-client-loading-indicator'
+import { AppLoadingIndicator } from '../common/app-loading-indicator'
 import {
     ApolloClient,
     InMemoryCache,
@@ -18,13 +18,13 @@ import {
 } from '@apollo/client'
 
 function AppClient() {
-    const appMainGlobalState = useHookstate(appMainHookState)
+    const appGlobalState = useHookstate(appHookState)
     const { isExtraLargeSizeUp } = useGlobalMediaQuery()
 
     useEffect(() => {
         //By default if xl size and user already logged in then show side menu
-        if (appMainGlobalState.appUser.isLoggedIn.get())
-            appMainGlobalState.open.set(isExtraLargeSizeUp)
+        if (appGlobalState.loginInfo.isLoggedIn.get())
+            appGlobalState.open.set(isExtraLargeSizeUp)
     })
 
     // const client = new ApolloClient({
@@ -39,7 +39,7 @@ function AppClient() {
                 <AppClientHeader />
                 <AppClientSideBar />
                 <AppClientCentral />
-                <AppClientLoadingIndicator />
+                <AppLoadingIndicator />
             </Box>
         // </ApolloProvider>
     )

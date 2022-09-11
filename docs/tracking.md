@@ -1,3 +1,9 @@
+## Login
+1. Super admin users: a) Create tenant and database schema b) Create admin user and associate with tenant
+2. Admin user: a) change uid, b) change pwd c) manage business user, d) manage roles e) Associate users with roles f) Associate users with branches
+3. Business user: a) change uid b) change pwd
+4. Forgot password with login
+
 ## UI masters grouping
 1. Discrete->States, Cities, Units of measurement, 
 2. Customers
@@ -49,8 +55,19 @@ Booking design:							10-10-2022
 
 																										# Research
 																										1. Check in database if without sequence auto increment id is possible. yes possible.
-# 07-09-2022 - 09-09-2022
+# 11-09-2022: Sun: 8 hrs
+1. Authentication for Super admin
+2. Error throw at client and server
+3. Wizard research
+
+# 10-09-2022: Sat: 6 hrs
+1. Logging: 2 hrs
+2. Server side error validations and implementation of pycopg2: 2 hrs
+3. Client and server side error mecanisms: 2 hrs
+
+# 07-09-2022 - 09-09-2022: 2 hrs
 1. Research over new technology in React
+2. Login: 2 hrs
 
 # 06-09-2022: Tue
 1. Afternoon: Completed error handling and logging at server					:						1 hrs

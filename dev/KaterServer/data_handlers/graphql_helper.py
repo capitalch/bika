@@ -1,3 +1,4 @@
+from asyncio.log import logger
 from redirect import allSqls, base64, bcrypt, config, cryptoDecrypt, datetime, GenericException, jwt, messages, timezone, unquote
 from data_handlers.postgres import execSql
 
@@ -12,10 +13,10 @@ def context_value(request):
         raiseGenericException('errOperationMissing')
     elif (operationName == 'login'):
         diff = getClientServerTimeDiff(auth)
-        if (diff > .5):
+        if (diff > 1):
             raiseGenericException('errTimeDiff')
-    else:
-        return
+    else:  # process token
+        processToken(auth)
 
 
 def getClientServerTimeDiff(auth):
@@ -50,6 +51,10 @@ def doLogin(credentials):
     def getToken(payload):
         secret = config.get('authentication').get('jwt').get('secret')
         algorithm = config.get('authentication').get('jwt').get('algorithm')
+        expInWeeks = config.get('authentication').get(
+            'jwt').get('expiryInWeeks')
+        payload['exp'] = datetime.datetime.now(
+            tz=timezone.utc) + datetime.timedelta(weeks=expInWeeks)
         token = jwt.encode(payload, secret, algorithm,)
         return token
 
@@ -71,11 +76,33 @@ def doLogin(credentials):
 
     credentials = unquote(credentials)
     uidOrEmail, pwd = getUidOrEmailAndPwd(credentials)
-    c = getBundle(uidOrEmail, pwd)
-    s = isSuperAdmin(uidOrEmail, pwd)
-    t = getToken({"a":"b"})
+    # c = getBundle(uidOrEmail, pwd)
+    if (isSuperAdmin(uidOrEmail, pwd)):
+        token = getToken({"a": "b"})
     # ret = execSql(allSqls['get-states'], schema='demo')
-    return 'success'
+        return {
+            'isSuccess': True,
+            'userType': 'S',
+            'token': token}
+    else:
+        return {
+            'isSuccess': False
+        }
+
+
+def processToken(auth):
+    try:
+        token = auth.split(' ')[-1]  # get last word
+        secret = config.get('authentication').get('jwt').get('secret')
+        algorithm = config.get('authentication').get('jwt').get('algorithm')
+        payload = jwt.decode(token, secret, algorithm)
+        print(payload)
+    except jwt.ExpiredSignatureError as error1:
+        logger.error(error1)
+        raiseGenericException('errTokenExpired')
+    except (Exception) as error:
+        logger.error(error)
+        raiseGenericException('errInvalidToken')
 
 
 def raiseGenericException(errName):

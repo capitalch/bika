@@ -7,5 +7,7 @@
     "messMustHaveOneDigit": "Field must have a digit",
     "messMustHaveOneSpecialChar": "Field must have a special character",
     "messNoSpaceOrSpecialChar": "Field cannot have space or special character",
-    "messInvalidInput": "Invalid input"
+    "messInvalidInput": "Invalid input",
+    "messLoginFailed": "Login failed. May be invalid user id or password",
+    "messConnectionError":"Connection error with server"
 }

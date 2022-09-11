@@ -69,18 +69,18 @@ function AppClientHeader() {
                         Catering
                     </Button>
                     {/* <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography sx={{ mr: theme.spacing(1) }} variant='body2' component='span'>{appGlobalState.appUser.uid.get()}</Typography>
+                        <Typography sx={{ mr: theme.spacing(1) }} variant='body2' component='span'>{appGlobalState.loginInfo.uid.get()}</Typography>
                         <Button
                             color="inherit"
                             variant="menuButton"
                             size="small"
                             endIcon={<ArrowDropDownIcon />}
                             onClick={handleLoginClick}>
-                            {appGlobalState.appUser.isLoggedIn.get() ? 'Welcome' : 'Login'}
+                            {appGlobalState.loginInfo.isLoggedIn.get() ? 'Welcome' : 'Login'}
                         </Button>
                     </Box> */}
                     <IconButton onClick={handleLogoutClick}>
-                        {appGlobalState.appUser.isLoggedIn.get() ? (
+                        {appGlobalState.loginInfo.isLoggedIn.get() ? (
                             <LogoutIcon
                                 sx={{
                                     color: theme.palette.common.white,
@@ -111,7 +111,7 @@ function AppClientHeader() {
 
     function handleDrawerOpen() {
         // Drawer can only be opened if user logged in
-        if (appGlobalState.appUser.isLoggedIn.get()) {
+        if (appGlobalState.loginInfo.isLoggedIn.get()) {
             appGlobalState.open.set(true)
         } else {
             appGlobalState.dialog.showDialog.set(true)
