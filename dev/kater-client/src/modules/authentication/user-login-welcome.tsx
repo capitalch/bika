@@ -8,6 +8,7 @@ import {
     Box,
     Button,
     CloseIcon,
+    cryptoEncrypt,
     globalValidators,
     IconButton,
     InputAdornment,
@@ -26,6 +27,7 @@ import {
     useTheme,
 } from '../../misc/redirect'
 import { Buffer } from 'buffer'
+// import Cryptojs from 'crypto-js'
 const Cryptojs = require('crypto-js')
 
 function UserLoginWelcome() {
@@ -179,26 +181,12 @@ function LoginContent() {
             userLocalState.pwdError.get().length === 0
         ) {
             appGlobalState.isLoading.set(true)
-            const utcTime = new Date().toISOString()
-            const privateKey: any = process.env.REACT_APP_LOGIN_TIME_KEY || ''
-            let key = 'AAAAAAAAAAAAAAAA'
-            const text = 'This is a test'
-
-            key = Cryptojs.enc.Utf8.parse(key);
-            const encrypted2 = Cryptojs.AES.encrypt(text, key, {
-                mode: Cryptojs.mode.ECB,
-            }) 
-            // const encrypted1 = Cryptojs.AES.encrypt(text, key, {
-            //     mode: Cryptojs.mode.ECB,
-            // }) 
-            const enc = encrypted2.toString()
-            console.log(enc)
-            const decr = Cryptojs.AES.decrypt(encrypted2, key, {
-                mode: Cryptojs.mode.ECB,
-            }).toString(
-                Cryptojs.enc.Utf8
-            )
-            appGlobalState.appUser.token.set(enc)
+            // const utcTime = new Date().toISOString()
+            const utcTime = new Date().getTime().toString()
+            const encryptedUtcTime = cryptoEncrypt(utcTime)
+            // console.log(encryptedUtcTime)
+            
+            appGlobalState.appUser.token.set(encryptedUtcTime)
             const cred = userLocalState.uid
                 .get()
                 .concat(':', userLocalState.pwd.get())
@@ -306,3 +294,21 @@ function WelcomeContent() {
         // appGlobalState.dialog.showDialog.set(false)
     }
 }
+
+
+// const privateKey: any = process.env.REACT_APP_LOGIN_TIME_KEY || ''
+// const key = Cryptojs.enc.Utf8.parse(privateKey)
+// let key = 'AAAAAAAAAAAAAAAA'
+// const text = 'This is a test'
+
+// key = Cryptojs.enc.Utf8.parse(key);
+// const encrypted2 = Cryptojs.AES.encrypt(text, key, {
+//     mode: Cryptojs.mode.ECB,
+// })
+// const enc = encrypted2.toString()
+
+// const decr = Cryptojs.AES.decrypt(encryptedUtcTime, key, {
+//     mode: Cryptojs.mode.ECB,
+// }).toString(
+//     Cryptojs.enc.Utf8
+// )

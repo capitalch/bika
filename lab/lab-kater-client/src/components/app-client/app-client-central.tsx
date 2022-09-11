@@ -1,6 +1,7 @@
 import { styled, useHookstate } from '../../misc/redirect'
 import { appMainHookState } from '../../hook-state/app-hookstate'
 import { componentMapping } from './app-client-central-components-mapping'
+import { Comp1 } from '../../modules/catering/components/comp1'
 // import { UserLogin } from '../../modules/authentication/user-login'
 
 const drawerWidth = 240
@@ -39,7 +40,8 @@ function AppClientCentral({ open }: any) {
         <Main open={appMainGlobalState.open.get()}>
             <DrawerHeader />
             {/* <UserLogIn /> */}
-            {componentMapping[currentComponentName]}
+            {/* {componentMapping[currentComponentName]} */}
+            <Comp1 />
         </Main>
     )
 }

@@ -1,6 +1,6 @@
 from redirect import CORS, exceptions, Flask, GenericException,getSourceComputer, jsonify, logger, render_template
 from core.core_routes import coreRoutes
-from graphql_main.graphql_main import graphqlMain
+from data_handlers.graphql_main import graphqlMain
 
 app = Flask(__name__,  template_folder="../build")  # React build
 CORS(app)

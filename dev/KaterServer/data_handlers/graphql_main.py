@@ -1,9 +1,8 @@
-from redirect import Blueprint,demjson, graphql_sync, gql, json, load_schema_from_path, make_executable_schema, ObjectType, PLAYGROUND_HTML, QueryType, request, unquote
+from redirect import Blueprint,demjson, graphql_sync, gql, json, load_schema_from_path, make_executable_schema, ObjectType, PLAYGROUND_HTML, QueryType, request
 from redirect import jsonify
-from .graphql_helper import context_value
+from .graphql_helper import context_value, doLogin
 
 graphqlMain = Blueprint('graphqlMain', __name__)
-
 
 @graphqlMain.route('/graphql', methods=['GET'])
 def graphql_playground():
@@ -24,7 +23,7 @@ def graphql_server():
 
 
 # Types of all queries and fields are defined in query.graphql file
-type_defs = load_schema_from_path('graphql_main')
+type_defs = load_schema_from_path('data_handlers')
 
 query = QueryType()  # or query = ObjectType('Query')
 appServerQuery = ObjectType('AppServerQuery')
@@ -37,9 +36,10 @@ def resolve_server(*_):
 
 @appServerQuery.field("doLogin")
 def resolve_doLogin(parent, info, credentials):
-    cred = unquote(credentials)
+    return doLogin(credentials)
+    # cred = unquote(credentials)
     # credObj = demjson.decode(cred)
-    return 'success'
+    # return 'success'
 
 
 @appServerQuery.field("genericView")

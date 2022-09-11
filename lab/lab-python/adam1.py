@@ -1,9 +1,9 @@
 # U2FsdGVkX1//GZNe8k1rlXJDbvfHU4H99lHLbduy5Fll+KToIkF8I4nLQxJ2P/b3
-from Crypto import Random
+# from Crypto import Random
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad,unpad
 import base64
-from pkcs7 import PKCS7Encoder
+# from pkcs7 import PKCS7Encoder
 from Crypto.Random import get_random_bytes
 
 # def unpad(s):

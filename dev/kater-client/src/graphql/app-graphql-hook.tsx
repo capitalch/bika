@@ -4,7 +4,6 @@ import {
     InMemoryCache,
     HttpLink,
 } from '@apollo/client'
-import { servicesVersion } from 'typescript'
 import { appHookState, messages, urlJoin, useHookstate, } from '../misc/redirect'
 
 function useAppGraphql() {
@@ -49,16 +48,12 @@ function useAppGraphql() {
                 query: q,
             })
         } catch (error: any) {
-            const serverErrorMessage = error?.networkError?.result?.message
+            const serverErrorMessage = error?.networkError?.result?.message || error.message
             const mess = serverErrorMessage || messages.errFetch
             appGlobalState.errorMessage.merge({ show: true, message: mess })
             console.log(error)
         }
         return ret
-    }
-
-    function objectToStringEncoded(obj: any) {
-
     }
 
     return { queryGraphql }
