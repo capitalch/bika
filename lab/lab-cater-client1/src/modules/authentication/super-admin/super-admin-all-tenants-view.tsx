@@ -1,0 +1,4 @@
+function SuperAdminAllTenantsView(){
+
+}
+export {SuperAdminAllTenantsView}
