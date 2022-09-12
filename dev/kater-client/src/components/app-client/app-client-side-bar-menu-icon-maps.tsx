@@ -1,5 +1,5 @@
 import { BusinessIcon, HomeIcon, MiscellaneousServicesIcon, ReportIcon, SettingsIcon, SettingsApplicationsIcon, SummarizeIcon, ViewListIcon } from '../../misc/redirect'
-const iconMapping: any = {
+const iconMaps: any = {
     home: <HomeIcon />,
     masters: <ViewListIcon />,
     misc: <MiscellaneousServicesIcon />,
@@ -9,5 +9,5 @@ const iconMapping: any = {
     reports: <ReportIcon />,
     reports1: <SummarizeIcon />,
 }
-export {iconMapping}
+export {iconMaps}
 

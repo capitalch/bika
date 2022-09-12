@@ -1,6 +1,6 @@
 import { styled, useHookstate } from '../../misc/redirect'
 import { appHookState } from '../../hook-state/app-hookstate'
-import { componentMapping } from './app-client-central-components-mapping'
+import { componentMaps } from './app-client-main-component-maps'
 import { AppErrorMessage } from '../common/app-error-message'
 // import { UserLogin } from '../../modules/authentication/user-login'
 
@@ -33,17 +33,17 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
 }))
-function AppClientCentral({ open }: any) {
+function AppClientMain({ open }: any) {
     const appGlobalState = useHookstate(appHookState)
     const currentComponentName:string = appGlobalState.misc.currentComponentName.get()
     return (
         <Main open={appGlobalState.misc.open.get()}>
             <DrawerHeader />
             {/* <UserLogIn /> */}
-            {componentMapping[currentComponentName]}
+            {componentMaps[currentComponentName]}
             <AppErrorMessage />
         </Main>
     )
 }
-export { AppClientCentral }
+export { AppClientMain}
 

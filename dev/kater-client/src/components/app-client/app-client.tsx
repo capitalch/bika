@@ -6,7 +6,7 @@ import {
     useEffect,
     useHookstate,
 } from '../../misc/redirect'
-import { AppClientCentral } from './app-client-central'
+import { AppClientMain } from './app-client-main'
 import { AppClientHeader } from './app-client-header'
 import { AppClientSideBar } from './app-client-side-bar'
 import { AppLoadingIndicator } from '../common/app-loading-indicator'
@@ -38,7 +38,7 @@ function AppClient() {
                 <CssBaseline />
                 <AppClientHeader />
                 <AppClientSideBar />
-                <AppClientCentral />
+                <AppClientMain />
                 <AppLoadingIndicator />
             </Box>
         // </ApolloProvider>

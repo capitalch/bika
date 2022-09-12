@@ -1,6 +1,6 @@
 import { AppHome } from "../../modules/catering/components/app-home"
 
-const componentMapping:any = {
+const componentMaps:any = {
     cateringHome: <AppHome />
 }
-export {componentMapping}
+export {componentMaps}

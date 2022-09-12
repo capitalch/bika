@@ -22,7 +22,7 @@ import {
 } from '../../misc/redirect'
 
 import { appHookState } from '../../hook-state/app-hookstate'
-import { iconMapping } from './app-client-side-bar-icons-mapping'
+import { iconMaps } from './app-client-side-bar-menu-icon-maps'
 
 const drawerWidth = 240
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -123,7 +123,7 @@ function AppClientSideBar() {
                             onClick={() => handleListItemButtonclick(item)}>
                             <ListItemIcon>
                                 {item.iconName ? (
-                                    iconMapping[item.iconName]
+                                    iconMaps[item.iconName]
                                 ) : (
                                     <InboxIcon />
                                 )}

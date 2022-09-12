@@ -14,7 +14,7 @@ import {
     useTheme,
     UserLoginWelcome,
 } from '../../misc/redirect'
-import { mainMenu } from './app-client-main-menu'
+import { sideBarMainMenu } from './app-client-side-bar-menus'
 
 const drawerWidth = 240
 const AppBar: any = styled(
@@ -102,7 +102,7 @@ function AppClientHeader() {
     )
 
     function handleCateringClick() {
-        appGlobalState.misc.selectedMenu.set(mainMenu)
+        appGlobalState.misc.selectedMenu.set(sideBarMainMenu)
     }
 
     function handleLogoutClick() {

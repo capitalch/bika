@@ -1,4 +1,4 @@
-import { mainMenu } from '../components/app-client/app-client-main-menu'
+import { sideBarMainMenu } from '../components/app-client/app-client-side-bar-menus'
 // import { hookstate } from '../misc/redirect'
 import { hookstate } from '@hookstate/core'
 
@@ -25,7 +25,7 @@ const appHookState = hookstate({
         currentComponentName: 'cateringHome',
         dbSchemaName: 'demo',
         open: false, // drawer open or close
-        selectedMenu: mainMenu,
+        selectedMenu: sideBarMainMenu,
         showLoadingDialog: false,
     },
 
