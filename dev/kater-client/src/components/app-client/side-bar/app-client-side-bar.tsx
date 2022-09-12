@@ -19,9 +19,9 @@ import {
     useGlobalMediaQuery,
     useHookstate,
     useTheme,
-} from '../../misc/redirect'
+} from '../../../misc/redirect'
 
-import { appHookState } from '../../hook-state/app-hookstate'
+import { appHookState } from '../../../hook-state/app-hookstate'
 import { iconMaps } from './app-client-side-bar-menu-icon-maps'
 
 const drawerWidth = 240
@@ -42,7 +42,7 @@ function AppClientSideBar() {
         selectedControlId: 0,
         expandedControlId: 0,
     })
-    const menu = appGlobalState.misc.selectedMenu.get()
+    const menu = appGlobalState.misc.sideBarMenu.get()
 
     return (
         <Drawer

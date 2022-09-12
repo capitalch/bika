@@ -1,4 +1,4 @@
-import { sideBarMainMenu } from '../components/app-client/app-client-side-bar-menus'
+import { sideBarMainMenu } from '../components/app-client/side-bar/app-client-side-bar-menus'
 // import { hookstate } from '../misc/redirect'
 import { hookstate } from '@hookstate/core'
 
@@ -22,10 +22,11 @@ const appHookState = hookstate({
 
     misc: {
         branchId: 1,
-        currentComponentName: 'cateringHome',
+        currentComponentName: '',
         dbSchemaName: 'demo',
+        headerMainMenuName: '',
         open: false, // drawer open or close
-        selectedMenu: sideBarMainMenu,
+        sideBarMenu: sideBarMainMenu,
         showLoadingDialog: false,
     },
 
@@ -33,6 +34,10 @@ const appHookState = hookstate({
         show: false,
         message: 'Operation successful',
     },
+
+    superAdmin:{
+        
+    }
 })
 
 export { appHookState }

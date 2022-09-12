@@ -203,30 +203,37 @@ function LoginContent() {
             try {
                 userLocalState.serverError.set('')
                 const ret = await queryGraphql(queryString(credentials))
-                if (ret) {
-                    const payload = getPayloadFromGraphqlObject(ret, 'doLogin')
-                    if (payload.isSuccess) {
-                        appGlobalState.loginInfo.merge({
-                            isLoggedIn: true,
-                            token: payload.token,
-                            uid: userLocalState.uid.get(),
-                            userType: payload.userType,
-                        })
-                    } else {
-                        userLocalState.serverError.set(messages.messLoginFailed)
-                        resetAllStates()
-                    }
-                    console.log(payload)
-                } else {
-                    resetAllStates()
-                    userLocalState.serverError.set(messages.messConnectionError)
-                }
+                processSubmitResult(ret)
             } catch (e: any) {
                 console.log(e.message)
                 resetAllStates()
                 userLocalState.serverError.set(e.message)
             } finally {
                 appGlobalState.misc.showLoadingDialog.set(false)
+            }
+        }
+
+        function processSubmitResult(ret: any) {
+            if (ret) {
+                const payload = getPayloadFromGraphqlObject(ret, 'doLogin')
+                if (payload.isSuccess) {
+                    appGlobalState.loginInfo.merge({
+                        isLoggedIn: true,
+                        token: payload.token,
+                        uid: userLocalState.uid.get(),
+                        userType: payload.userType,
+                    })
+                    if(appGlobalState.loginInfo.userType.get()==='S'){
+                        appGlobalState.misc.currentComponentName.set('superAdminTenant')
+                    }
+                } else {
+                    userLocalState.serverError.set(messages.messLoginFailed)
+                    resetAllStates()
+                }
+                console.log(payload)
+            } else {
+                resetAllStates()
+                userLocalState.serverError.set(messages.messConnectionError)
             }
         }
     }
@@ -251,6 +258,9 @@ function LoginContent() {
             token: '',
             userType: '',
             uid: '',
+        })
+        appGlobalState.misc.merge({
+            currentComponentName:''
         })
     }
 }
@@ -318,8 +328,13 @@ function WelcomeContent() {
     function handleSubmit() {
         appGlobalState.loginInfo.merge({
             isLoggedIn: false,
+            token: '',
+            userType: '',
             uid: '',
         })
-        appGlobalState.misc.open.set(false)
+        appGlobalState.misc.merge({
+            open:false,
+            currentComponentName: ''
+        })
     }
 }

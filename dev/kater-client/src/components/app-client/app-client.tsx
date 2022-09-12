@@ -6,16 +6,10 @@ import {
     useEffect,
     useHookstate,
 } from '../../misc/redirect'
-import { AppClientMain } from './app-client-main'
-import { AppClientHeader } from './app-client-header'
-import { AppClientSideBar } from './app-client-side-bar'
+import { AppClientMain } from './main/app-client-main'
+import { AppClientHeader } from './header/app-client-header'
+import { AppClientSideBar } from './side-bar/app-client-side-bar'
 import { AppLoadingIndicator } from '../common/app-loading-indicator'
-import {
-    ApolloClient,
-    InMemoryCache,
-    ApolloProvider,
-    gql,
-} from '@apollo/client'
 
 function AppClient() {
     const appGlobalState = useHookstate(appHookState)
@@ -23,25 +17,22 @@ function AppClient() {
 
     useEffect(() => {
         //By default if xl size and user already logged in then show side menu
-        if (appGlobalState.loginInfo.isLoggedIn.get())
+        if (appGlobalState.loginInfo.isLoggedIn.get() && (!isSuperAdmin()))
             appGlobalState.misc.open.set(isExtraLargeSizeUp)
     })
 
-    // const client = new ApolloClient({
-    //     uri: 'http://localhost:5000/graphql',
-    //     cache: new InMemoryCache(),
-    // })
-
     return (
-        // <ApolloProvider client={client}>
-            <Box sx={{ display: 'flex' }}>
-                <CssBaseline />
-                <AppClientHeader />
-                <AppClientSideBar />
-                <AppClientMain />
-                <AppLoadingIndicator />
-            </Box>
-        // </ApolloProvider>
+        <Box sx={{ display: 'flex' }}>
+            <CssBaseline />
+            <AppClientHeader />
+            <AppClientSideBar />
+            <AppClientMain />
+            <AppLoadingIndicator />
+        </Box>
     )
+
+    function isSuperAdmin(){
+        return(appGlobalState.loginInfo.userType.get()==='S')
+    }
 }
 export { AppClient }

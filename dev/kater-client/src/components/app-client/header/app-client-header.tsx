@@ -13,8 +13,9 @@ import {
     useHookstate,
     useTheme,
     UserLoginWelcome,
-} from '../../misc/redirect'
-import { sideBarMainMenu } from './app-client-side-bar-menus'
+    Typography,
+} from '../../../misc/redirect'
+import { sideBarMainMenu } from '../side-bar/app-client-side-bar-menus'
 
 const drawerWidth = 240
 const AppBar: any = styled(
@@ -38,6 +39,9 @@ const AppBar: any = styled(
 function AppClientHeader() {
     const appGlobalState = useHookstate(appHookState)
     const theme = useTheme()
+    const userMap: any = { 'S': 'Super admin', 'A': 'Admin', 'B': 'Business user' }
+    const userType: string = appGlobalState.loginInfo.userType.get() || ''
+    const userTypeName = userMap[userType] || ''
     return (
         <AppBar position="fixed" open={appGlobalState.misc.open.get()}>
             <Toolbar>
@@ -66,35 +70,27 @@ function AppClientHeader() {
                         variant="menuButton"
                         size="large"
                         onClick={handleCateringClick}>
-                        Catering
+                        {appGlobalState.misc.headerMainMenuName.get()}
                     </Button>
-                    {/* <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography sx={{ mr: theme.spacing(1) }} variant='body2' component='span'>{appGlobalState.loginInfo.uid.get()}</Typography>
-                        <Button
-                            color="inherit"
-                            variant="menuButton"
-                            size="small"
-                            endIcon={<ArrowDropDownIcon />}
-                            onClick={handleLoginClick}>
-                            {appGlobalState.loginInfo.isLoggedIn.get() ? 'Welcome' : 'Login'}
-                        </Button>
-                    </Box> */}
-                    <IconButton onClick={handleLogoutClick}>
-                        {appGlobalState.loginInfo.isLoggedIn.get() ? (
-                            <LogoutIcon
-                                sx={{
-                                    color: theme.palette.common.white,
-                                }}
-                            />
-                        ) : (
-                            <PersonIcon
+                    <Box>
+                        <Typography variant='body2' component='span' color='beige'>{userTypeName}</Typography>
+                        <IconButton onClick={handleLogoutClick}>
+                            {appGlobalState.loginInfo.isLoggedIn.get() ? (
+                                <LogoutIcon
+                                    sx={{
+                                        color: theme.palette.common.white,
+                                    }}
+                                />
+                            ) : (
+                                <PersonIcon
+                                    sx={{ color: theme.palette.common.white }}
+                                />
+                            )}
+                            <ArrowDropDownIcon
                                 sx={{ color: theme.palette.common.white }}
                             />
-                        )}
-                        <ArrowDropDownIcon
-                            sx={{ color: theme.palette.common.white }}
-                        />
-                    </IconButton>
+                        </IconButton>
+                    </Box>
                 </Box>
             </Toolbar>
             <UserLoginWelcome />
@@ -102,7 +98,7 @@ function AppClientHeader() {
     )
 
     function handleCateringClick() {
-        appGlobalState.misc.selectedMenu.set(sideBarMainMenu)
+        appGlobalState.misc.sideBarMenu.set(sideBarMainMenu)
     }
 
     function handleLogoutClick() {
@@ -110,12 +106,17 @@ function AppClientHeader() {
     }
 
     function handleDrawerOpen() {
-        // Drawer can only be opened if user logged in
-        if (appGlobalState.loginInfo.isLoggedIn.get()) {
+        // Drawer can only be opened if user logged in and not super admin
+        // const userType = appGlobalState.loginInfo.userType.get()
+        if (appGlobalState.loginInfo.isLoggedIn.get() && (!isSuperAdmin())) {
             appGlobalState.misc.open.set(true)
         } else {
-            appGlobalState.dialog.showDialog.set(true)
+            // appGlobalState.dialog.showDialog.set(true)
         }
+    }
+
+    function isSuperAdmin() {
+        return (appGlobalState.loginInfo.userType.get() === 'S')
     }
 }
 export { AppClientHeader }

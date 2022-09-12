@@ -9,6 +9,7 @@
     "@fontsource/roboto": "^4.5.8",
     "@hookstate/core": "^4.0.0-rc21",
     "@mui/icons-material": "^5.10.3",
+    "@mui/lab": "^5.0.0-alpha.98",
     "@mui/material": "^5.10.4",
     "@mui/styled-engine": "^5.10.4",
     "@mui/x-data-grid-pro": "^5.17.1",

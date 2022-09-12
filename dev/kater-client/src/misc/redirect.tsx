@@ -56,12 +56,26 @@ export {
     MenuItem,
     MenuList,
     Snackbar,
+    Tab,
+    Tabs,
     TextField,
     Toolbar,
     Typography,
     useMediaQuery,
     useTheme,
 } from '@mui/material'
+export {
+    DataGridPro,
+    GridToolbarFilterButton,
+    GridToolbarExport,
+    GridToolbarContainer,
+    GridToolbarColumnsButton,
+    GridFooterContainer,
+    // GridRowId,
+    // GridRowData,
+    useGridApiRef,
+    // GridCellParams,
+} from '@mui/x-data-grid-pro'
 export {
     _,
     AppMaterialDialog,
@@ -72,6 +86,7 @@ export {
     MuiAppBar,
     urlJoin,
 }
+export { TabContext, TabList, TabPanel } from '@mui/lab'
 export { useEffect, useLayoutEffect, useRef, useState } from 'react'
 export const {
     debounceEmit,
