@@ -24,7 +24,7 @@ function AppClient() {
     useEffect(() => {
         //By default if xl size and user already logged in then show side menu
         if (appGlobalState.loginInfo.isLoggedIn.get())
-            appGlobalState.open.set(isExtraLargeSizeUp)
+            appGlobalState.misc.open.set(isExtraLargeSizeUp)
     })
 
     // const client = new ApolloClient({

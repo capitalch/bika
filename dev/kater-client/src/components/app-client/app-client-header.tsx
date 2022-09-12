@@ -39,7 +39,7 @@ function AppClientHeader() {
     const appGlobalState = useHookstate(appHookState)
     const theme = useTheme()
     return (
-        <AppBar position="fixed" open={appGlobalState.open.get()}>
+        <AppBar position="fixed" open={appGlobalState.misc.open.get()}>
             <Toolbar>
                 <IconButton
                     color="inherit"
@@ -48,7 +48,7 @@ function AppClientHeader() {
                     edge="start"
                     sx={{
                         mr: 2,
-                        ...(appGlobalState.open.get() && {
+                        ...(appGlobalState.misc.open.get() && {
                             display: 'none',
                         }),
                     }}>
@@ -102,7 +102,7 @@ function AppClientHeader() {
     )
 
     function handleCateringClick() {
-        appGlobalState.selectedMenu.set(mainMenu)
+        appGlobalState.misc.selectedMenu.set(mainMenu)
     }
 
     function handleLogoutClick() {
@@ -112,7 +112,7 @@ function AppClientHeader() {
     function handleDrawerOpen() {
         // Drawer can only be opened if user logged in
         if (appGlobalState.loginInfo.isLoggedIn.get()) {
-            appGlobalState.open.set(true)
+            appGlobalState.misc.open.set(true)
         } else {
             appGlobalState.dialog.showDialog.set(true)
         }

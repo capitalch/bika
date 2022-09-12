@@ -42,7 +42,7 @@ function AppClientSideBar() {
         selectedControlId: 0,
         expandedControlId: 0,
     })
-    const menu = appGlobalState.selectedMenu.get()
+    const menu = appGlobalState.misc.selectedMenu.get()
 
     return (
         <Drawer
@@ -62,7 +62,7 @@ function AppClientSideBar() {
             variant="persistent"
             anchor="left"
             transitionDuration={300}
-            open={appGlobalState.open.get()}>
+            open={appGlobalState.misc.open.get()}>
             <DrawerHeader
                 sx={{
                     display: 'flex',
@@ -174,14 +174,14 @@ function AppClientSideBar() {
 
     function handleDrawerCloseIfRequired() {
         if (!isExtraLargeSizeUp) {
-            if (appGlobalState.open.get()) {
-                appGlobalState.open.set(false)
+            if (appGlobalState.misc.open.get()) {
+                appGlobalState.misc.open.set(false)
             }
         }
     }
 
     function handleDrawerClose() {
-        appGlobalState.open.set(false)
+        appGlobalState.misc.open.set(false)
     }
 
     function handleListItemButtonclick(item: any) {
@@ -193,7 +193,7 @@ function AppClientSideBar() {
             sideBarLocalState.expandedControlId.set(expandedControlId)
         } else {
             sideBarLocalState.selectedControlId.set(item.controlId)
-            appGlobalState.currentComponentName.set(item.componentName)
+            appGlobalState.misc.currentComponentName.set(item.componentName)
             handleDrawerCloseIfRequired()
         }
     }

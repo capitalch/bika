@@ -1,10 +1,8 @@
 import { CSSProperties } from '@mui/styled-engine'
-// import { buffer } from 'node:stream/consumers'
-import { AppMaterialDialog } from '../../components/common/app-material-dialog'
-import { appHookState } from '../../hook-state/app-hookstate'
-
 import {
     appGraphqlStrings,
+    appHookState,
+    AppMaterialDialog,
     Box,
     Button,
     CloseIcon,
@@ -29,8 +27,6 @@ import {
     useTheme,
 } from '../../misc/redirect'
 import { Buffer } from 'buffer'
-// import Cryptojs from 'crypto-js'
-// const Cryptojs = require('crypto-js')
 
 function UserLoginWelcome() {
     const appGlobalState = useHookstate(appHookState)
@@ -102,7 +98,10 @@ function LoginContent() {
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
-                            <IconButton size="small" onClick={handleUidClear} tabIndex={-1}>
+                            <IconButton
+                                size="small"
+                                onClick={handleUidClear}
+                                tabIndex={-1}>
                                 <CloseIcon />
                             </IconButton>
                         </InputAdornment>
@@ -130,14 +129,16 @@ function LoginContent() {
             <TextField
                 id="pwd1"
                 autoComplete="new-password"
-                // defaultValue="demoUser1!"
                 size="small"
                 type="password"
                 error={userLocalState.pwdError.get().length > 0}
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
-                            <IconButton size="small" onClick={handlePwdClear} tabIndex={-1}>
+                            <IconButton
+                                size="small"
+                                onClick={handlePwdClear}
+                                tabIndex={-1}>
                                 <CloseIcon />
                             </IconButton>
                         </InputAdornment>
@@ -164,7 +165,9 @@ function LoginContent() {
                 disabled={isSubmitDisabled}>
                 Submit
             </Button>
-            <Typography sx={{ mt: theme.spacing(1) }} variant='caption'>{userLocalState.serverError.get()}</Typography>
+            <Typography sx={{ mt: theme.spacing(1) }} variant="caption">
+                {userLocalState.serverError.get()}
+            </Typography>
         </Box>
     )
 
@@ -186,7 +189,7 @@ function LoginContent() {
             userLocalState.uidError.get().length === 0 &&
             userLocalState.pwdError.get().length === 0
         ) {
-            appGlobalState.isLoading.set(true)
+            appGlobalState.misc.showLoadingDialog.set(true)
             const utcTime = new Date().getTime().toString()
             const encryptedUtcTime = cryptoEncrypt(utcTime)
 
@@ -207,7 +210,7 @@ function LoginContent() {
                             isLoggedIn: true,
                             token: payload.token,
                             uid: userLocalState.uid.get(),
-                            userType: payload.userType
+                            userType: payload.userType,
                         })
                     } else {
                         userLocalState.serverError.set(messages.messLoginFailed)
@@ -218,21 +221,13 @@ function LoginContent() {
                     resetAllStates()
                     userLocalState.serverError.set(messages.messConnectionError)
                 }
-
             } catch (e: any) {
                 console.log(e.message)
                 resetAllStates()
                 userLocalState.serverError.set(e.message)
+            } finally {
+                appGlobalState.misc.showLoadingDialog.set(false)
             }
-            finally {
-                appGlobalState.isLoading.set(false)
-            }
-            // setTimeout(() => {
-            //     appGlobalState.isLoading.set(false)
-            //     appGlobalState.loginInfo.uid.set('demoUser')
-            //     appGlobalState.dialog.showDialog.set(false)
-            //     appGlobalState.loginInfo.isLoggedIn.set(true)
-            // }, 100)
         }
     }
 
@@ -250,9 +245,13 @@ function LoginContent() {
             pwd: '',
             uidError: '',
             pwdError: '',
-            // serverError: '',
         })
-        appGlobalState.loginInfo.merge({ isLoggedIn: false, token: '', userType: '', uid: '' })
+        appGlobalState.loginInfo.merge({
+            isLoggedIn: false,
+            token: '',
+            userType: '',
+            uid: '',
+        })
     }
 }
 
@@ -317,37 +316,10 @@ function WelcomeContent() {
     }
     // logout
     function handleSubmit() {
-        // const loginInfo = entireGlobalState.loginInfo.get()
-        // const user = immer(loginInfo,(old:any)=>{
-        //     old.isLoggedIn.set(false)
-        //     old.uid.set('')
-        // })
         appGlobalState.loginInfo.merge({
             isLoggedIn: false,
             uid: '',
         })
-        // entireGlobalState.loginInfo.isLoggedIn.set(false)
-        // entireGlobalState.loginInfo.uid.set('')
-
-        appGlobalState.open.set(false)
-        // appGlobalState.dialog.showDialog.set(false)
+        appGlobalState.misc.open.set(false)
     }
 }
-
-
-// const privateKey: any = process.env.REACT_APP_LOGIN_TIME_KEY || ''
-// const key = Cryptojs.enc.Utf8.parse(privateKey)
-// let key = 'AAAAAAAAAAAAAAAA'
-// const text = 'This is a test'
-
-// key = Cryptojs.enc.Utf8.parse(key);
-// const encrypted2 = Cryptojs.AES.encrypt(text, key, {
-//     mode: Cryptojs.mode.ECB,
-// })
-// const enc = encrypted2.toString()
-
-// const decr = Cryptojs.AES.decrypt(encryptedUtcTime, key, {
-//     mode: Cryptojs.mode.ECB,
-// }).toString(
-//     Cryptojs.enc.Utf8
-// )

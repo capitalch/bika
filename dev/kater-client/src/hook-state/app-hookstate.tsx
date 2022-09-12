@@ -1,33 +1,36 @@
 import { mainMenu } from '../components/app-client/app-client-main-menu'
-import { hookstate } from '../misc/redirect'
+// import { hookstate } from '../misc/redirect'
+import { hookstate } from '@hookstate/core'
 
 const appHookState = hookstate({
+    dialog: {
+        showDialog: false,
+        title: '',
+    },
+
+    errorMessage: {
+        show: false,
+        message: '',
+    },
+
     loginInfo: {
         isLoggedIn: false,
         token: '',
         userType: '',
         uid: '',
     },
-    currentComponentName: 'cateringHome',
-    dialog: {
-        showDialog: false,
-        title: ''
+
+    misc: {
+        currentComponentName: 'cateringHome',
+        open: false, // drawer open or close
+        selectedMenu: mainMenu,
+        showLoadingDialog: false,
     },
-    errorMessage:{
+
+    successMessage: {
         show: false,
-        message:''
-    },
-    isLoading: false,
-    open: false, // drawer open or close
-    selectedMenu: mainMenu,
-    successMessage:{
-        show: false,
-        message: 'Operation successful'
+        message: 'Operation successful',
     },
 })
+
 export { appHookState }
-
-// const entireHookState = hookstate({
-
-// })
-// export { entireHookState }

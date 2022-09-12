@@ -7,8 +7,7 @@ def context_value(request):
     operationName = request.json.get('operationName', None)
     auth = request.headers.get('AUTHORIZATION')
     if ((auth is None) or (auth == '')):
-        # raiseGenericException('errMissingToken')
-        pass
+        raiseGenericException('errMissingToken')
     elif (operationName is None):
         raiseGenericException('errOperationMissing')
     elif (operationName == 'login'):

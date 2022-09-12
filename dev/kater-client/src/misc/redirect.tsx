@@ -1,4 +1,5 @@
 import { usingIbuki } from './ibuki'
+import { AppMaterialDialog } from '../components/common/app-material-dialog'
 import MuiAppBar from '@mui/material/AppBar'
 import moment from 'moment'
 import axios from 'axios'
@@ -61,7 +62,16 @@ export {
     useMediaQuery,
     useTheme,
 } from '@mui/material'
-export { _, axios, immer, messages, moment, MuiAppBar, urlJoin }
+export {
+    _,
+    AppMaterialDialog,
+    axios,
+    immer,
+    messages,
+    moment,
+    MuiAppBar,
+    urlJoin,
+}
 export { useEffect, useLayoutEffect, useRef, useState } from 'react'
 export const {
     debounceEmit,

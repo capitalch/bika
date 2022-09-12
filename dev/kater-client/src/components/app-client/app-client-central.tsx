@@ -35,9 +35,9 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }))
 function AppClientCentral({ open }: any) {
     const appGlobalState = useHookstate(appHookState)
-    const currentComponentName:string = appGlobalState.currentComponentName.get()
+    const currentComponentName:string = appGlobalState.misc.currentComponentName.get()
     return (
-        <Main open={appGlobalState.open.get()}>
+        <Main open={appGlobalState.misc.open.get()}>
             <DrawerHeader />
             {/* <UserLogIn /> */}
             {componentMapping[currentComponentName]}
