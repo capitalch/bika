@@ -21,7 +21,9 @@ const appHookState = hookstate({
     },
 
     misc: {
+        branchId: 1,
         currentComponentName: 'cateringHome',
+        dbSchemaName: 'demo',
         open: false, // drawer open or close
         selectedMenu: mainMenu,
         showLoadingDialog: false,

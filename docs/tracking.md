@@ -3,6 +3,10 @@
 2. Admin user: a) change uid, b) change pwd c) manage business user, d) manage roles e) Associate users with roles f) Associate users with branches
 3. Business user: a) change uid b) change pwd
 4. Forgot password with login
+# Logic
+1. Provide selection-criteria in headers as dbSchemaName:branchId
+2. At server accordingly switch schema and inject branchId in args
+3. Provide subHeader to show: BreadCrumb, company name, branch, branch selection control
 
 ## UI masters grouping
 1. Discrete->States, Cities, Units of measurement, 

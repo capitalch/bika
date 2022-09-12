@@ -107,4 +107,4 @@
 				id(A, int), componentId, roleId, isEnabled
 
 			5. UserM
-				id(A, bigint), tenantId, roleId, userName, uid, hash, isActive, parentId, userEmail, remarks, timestamp
+				id(A, bigint), tenantId, roleId, userName, uid, hash, isActive, parentId, userEmail, remarks, timestamp, userMobileNo, branchIds(smallint[]), lastBranchId
