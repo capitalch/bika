@@ -17,7 +17,7 @@
         "password": "KTAgnn15797",
         "host": "node113022-kater-db.cloudjiffy.net",
         "port": "11301",
-        "database": "katerMain"
+        "database": ""
     },
     "authentication": {
         "superAdmin": {

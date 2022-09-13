@@ -27,6 +27,8 @@ import {
     useTheme,
 } from '../../misc/redirect'
 import { Buffer } from 'buffer'
+import _ from 'lodash'
+import { appHook } from '../../hook-state/app-hookstate'
 
 function UserLoginWelcome() {
     const appGlobalState = useHookstate(appHookState)
@@ -326,15 +328,18 @@ function WelcomeContent() {
     }
     // logout
     function handleSubmit() {
-        appGlobalState.loginInfo.merge({
-            isLoggedIn: false,
-            token: '',
-            userType: '',
-            uid: '',
-        })
-        appGlobalState.misc.merge({
-            open:false,
-            currentComponentName: ''
-        })
+        const clone = _.cloneDeep(appHook)
+        appGlobalState.merge(clone)
+        
+        // appGlobalState.loginInfo.merge({
+        //     isLoggedIn: false,
+        //     token: '',
+        //     userType: '',
+        //     uid: '',
+        // })
+        // appGlobalState.misc.merge({
+        //     open:false,
+        //     currentComponentName: ''
+        // })
     }
 }

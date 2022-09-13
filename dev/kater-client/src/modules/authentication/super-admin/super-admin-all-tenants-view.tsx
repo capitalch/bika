@@ -1,4 +1,0 @@
-function SuperAdminAllTenantsView(){
-
-}
-export {SuperAdminAllTenantsView}

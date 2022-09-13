@@ -1,8 +1,9 @@
-import { sideBarMainMenu } from '../components/app-client/side-bar/app-client-side-bar-menus'
-// import { hookstate } from '../misc/redirect'
 import { hookstate } from '@hookstate/core'
+import { sideBarMainMenu } from '../components/app-client/side-bar/app-client-side-bar-menus'
+// import {createState, hookstate } from '../misc/redirect'
+import _ from 'lodash'
 
-const appHookState = hookstate({
+const appHook = {
     dialog: {
         showDialog: false,
         title: '',
@@ -35,9 +36,14 @@ const appHookState = hookstate({
         message: 'Operation successful',
     },
 
-    superAdmin:{
-        
-    }
-})
+    superAdmin: {
+        clients:{
+            rows:[]
+        }
+    },
+}
+let clone = _.cloneDeep(appHook)
 
-export { appHookState }
+const appHookState = hookstate(clone)
+
+export { appHook, appHookState }

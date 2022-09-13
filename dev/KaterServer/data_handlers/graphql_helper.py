@@ -1,5 +1,5 @@
 from asyncio.log import logger
-from redirect import allSqls, base64, bcrypt, config, cryptoDecrypt, datetime, GenericException, jwt, messages, timezone, unquote
+from redirect import allSqls, base64, bcrypt, config, cryptoDecrypt, datetime, demjson, GenericException, jwt, messages, timezone, unquote
 from data_handlers.postgres import execSql
 
 
@@ -33,7 +33,6 @@ def getClientServerTimeDiff(auth):
 
 
 def doLogin(credentials):
-
     def getBundle(uidOrEmail, pwd):
         bundle = None
         a = config['authentication']['superAdmin']['uid']
@@ -102,6 +101,20 @@ def processToken(auth):
     except (Exception) as error:
         logger.error(error)
         raiseGenericException('errInvalidToken')
+
+
+def processGenericView(context, value):
+    value = unquote(value)
+    valueDict = demjson.decode(value)
+    if (valueDict.get('sqlKey') is None):
+        raiseGenericException('errNoSqlKeyProvided')
+    sqlString = allSqls.get('sqlKey', None)
+    if (sqlString is None):
+        raiseGenericException('errNoSqlStringForSqlKey')
+    args = valueDict.get('args', None)
+    return execSql(sqlString=sqlString, args=args)
+    # if (valueDict.get('args') is None):
+    #     valueDict['args'] = {}
 
 
 def raiseGenericException(errName):

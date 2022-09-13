@@ -59,6 +59,9 @@ Booking design:							10-10-2022
 
 																										# Research
 																										1. Check in database if without sequence auto increment id is possible. yes possible.
+# 12-09-2022: Mon 4 hrs
+1. Super admin authentication etc.
+
 # 11-09-2022: Sun: 8 hrs
 1. Authentication for Super admin
 2. Error throw at client and server

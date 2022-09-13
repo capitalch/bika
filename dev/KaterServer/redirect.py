@@ -27,5 +27,5 @@ from datetime import timezone
 config = None
 with open('config.json') as f:
     config = json.load(f)
-dbName = config['baseConnection']['database']
+# dbName = config['baseConnection']['database']
 from data_handlers.sql import allSqls
