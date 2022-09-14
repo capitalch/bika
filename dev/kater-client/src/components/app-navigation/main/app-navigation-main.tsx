@@ -1,7 +1,7 @@
 import { styled, useHookstate } from '../../../misc/redirect'
 import { appHookState } from '../../../hook-state/app-hookstate'
-import { componentMaps } from './app-client-main-component-maps'
-import { AppErrorMessage } from '../../common/app-error-message'
+import { componentMaps } from './app-navigation-main-component-maps'
+import { AppErrorMessage } from '../../app-common/app-error-message'
 // import { UserLogin } from '../../modules/authentication/user-login'
 
 const drawerWidth = 240
@@ -33,7 +33,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
 }))
-function AppClientMain({ open }: any) {
+function AppNavigationMain({ open }: any) {
     const appGlobalState = useHookstate(appHookState)
     const currentComponentName: string = appGlobalState.misc.currentComponentName.get()
     return (
@@ -45,5 +45,5 @@ function AppClientMain({ open }: any) {
         </Main>
     )
 }
-export { AppClientMain }
+export { AppNavigationMain }
 

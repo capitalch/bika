@@ -4,10 +4,12 @@ messages = {
     'errToken': (1003, 'Authentication token error'),
     'errTimeDiff': (1004, 'The time difference between clint and server is too high'),
     'errDbCusorFetchError': (1005, 'Error while fetching rows from database cursor'),
-    'errSqlExecError': (1006, 'Error while executing sql statement at server'),
+    'errSqlExecError': (1006, 'Error executing sql statement at server'),
     'errTokenExpired': (1007, 'Authentication token is expired. Please login'),
     'errInvalidToken': (1008, 'Authentication failure. Invalid token'),
 
     'errNoSqlKeyProvided': (1009, "No sql key is provided with query"),
     'errNoSqlStringForSqlKey':(1010, "There is no sql string available against sql key"),
+    'errProcessGenericView': (lambda mess: (1011, f"Could not process generic view: {mess}")),
 }
+

@@ -6,12 +6,12 @@ import {
     useEffect,
     useHookstate,
 } from '../../misc/redirect'
-import { AppClientMain } from './main/app-client-main'
-import { AppClientHeader } from './header/app-client-header'
-import { AppClientSideBar } from './side-bar/app-client-side-bar'
-import { AppLoadingIndicator } from '../common/app-loading-indicator'
+import { AppNavigationMain } from './main/app-navigation-main'
+import { AppNavigationHeader } from './header/app-navigation-header'
+import { AppNavigationSideBar } from './side-bar/app-navigation-side-bar'
+import { AppLoadingIndicator } from '../app-common/app-loading-indicator'
 
-function AppClient() {
+function AppNavigation() {
     const appGlobalState = useHookstate(appHookState)
     const { isExtraLargeSizeUp } = useGlobalMediaQuery()
 
@@ -24,9 +24,9 @@ function AppClient() {
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <AppClientHeader />
-            <AppClientSideBar />
-            <AppClientMain />
+            <AppNavigationHeader />
+            <AppNavigationSideBar />
+            <AppNavigationMain />
             <AppLoadingIndicator />
         </Box>
     )
@@ -35,4 +35,4 @@ function AppClient() {
         return(appGlobalState.loginInfo.userType.get()==='S')
     }
 }
-export { AppClient }
+export { AppNavigation }

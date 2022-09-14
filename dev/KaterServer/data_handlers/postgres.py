@@ -1,18 +1,18 @@
-from redirect import config, getSchemaSearchPath, logger, messages, psycopg2,  RealDictCursor
+from redirect import config,  getSchemaSearchPath, global_settings, logger, messages, psycopg2,  RealDictCursor
 from psycopg2 import pool
 from core.generic_classes import GenericException
 
 poolStore = {}
-dbName = None
+# dbName = ''
 
 
-def execSql(sqlString, args=None, isMultipleRows=True,  autoCommitMode=False, schema='public'):
+def execSql(dbName, sqlString, args=None, isMultipleRows=True,  autoCommitMode=False, schema='public'):
     out = None
     connection = None
     searchPathSql = getSchemaSearchPath(schema)
     try:
-        connection, cursor, pool = getConnectionCursor(
-            autoCommitMode)
+        connection, cursor, pool = getConnectionCursor(dbName,
+                                                       autoCommitMode)
         cursor.execute(f'{searchPathSql};{sqlString}', args)
         try:
             if isMultipleRows:
@@ -38,8 +38,8 @@ def execSql(sqlString, args=None, isMultipleRows=True,  autoCommitMode=False, sc
     return out
 
 
-def getConnectionCursor(autoCommitMode=False):
-    pool = getPool()
+def getConnectionCursor(dbName, autoCommitMode=False):
+    pool = getPool(dbName)
     connection = pool.getconn()
     if autoCommitMode:
         connection.autocommit = True
@@ -47,10 +47,11 @@ def getConnectionCursor(autoCommitMode=False):
     return connection, cursor, pool
 
 
-def getPool():
+def getPool(dbName):
     ref = config['baseConnection']
-    if (dbName is None):
-        dbName = 'authentication'
+    # dbName = global_settings.get('dbName', None)
+    # if (dbName in (None, '')):
+    #     dbName = 'authentication'
     if not dbName in poolStore:
         poolStore[dbName] = pool.ThreadedConnectionPool(
             1, 500, user=ref['user'], password=ref['password'], host=ref['host'], port=ref['port'], database=dbName)

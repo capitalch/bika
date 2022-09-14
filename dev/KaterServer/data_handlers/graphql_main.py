@@ -1,6 +1,6 @@
 from redirect import Blueprint, demjson, graphql_sync, gql, json, load_schema_from_path, make_executable_schema, ObjectType, PLAYGROUND_HTML, QueryType, request
 from redirect import jsonify
-from .graphql_helper import context_value, doLogin, processGenericView
+from .graphql_worker import context_value, doLogin, processGenericView
 
 graphqlMain = Blueprint('graphqlMain', __name__)
 
@@ -37,7 +37,7 @@ def resolve_server(*_):
 
 @appServerQuery.field("doLogin")
 def resolve_doLogin(parent, info, credentials):
-    return doLogin(credentials)
+    return doLogin(info,credentials)
     # cred = unquote(credentials)
     # credObj = demjson.decode(cred)
     # return 'success'
@@ -45,7 +45,8 @@ def resolve_doLogin(parent, info, credentials):
 
 @appServerQuery.field("genericView")
 def resolve_generic_view(parent, info, value):
-    processGenericView(info.context, value)
+    ret = processGenericView(info.context, value)
+    return ret
     # return [
     #     {"id": 1, "firstName": "Sushant", "lastName": "Agrawal", "age": 58},
     #     {"id": 2, "firstName": "Prashant", "lastName": "Agrawal", "age": 58}

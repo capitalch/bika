@@ -15,7 +15,7 @@ import {
     UserLoginWelcome,
     Typography,
 } from '../../../misc/redirect'
-import { sideBarMainMenu } from '../side-bar/app-client-side-bar-menus'
+import { sideBarMainMenu } from '../side-bar/app-navigation-side-bar-menus'
 
 const drawerWidth = 240
 const AppBar: any = styled(
@@ -36,7 +36,7 @@ const AppBar: any = styled(
     }),
 }))
 
-function AppClientHeader() {
+function AppNavigationHeader() {
     const appGlobalState = useHookstate(appHookState)
     const theme = useTheme()
     const userMap: any = { 'S': 'Super admin', 'A': 'Admin', 'B': 'Business user' }
@@ -119,4 +119,4 @@ function AppClientHeader() {
         return (appGlobalState.loginInfo.userType.get() === 'S')
     }
 }
-export { AppClientHeader }
+export { AppNavigationHeader }

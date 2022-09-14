@@ -2,7 +2,7 @@ import { createTheme, ThemeProvider } from '@mui/material'
 import { LicenseInfo } from '@mui/x-data-grid-pro'
 import { ConfirmProvider } from 'material-ui-confirm'
 import './App.scss'
-import { AppClient } from './components/app-client/app-client'
+import { AppNavigation } from './components/app-navigation/app-navigation'
 
 declare module '@mui/material/Button' {
     interface ButtonPropsVariantOverrides {
@@ -69,7 +69,7 @@ function App() {
     return (
         <ThemeProvider theme={theme}>
             <ConfirmProvider>
-                <AppClient />
+                <AppNavigation />
             </ConfirmProvider>
         </ThemeProvider>
     )

@@ -4,7 +4,7 @@ type Query {
 
 type AppServerQuery {
     doLogin(credentials: String): Generic
-    genericView: Generic
+    genericView(value: Generic): Generic
     genericViewTest: Generic
 }
 scalar Generic

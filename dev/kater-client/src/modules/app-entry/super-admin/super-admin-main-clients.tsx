@@ -11,7 +11,8 @@ function SuperAdminMainClients() {
         }
     }, [])
     return (
-        <Box sx={{ height: theme.spacing(50) }}><DataGridPro
+        <Box sx={{ height: theme.spacing(50), width: '100%' }}>
+            <DataGridPro
             rows={appGlobalState.superAdmin.clients.rows.get()}
 
             columns={[{
@@ -20,17 +21,18 @@ function SuperAdminMainClients() {
                 field: 'id'
             },
             {
-                headerName: 'First',
-                width: 60,
-                field: 'firstName'
+                headerName: 'Name',
+                width: 120,
+                field: 'clientName'
             },
             {
-                headerName: 'Age',
-                width: 60,
-                field: 'age'
+                headerName: 'Short code',
+                width: 100,
+                field: 'shortCode'
             }
             ]}
-        /></Box>
+        />
+        </Box>
 
     )
 
@@ -40,7 +42,7 @@ function SuperAdminMainClients() {
         const data = getPayloadFromGraphqlObject(ret, 'genericView')
 
         clients.set({ rows: [] })
-        clients.rows.merge(data)
+        data && clients.rows.merge(data)
         console.log(ret)
     }
 }

@@ -1,6 +1,6 @@
-from asyncio.log import logger
-from redirect import allSqls, base64, bcrypt, config, cryptoDecrypt, datetime, demjson, GenericException, jwt, messages, timezone, unquote
-from data_handlers.postgres import execSql
+from redirect import allSqls, base64, bcrypt, config, cryptoDecrypt, datetime, demjson, entryDb, GenericException, jwt, logger, messages, timezone, unquote
+from .graphql_sub_worker import getClientServerTimeDiff, raiseGenericException, raiseGenericExceptionFn, validateTokenAndGetPayload
+from .postgres import execSql
 
 
 def context_value(request):
@@ -12,27 +12,16 @@ def context_value(request):
         raiseGenericException('errOperationMissing')
     elif (operationName == 'login'):
         diff = getClientServerTimeDiff(auth)
+        return {}
         if (diff > 1):
             raiseGenericException('errTimeDiff')
     else:  # process token
-        processToken(auth)
+        payload = validateTokenAndGetPayload(auth)
+        payload['operationName'] = operationName
+        return payload
 
 
-def getClientServerTimeDiff(auth):
-    try:
-        token = auth.split(' ')[-1]
-        decrypted = cryptoDecrypt(token)
-        client_timestamp = float(decrypted)/1000
-        dt = datetime.datetime.now(timezone.utc)
-        utc_time = dt.replace(tzinfo=timezone.utc)
-        server_timestamp = utc_time.timestamp()
-        diff = server_timestamp - client_timestamp
-        return diff
-    except:
-        raiseGenericException('errToken')
-
-
-def doLogin(credentials):
+def doLogin(info, credentials):
     def getBundle(uidOrEmail, pwd):
         bundle = None
         a = config['authentication']['superAdmin']['uid']
@@ -46,7 +35,7 @@ def doLogin(credentials):
             ret = True
         return ret
 
-    def getToken(payload):
+    def createToken(payload):
         secret = config.get('authentication').get('jwt').get('secret')
         algorithm = config.get('authentication').get('jwt').get('algorithm')
         expInWeeks = config.get('authentication').get(
@@ -74,9 +63,13 @@ def doLogin(credentials):
 
     credentials = unquote(credentials)
     uidOrEmail, pwd = getUidOrEmailAndPwd(credentials)
+    
     # c = getBundle(uidOrEmail, pwd)
     if (isSuperAdmin(uidOrEmail, pwd)):
-        token = getToken({"a": "b"})
+        token = createToken({"userType": "S"})
+        info.context['dbName'] = entryDb
+        # info.context['dbName'] = 'appEntry'
+
     # ret = execSql(allSqls['get-states'], schema='demo')
         return {
             'isSuccess': True,
@@ -88,35 +81,22 @@ def doLogin(credentials):
         }
 
 
-def processToken(auth):
-    try:
-        token = auth.split(' ')[-1]  # get last word
-        secret = config.get('authentication').get('jwt').get('secret')
-        algorithm = config.get('authentication').get('jwt').get('algorithm')
-        payload = jwt.decode(token, secret, algorithm)
-        print(payload)
-    except jwt.ExpiredSignatureError as error1:
-        logger.error(error1)
-        raiseGenericException('errTokenExpired')
-    except (Exception) as error:
-        logger.error(error)
-        raiseGenericException('errInvalidToken')
-
-
 def processGenericView(context, value):
-    value = unquote(value)
-    valueDict = demjson.decode(value)
-    if (valueDict.get('sqlKey') is None):
-        raiseGenericException('errNoSqlKeyProvided')
-    sqlString = allSqls.get('sqlKey', None)
-    if (sqlString is None):
-        raiseGenericException('errNoSqlStringForSqlKey')
-    args = valueDict.get('args', None)
-    return execSql(sqlString=sqlString, args=args)
-    # if (valueDict.get('args') is None):
-    #     valueDict['args'] = {}
-
-
-def raiseGenericException(errName):
-    raise GenericException(
-        code=messages[errName][0], name=errName, message=messages[errName][1])
+    try:
+        value = unquote(value)
+        valueDict = demjson.decode(value)
+        operationName = context['operationName']
+        if(operationName == 'appEntry'):
+            context['dbName'] = entryDb
+        sqlKey = valueDict.get('sqlKey', None)
+        if (sqlKey is None):
+            raiseGenericException('errNoSqlKeyProvided')
+        sqlString = allSqls.get(sqlKey, None)
+        if (sqlString is None):
+            raiseGenericException('errNoSqlStringForSqlKey')
+        args = valueDict.get('args', None)
+        return execSql(context['dbName'], sqlString=sqlString, args=args)
+        # if (valueDict.get('args') is None):
+        #     valueDict['args'] = {}
+    except Exception as error:
+        raiseGenericExceptionFn('errProcessGenericView', error.message)

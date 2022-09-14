@@ -29,7 +29,8 @@
             "secret": "secret",
             "algorithm": "HS256",
             "expiryInWeeks": 1
-        }
+        },
+        "entryDb":"appEntry"
     },
     "comments": "Super admin uid:password is superAdmin:superAdmin@123"
 }

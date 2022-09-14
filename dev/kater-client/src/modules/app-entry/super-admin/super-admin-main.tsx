@@ -1,4 +1,5 @@
 import { createState } from '@hookstate/core';
+import { Card, Paper } from '@mui/material';
 import { appHookState, Box, Button, Container, Tab, TabContext, TabList, TabPanel, Tabs, Typography, useHookstate, useState } from '../../../misc/redirect'
 import { SuperAdminMainClients } from './super-admin-main-clients';
 function SuperAdminMain() {
@@ -8,7 +9,7 @@ function SuperAdminMain() {
     const handleChange = (event:any, newValue:any) => {
         setValue(newValue);
     };
-    return (<Container sx={{}}>
+    return (
         <Box sx={{ width: '100%', typography: 'body1' }}>
             <TabContext value={value}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -25,7 +26,7 @@ function SuperAdminMain() {
             </TabContext>
         </Box>
 
-    </Container>)
+    )
 }
 export { SuperAdminMain }
 

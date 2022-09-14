@@ -1,5 +1,5 @@
 import { hookstate } from '@hookstate/core'
-import { sideBarMainMenu } from '../components/app-client/side-bar/app-client-side-bar-menus'
+import { sideBarMainMenu } from '../components/app-navigation/side-bar/app-navigation-side-bar-menus'
 // import {createState, hookstate } from '../misc/redirect'
 import _ from 'lodash'
 

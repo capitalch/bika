@@ -1,6 +1,6 @@
 allSqls = {
     "get-states": '''
-        select * from "StateM1"
+        select * from "StateM"
     ''',
 
     "get-clients":'''

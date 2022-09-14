@@ -1,4 +1,5 @@
 # from data_handlers.postgres import execSql
+from data_handlers.sql import allSqls
 from psycopg2.extras import RealDictCursor
 import psycopg2
 import bcrypt
@@ -27,5 +28,14 @@ from datetime import timezone
 config = None
 with open('config.json') as f:
     config = json.load(f)
+entryDb = config.get('authentication').get('entryDb')
 # dbName = config['baseConnection']['database']
-from data_handlers.sql import allSqls
+global_settings = {
+    # 'authDbName': ''
+}
+
+# def getdbName():
+#     return(global_settings['dbName'])
+
+# def setDbName(dbName):
+#     global_settings['dbName'] = dbName

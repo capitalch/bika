@@ -1,13 +1,16 @@
 import { gql } from '../misc/redirect'
 import _ from 'lodash'
 const appGraphqlStrings: any = {
-    genericView: (value: GenericViewValues) => gql`
-        query mainModule {
+    genericView: (val: GenericViewValues, moduleName: string = 'appEntry') => {
+        const value = encodeObj(val)
+        return gql`
+        query ${moduleName} {
             appServer {
                 genericView(value:"${value}")
             }
         }
-    `,
+    `
+    },
 
     login: (credentials: any) => {
         const cred = encodeObj(credentials)
@@ -17,7 +20,8 @@ const appGraphqlStrings: any = {
                 doLogin(credentials: "${cred}")
             }
         }
-    `},
+    `
+    },
 }
 
 function encodeObj(obj: any) {
@@ -25,7 +29,7 @@ function encodeObj(obj: any) {
     if (!_.isEmpty(obj)) {
         ret = encodeURI(JSON.stringify(obj))
     }
-    return (ret)
+    return ret
 }
 export { appGraphqlStrings, encodeObj }
 
