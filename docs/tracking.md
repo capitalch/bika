@@ -1,3 +1,20 @@
+## Provide in XX-grid
+1. Edit
+2. Delete
+3. Add
+4. Search
+5. Selection
+6. Title
+7. subtitle
+8. Hide
+9. id swap
+10. header color
+11. View no
+12. Refresh
+13. Summary footer
+14. Normal buttons
+15. Remove some buttons when below MD isMediumSizeDown
+
 ## Login
 1. Super admin users: a) Create tenant and database schema b) Create admin user and associate with tenant
 2. Admin user: a) change uid, b) change pwd c) manage business user, d) manage roles e) Associate users with roles f) Associate users with branches

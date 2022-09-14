@@ -1,25 +1,27 @@
-import { createState } from '@hookstate/core';
-import { Card, Paper } from '@mui/material';
+import { createState } from '@hookstate/core'
+import { Card, Paper } from '@mui/material'
 import { appHookState, Box, Button, Container, Tab, TabContext, TabList, TabPanel, Tabs, Typography, useHookstate, useState } from '../../../misc/redirect'
-import { SuperAdminMainClients } from './super-admin-main-clients';
+import { SuperAdminMainClients } from './super-admin-main-clients'
+import { CSSProperties } from '@mui/styled-engine'
+
 function SuperAdminMain() {
     const appGlobalState = useHookstate(appHookState)
-    const [value, setValue] = useState('1');
+    const [value, setValue] = useState('1')
 
-    const handleChange = (event:any, newValue:any) => {
-        setValue(newValue);
+    const handleChange = (event: any, newValue: any) => {
+        setValue(newValue)
     };
     return (
-        <Box sx={{ width: '100%', typography: 'body1' }}>
+        <Box sx={styles}>
             <TabContext value={value}>
-                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <Box>
                     <TabList onChange={handleChange} aria-label="lab API tabs example" textColor='secondary'>
-                        <Tab label="Clients" value="1" />
+                        <Tab className='tab' label="Clients" value="1" />
                         <Tab label="Users" value="2" />
                         <Tab label="Associate" value="3" />
                     </TabList>
                 </Box>
-                <TabPanel value="1"> <SuperAdminMainClients />
+                <TabPanel value="1" sx={{ ml: 0, pl: 0 }}> <SuperAdminMainClients />
                 </TabPanel>
                 <TabPanel value="2">Users</TabPanel>
                 <TabPanel value="3">Associate</TabPanel>
@@ -30,6 +32,11 @@ function SuperAdminMain() {
 }
 export { SuperAdminMain }
 
+const styles = {
+    width: '100%',
+    '& .tab': { paddingLeft: 0 },
+    // '& .grid-box': { height: 'calc(100vh - 230px)', }
+}
 // const tenantState = createState({})
 
 /* 
