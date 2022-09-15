@@ -56,6 +56,7 @@ export {
     MenuItem,
     MenuList,
     Snackbar,
+    type SxProps,
     Tab,
     Tabs,
     TextField,
