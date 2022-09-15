@@ -42,33 +42,26 @@ function SuperAdminMainClients() {
                     columns={getColumns()}
                     deleteMethod={deleteMethod}
                     editMethod={editMethod}
+                    printPreviewMethod={printPreviewMethod}
+                    isCheckBoxSelection={true}
                     rows={appGlobalState.superAdmin.clients.rows.get()}
+                    title='Persistent datagrid'
+                    subTitle='Subtitle of grid'
                 />
             </Then>
             <Else>
-                <Typography variant='body1'>No data</Typography>
+                <Typography variant="body1">No data</Typography>
             </Else>
         </If>
-
-        // <DataGridPro sx={{'& .header-class':{color:theme.palette.primary.main,  fontWeight:'bolder', fontSize: theme.spacing(1.8)}}}
-        //     columns={getColumns()}
-        //     density='compact'
-        //     rows={appGlobalState.superAdmin.clients.rows.get()}
-        //     showCellRightBorder={true}
-        //     showColumnRightBorder={true}
-        //     autoHeight= {true}
-        // />
     )
-
 
     function editMethod(params: any) {
         console.log(params.row.clientName)
-        // const x = row.row.clientName.get()
     }
 
-    function deleteMethod(id: number) {
+    function deleteMethod(params:any) {}
 
-    }
+    function printPreviewMethod(params:any){}
 
     async function fetchData() {
         let i = 0
@@ -79,9 +72,6 @@ function SuperAdminMainClients() {
 
         clients.set({ rows: [] })
         data && clients.rows.merge(rows)
-        // data && clients.rows.set(()=>rows.get())
-        // // const nrows = clients.rows.get()
-
     }
 
     function getColumns() {
@@ -127,3 +117,12 @@ function SuperAdminMainClients() {
     }
 }
 export { SuperAdminMainClients }
+
+// <DataGridPro sx={{'& .header-class':{color:theme.palette.primary.main,  fontWeight:'bolder', fontSize: theme.spacing(1.8)}}}
+//     columns={getColumns()}
+//     density='compact'
+//     rows={appGlobalState.superAdmin.clients.rows.get()}
+//     showCellRightBorder={true}
+//     showColumnRightBorder={true}
+//     autoHeight= {true}
+// />
