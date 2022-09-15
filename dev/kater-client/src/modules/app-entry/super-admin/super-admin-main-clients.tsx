@@ -6,12 +6,16 @@ import {
     Button,
     Container,
     DataGridPro,
+    Else,
     getPayloadFromGraphqlObject,
+    If,
+    immer,
     Tab,
     TabContext,
     TabList,
     TabPanel,
     Tabs,
+    Then,
     Typography,
     useAppGraphql,
     useEffect,
@@ -19,6 +23,7 @@ import {
     useState,
     useTheme,
 } from '../../../misc/redirect'
+import { getRowsWithSwappedId } from '../../../misc/global-utils'
 
 function SuperAdminMainClients() {
     const { queryGraphql } = useAppGraphql()
@@ -31,11 +36,20 @@ function SuperAdminMainClients() {
         }
     }, [])
     return (
-        <AppXXGrid
-            sx={{ '& .custom-header': { color: 'red' } }}
-            rows={appGlobalState.superAdmin.clients.rows.get()}
-            columns={getColumns()}
-        />
+        <If condition={clients.rows.get().length > 0}>
+            <Then>
+                <AppXXGrid
+                    columns={getColumns()}
+                    deleteMethod={deleteMethod}
+                    editMethod={editMethod}
+                    rows={appGlobalState.superAdmin.clients.rows.get()}
+                />
+            </Then>
+            <Else>
+                <Typography variant='body1'>No data</Typography>
+            </Else>
+        </If>
+
         // <DataGridPro sx={{'& .header-class':{color:theme.palette.primary.main,  fontWeight:'bolder', fontSize: theme.spacing(1.8)}}}
         //     columns={getColumns()}
         //     density='compact'
@@ -46,24 +60,30 @@ function SuperAdminMainClients() {
         // />
     )
 
+
+    function editMethod(params: any) {
+        console.log(params.row.clientName)
+        // const x = row.row.clientName.get()
+    }
+
+    function deleteMethod(id: number) {
+
+    }
+
     async function fetchData() {
         let i = 0
         const q = appGraphqlStrings['genericView']({ sqlKey: 'get-clients' })
         const ret = await queryGraphql(q)
         const data: any[] = getPayloadFromGraphqlObject(ret, 'genericView')
-        const rows: any = data.map((row: any) => {
-            // row.id1 = row.id
-            // row.id = incr()
-            return row
-        })
+        const rows: any = getRowsWithSwappedId(data)
 
         clients.set({ rows: [] })
         data && clients.rows.merge(rows)
+        // data && clients.rows.set(()=>rows.get())
+        // // const nrows = clients.rows.get()
 
-        function incr() {
-            return i++
-        }
     }
+
     function getColumns() {
         return [
             {
@@ -72,16 +92,10 @@ function SuperAdminMainClients() {
                 field: 'id',
             },
             {
-                headerName: 'id',
-                width: 60,
-                field: 'id1',
-            },
-            {
                 headerName: 'Name',
                 width: 160,
                 field: 'clientName',
                 headerClassName: 'header-class',
-                // editable:true,
             },
             {
                 headerName: 'Short code',

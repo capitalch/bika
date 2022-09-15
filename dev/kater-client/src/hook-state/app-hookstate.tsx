@@ -1,4 +1,4 @@
-import { hookstate } from '@hookstate/core'
+import {createState, hookstate } from '@hookstate/core'
 import { sideBarMainMenu } from '../components/app-navigation/side-bar/app-navigation-side-bar-menus'
 // import {createState, hookstate } from '../misc/redirect'
 import _ from 'lodash'
@@ -44,6 +44,7 @@ const appHook = {
 }
 let clone = _.cloneDeep(appHook)
 
-const appHookState = hookstate(clone)
+// const appHookState = hookstate(clone)
+const appHookState = createState(clone)
 
 export { appHook, appHookState }

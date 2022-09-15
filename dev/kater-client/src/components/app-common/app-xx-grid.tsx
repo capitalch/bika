@@ -1,22 +1,28 @@
-import { SxProps } from '@mui/material'
-import { Box, DataGridPro, useTheme } from '../../misc/redirect'
+import _ from 'lodash'
+import { Box, DataGridPro, useEffect, useTheme } from '../../misc/redirect'
 import { useAppXXGrid } from './app-xx-grid-hook'
-function AppXXGrid({ rows, columns }: any) {
-    const theme = useTheme()
-    const { getStyledColumns, sxStyles } = useAppXXGrid()
 
-    let cols = getStyledColumns(columns) // change headers
+function AppXXGrid(xxGridOptions: XXGridOptions) {
+    const { columns, sxStyles } = useAppXXGrid(xxGridOptions)
 
     return (
         <DataGridPro
-            columns={cols}
+            autoHeight={true}
+            columns={columns}
             density="compact"
-            rows={rows}
+            rows={xxGridOptions.rows}
             showCellRightBorder={true}
             showColumnRightBorder={true}
-            autoHeight={true}
             sx={sxStyles}
         />
     )
 }
 export { AppXXGrid }
+
+interface XXGridOptions {
+    columns: any[]
+    editMethod?: (args: any) => void
+    deleteMethod?: (args:any) => void
+    rows: any[]
+}
+export { type XXGridOptions }

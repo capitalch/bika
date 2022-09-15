@@ -1,15 +1,16 @@
 ## Provide in XX-grid
-1. Edit
-2. Delete
+																									1. Edit
+																									2. Delete
+.. Print preview with edit
 3. Add
 4. Search
 5. Selection
 6. Title
 7. subtitle
 8. Hide
-9. id swap
-10. header color
-11. View no
+																									9. id swap
+																									10. header color
+11. View no of rows
 12. Refresh
 13. Summary footer
 14. Normal buttons
