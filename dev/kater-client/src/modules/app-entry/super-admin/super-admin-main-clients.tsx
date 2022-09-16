@@ -18,6 +18,7 @@ import {
     Then,
     Typography,
     useAppGraphql,
+    useConfirm,
     useEffect,
     useHookstate,
     useState,
@@ -31,36 +32,42 @@ function SuperAdminMainClients() {
     const theme = useTheme()
     const clients = appGlobalState.superAdmin.clients
 
+
     useEffect(() => {
         if (clients.sharedXXGridHookstate.rows.get().length === 0) {
             fetchData()
         }
     }, [])
+
     return (
-        <If condition={clients.sharedXXGridHookstate.rows.get().length > 0}>
-            <Then>
-                <AppXXGrid
-                    columns={getColumns()}
-                    deleteMethod={deleteMethod}
-                    editMethod={editMethod}
-                    fetchData={fetchData}
-                    toShowViewLimit={true}
-                    isToolbarColumnsButton={true}
-                    isToolbarExportButton={true}
-                    isToolbarFilterButton={true}
-                    printPreviewMethod={printPreviewMethod}
-                    isCheckBoxSelection={true}
-                    sharedXXGridHookstate={appGlobalState.superAdmin.clients.sharedXXGridHookstate}
-                    // rows={appGlobalState.superAdmin.clients.rows.get()}
-                    title="Persistent datagrid"
-                    subTitle="Subtitle of grid"
-                />
-            </Then>
-            <Else>
-                <Typography variant="body1">No data</Typography>
-            </Else>
-        </If>
+        // <If condition={clients.sharedXXGridHookstate.rows.get().length > 0}>
+        //     <Then>
+        <AppXXGrid
+            columns={getColumns()}
+            addMethod={addMethod}
+            deleteMethod={deleteMethod}
+            editMethod={editMethod}
+            fetchData={fetchData}
+            toShowViewLimit={true}
+            isToolbarColumnsButton={true}
+            isToolbarExportButton={true}
+            isToolbarFilterButton={true}
+            printPreviewMethod={printPreviewMethod}
+            isCheckBoxSelection={true}
+            sharedXXGridHookstate={appGlobalState.superAdmin.clients.sharedXXGridHookstate}
+            title="Persistent datagrid"
+            subTitle="Subtitle of grid"
+        />
+        //     </Then>
+        //     <Else>
+        //         <Typography variant="body1">No data</Typography>
+        //     </Else>
+        // </If>
     )
+
+    function addMethod() {
+        console.log('add')
+    }
 
     function editMethod(params: any) {
         console.log(params.row.clientName)
@@ -72,12 +79,13 @@ function SuperAdminMainClients() {
 
     async function fetchData() {
         appGlobalState.misc.showLoadingDialog.set(true)
-        const q = appGraphqlStrings['genericView']({ sqlKey: 'get-clients' })
+        const rowsViewLimit = clients.sharedXXGridHookstate.rowsViewLimit.get()
+        const q = appGraphqlStrings['genericView']({ sqlKey: 'get-clients', args: { no: rowsViewLimit } })
         const ret = await queryGraphql(q)
         const data: any[] = getPayloadFromGraphqlObject(ret, 'genericView')
         const rows: any = getRowsWithSwappedId(data)
 
-        clients.sharedXXGridHookstate.set({ rows: [], rowsViewLimit:clients.sharedXXGridHookstate.rowsViewLimit.get() })
+        clients.sharedXXGridHookstate.set({ rows: [], rowsViewLimit: rowsViewLimit })
         data && clients.sharedXXGridHookstate.rows.merge(rows)
         appGlobalState.misc.showLoadingDialog.set(false)
     }

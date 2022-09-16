@@ -8,7 +8,7 @@ import immer from 'immer'
 import messages from './messages.json'
 import urlJoin from 'url-join'
 export { styled } from '@mui/material/styles'
-
+export { useConfirm } from 'material-ui-confirm'
 export {
     AddCircle as AddCircleIcon,
     ArrowDropDown as ArrowDropDownIcon,

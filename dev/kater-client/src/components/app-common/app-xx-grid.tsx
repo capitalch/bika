@@ -13,6 +13,7 @@ function AppXXGrid(xxGridOptions: XXGridOptions) {
             columns={columns}
             density="compact"
             disableColumnMenu={true}
+            disableSelectionOnClick={true}
             rows={xxGridOptions.sharedXXGridHookstate.rows.get()}
             showCellRightBorder={true}
             showColumnRightBorder={true}
@@ -27,6 +28,7 @@ export { AppXXGrid }
 
 interface XXGridOptions {
     columns: any[]
+    addMethod?: () => void
     deleteMethod?: (args: any) => void
     editMethod?: (args: any) => void
     fetchData: () => void

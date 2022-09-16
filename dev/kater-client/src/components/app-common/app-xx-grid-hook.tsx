@@ -29,6 +29,8 @@ import {
     GridToolbarExport,
     useGlobalMediaQuery,
     AddCircleIcon,
+    useConfirm,
+    messages,
 } from '../../misc/redirect'
 import { XXGridOptions } from './app-xx-grid'
 
@@ -37,15 +39,14 @@ function useAppXXGrid(xxGridOptions: XXGridOptions) {
     // const columns = useHookstate(xxGridOptions.columns)
     const columns = _.cloneDeep(xxGridOptions.columns)
     const theme = useTheme()
-    const { isMediumSizeUp,isLargeSizeUp, isSmallAndMediumSizeUp } = useGlobalMediaQuery()
+    const { isMediumSizeUp, isLargeSizeUp, isExtraSmallSizeUp, isSmallAndMediumSizeUp } = useGlobalMediaQuery()
+    const confirm = useConfirm()
 
     injectStyles()
     insertDeleteColumn()
     insertEditColumn()
     insertPrintPreviewColumn()
-
     function CustomGridToolbar(props: any) {
-        // const toolbarState = useHookstate({viewLimit:100, searchString:''})
         return (
             <GridToolbarContainer className="custom-toolbar">
                 <Box className="sub-title">
@@ -55,9 +56,14 @@ function useAppXXGrid(xxGridOptions: XXGridOptions) {
                 </Box>
 
                 <Box className="main-container">
-                    <Typography className="toolbar-title">
-                        {xxGridOptions.title}
-                    </Typography>
+                    <If condition={isSmallAndMediumSizeUp}>
+                        <Then>
+                            <Typography className="toolbar-title">
+                                {xxGridOptions.title}
+                            </Typography>
+                        </Then>
+                    </If>
+
                     <Box className="toolbar-left-items">
                         <If condition={isMediumSizeUp}>
                             <Then>
@@ -110,14 +116,15 @@ function useAppXXGrid(xxGridOptions: XXGridOptions) {
                                         View
                                     </Typography>
                                     <select
-                                        value={xxGridOptions.sharedXXGridHookstate.rowsViewLimit.get() || ''}
+                                        value={xxGridOptions.sharedXXGridHookstate.rowsViewLimit ? xxGridOptions.sharedXXGridHookstate.rowsViewLimit.get() : ''}
                                         style={{
                                             width: '4rem',
                                         }}
                                         onChange={(e: any) => {
                                             xxGridOptions.sharedXXGridHookstate.rowsViewLimit.set(e.target.value)
                                             xxGridOptions.fetchData()
-                                        }}>
+                                        }}
+                                        >
                                         <option value={'100'}>
                                             100
                                         </option>
@@ -141,7 +148,7 @@ function useAppXXGrid(xxGridOptions: XXGridOptions) {
                         </IconButton>
 
                     </Box>
-                    <Box component='span' sx={{ ml: 'auto' }}>
+                    <Box component='span' className='toolbar-right-items'>
                         {/* Search box */}
                         <If condition={isLargeSizeUp}>
                             <Then>
@@ -154,7 +161,6 @@ function useAppXXGrid(xxGridOptions: XXGridOptions) {
                                     value={props.value}
                                     onChange={props.onChange}
                                     placeholder="Search…"
-                                    className="global-search"
                                     InputProps={{
                                         startAdornment: (
                                             <>
@@ -185,10 +191,15 @@ function useAppXXGrid(xxGridOptions: XXGridOptions) {
                                     }}
                                 /></Then>
                         </If>
-                        {/* Add Button */}
-                        <IconButton color='primary' size='large'>
-                            <AddCircleIcon sx={{ fontSize: theme.spacing(6), ml: theme.spacing(2), mr: theme.spacing(4) }}></AddCircleIcon>
-                        </IconButton>
+                        <If condition={!!xxGridOptions.addMethod}>
+                            <Then>
+                                {/* Add Button */}
+                                <IconButton color='primary' size='medium' onClick={xxGridOptions.addMethod}>
+                                    <AddCircleIcon sx={{ fontSize: theme.spacing(6), ml: theme.spacing(2), mr: theme.spacing(1) }}></AddCircleIcon>
+                                </IconButton>
+                            </Then>
+                        </If>
+
                     </Box>
                     {/* <Box className="toolbar-right-items">
                         {!!xxGridOptions.toShowAddButton && (
@@ -203,9 +214,6 @@ function useAppXXGrid(xxGridOptions: XXGridOptions) {
                                 Add
                             </Button>
                         )}
-
-                        
-                        
                     </Box> */}
                 </Box>
             </GridToolbarContainer>
@@ -304,11 +312,18 @@ function useAppXXGrid(xxGridOptions: XXGridOptions) {
                             color="error"
                             className="delete"
                             disabled={!!xxGridOptions.isDeleteDisabled}
-                            onClick={() =>
-                                xxGridOptions.deleteMethod
-                                    ? xxGridOptions.deleteMethod(params)
-                                    : null
-                            }
+                            onClick={() => {
+                                const options = {
+                                    description: messages.messConfirmDelete,
+                                    confirmationText: 'Yes',
+                                    cancellationText: 'No',
+                                }
+                                confirm(options).then(() => {
+                                    if (xxGridOptions.deleteMethod) {
+                                        xxGridOptions.deleteMethod(params)
+                                    }
+                                }).catch(() => { })
+                            }}
                             aria-label="Delete">
                             <DeleteForeverIcon />
                         </IconButton>
@@ -328,13 +343,14 @@ function useAppXXGrid(xxGridOptions: XXGridOptions) {
     const sxStyles: SxProps = {
         '& .header-style': {
             color: theme.palette.primary.light,
-            fontWeight: 'bolder',
+            fontWeight: 'bold',
         },
         '& .custom-toolbar': {
             display: 'flex',
             flexDirection: 'column',
             borderBottom: '1px solid lightGrey',
             padding: 0,
+            pr: theme.spacing(2),
             width: '100%',
             '& .sub-title': {
                 width: '100%',
@@ -347,33 +363,22 @@ function useAppXXGrid(xxGridOptions: XXGridOptions) {
             '& .main-container': {
                 width: '100%',
                 display: 'flex',
-                // justifyContent: 'space-between',
+                // border:'1px solid red',
+                height: theme.spacing(5),
                 alignItems: 'center',
                 '& .toolbar-title': {
                     color: theme.palette.text.secondary,
                     fontSize: theme.spacing(2.1),
                     fontWeight: 'bold',
-                    // marginBottom: theme.spacing(0.4),
                 },
                 '& .toolbar-left-items': {
                     display: 'flex',
                     alignItems: 'center',
                     flexWrap: 'wrap',
-                    // border: '1px solid black',
-                    // mb:theme.spacing(.5),
-                    // columnGap: theme.spacing(0.5),
-
-                    // '& .view-limit': {
-                    //     display: 'flex',
-                    //     columnGap: '0.5rem',
-                    //     color: theme.palette.secondary.main,
-                    //     marginRight: '1rem',
-                    //     '& select': {
-                    //         borderColor: 'grey',
-                    //         color: theme.palette.primary.main,
-                    //     },
-                    // },
                 },
+                '& .toolbar-right-items': {
+                    ml: 'auto'
+                }
             },
         },
     }

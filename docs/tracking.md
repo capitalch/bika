@@ -1,20 +1,27 @@
 ## Provide in XX-grid
+																									.. Add method and logic for its display
+.. Search logic
+.. view row logic
+																									.. Delete logic add confirm message
+																									.. With no data add is not visible because data grid is not visible
+																									-- disable onclick selection
+
 																									1. Edit
 																									2. Delete
-.. Print preview with edit
-3. Add
-4. Search
-5. Selection
-6. Title
-7. subtitle
-8. Hide
+																									.. Print
+																									3. Add
+																									4. Search
+																									5. Selection
+																									6. Title
+																									7. subtitle
+
 																									9. id swap
 																									10. header color
-11. View no of rows
-12. Refresh
+																									11. View no of rows
+																									12. Refresh
 13. Summary footer
-14. Normal buttons
-15. Remove some buttons when below MD isMediumSizeDown
+																									14. Normal buttons
+																									15. Remove some buttons when below MD isMediumSizeDown
 
 ## Login
 1. Super admin users: a) Create tenant and database schema b) Create admin user and associate with tenant

@@ -18,6 +18,15 @@ function useGlobalMediaQuery() {
     const isEqualsXL = useMediaQuery(theme.breakpoints.only('xl'), {
         noSsr: true,
     })
+
+    const isExtraSmallSizeDown = useMediaQuery(theme.breakpoints.down('xs'), {
+        noSsr: true,
+    })
+
+    const isExtraSmallSizeUp = useMediaQuery(theme.breakpoints.up('xs'), {
+        noSsr: true,
+    })
+
     const isSmallAndMediumSizeUp = useMediaQuery(theme.breakpoints.up('sm'), {
         noSsr: true,
     })
@@ -71,6 +80,8 @@ function useGlobalMediaQuery() {
         isMediumSizeUp,
         isSmallAndMediumSizeDown,
         isSmallAndMediumSizeUp,
+        isExtraSmallSizeDown,
+        isExtraSmallSizeUp
     }
 }
 export { useGlobalMediaQuery }
