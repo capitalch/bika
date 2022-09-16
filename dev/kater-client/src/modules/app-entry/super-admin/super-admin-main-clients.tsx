@@ -30,6 +30,7 @@ function SuperAdminMainClients() {
     const appGlobalState = useHookstate(appHookState)
     const theme = useTheme()
     const clients = appGlobalState.superAdmin.clients
+
     useEffect(() => {
         if (clients.rows.get().length === 0) {
             fetchData()
@@ -42,11 +43,16 @@ function SuperAdminMainClients() {
                     columns={getColumns()}
                     deleteMethod={deleteMethod}
                     editMethod={editMethod}
+                    fetchData={fetchData}
+                    toShowViewLimit={true}
+                    isToolbarColumnsButton={true}
+                    isToolbarExportButton={true}
+                    isToolbarFilterButton={true}
                     printPreviewMethod={printPreviewMethod}
                     isCheckBoxSelection={true}
                     rows={appGlobalState.superAdmin.clients.rows.get()}
-                    title='Persistent datagrid'
-                    subTitle='Subtitle of grid'
+                    title="Persistent datagrid"
+                    subTitle="Subtitle of grid"
                 />
             </Then>
             <Else>
@@ -59,12 +65,12 @@ function SuperAdminMainClients() {
         console.log(params.row.clientName)
     }
 
-    function deleteMethod(params:any) {}
+    function deleteMethod(params: any) {}
 
-    function printPreviewMethod(params:any){}
+    function printPreviewMethod(params: any) {}
 
     async function fetchData() {
-        let i = 0
+        appGlobalState.misc.showLoadingDialog.set(true)
         const q = appGraphqlStrings['genericView']({ sqlKey: 'get-clients' })
         const ret = await queryGraphql(q)
         const data: any[] = getPayloadFromGraphqlObject(ret, 'genericView')
@@ -72,6 +78,7 @@ function SuperAdminMainClients() {
 
         clients.set({ rows: [] })
         data && clients.rows.merge(rows)
+        appGlobalState.misc.showLoadingDialog.set(false)
     }
 
     function getColumns() {

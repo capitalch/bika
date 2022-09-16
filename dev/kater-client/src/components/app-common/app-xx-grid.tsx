@@ -29,11 +29,18 @@ interface XXGridOptions {
     columns: any[]
     deleteMethod?: (args: any) => void
     editMethod?: (args: any) => void
+    fetchData: () => void
     printPreviewMethod?: (args: any) => void
+
+    isToolbarColumnsButton?: boolean
+    isToolbarExportButton?: boolean
+    isToolbarFilterButton?: boolean
+
     isCheckBoxSelection?: boolean
     isEditDisabled?: boolean
     isDeleteDisabled?: boolean
     isPrintPreviewDisabled?: boolean
+    toShowViewLimit?: boolean
     rows: any[]
     subTitle?: string
     title?: string
