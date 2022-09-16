@@ -13,7 +13,7 @@ function AppXXGrid(xxGridOptions: XXGridOptions) {
             columns={columns}
             density="compact"
             disableColumnMenu={true}
-            rows={xxGridOptions.rows}
+            rows={xxGridOptions.sharedXXGridHookstate.rows.get()}
             showCellRightBorder={true}
             showColumnRightBorder={true}
             sx={sxStyles}
@@ -41,7 +41,8 @@ interface XXGridOptions {
     isDeleteDisabled?: boolean
     isPrintPreviewDisabled?: boolean
     toShowViewLimit?: boolean
-    rows: any[]
+    // rows: any[]
+    sharedXXGridHookstate: any
     subTitle?: string
     title?: string
 }

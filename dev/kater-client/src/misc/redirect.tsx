@@ -10,6 +10,7 @@ import urlJoin from 'url-join'
 export { styled } from '@mui/material/styles'
 
 export {
+    AddCircle as AddCircleIcon,
     ArrowDropDown as ArrowDropDownIcon,
     ArrowDropUp as ArrowDropUpIcon,
     Business as BusinessIcon,

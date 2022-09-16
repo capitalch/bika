@@ -28,6 +28,7 @@ import {
     GridToolbarFilterButton,
     GridToolbarExport,
     useGlobalMediaQuery,
+    AddCircleIcon,
 } from '../../misc/redirect'
 import { XXGridOptions } from './app-xx-grid'
 
@@ -36,7 +37,7 @@ function useAppXXGrid(xxGridOptions: XXGridOptions) {
     // const columns = useHookstate(xxGridOptions.columns)
     const columns = _.cloneDeep(xxGridOptions.columns)
     const theme = useTheme()
-    const { isMediumSizeUp } = useGlobalMediaQuery()
+    const { isMediumSizeUp,isLargeSizeUp, isSmallAndMediumSizeUp } = useGlobalMediaQuery()
 
     injectStyles()
     insertDeleteColumn()
@@ -44,7 +45,7 @@ function useAppXXGrid(xxGridOptions: XXGridOptions) {
     insertPrintPreviewColumn()
 
     function CustomGridToolbar(props: any) {
-        const toolbarState = useHookstate({viewLimit:100, searchString:''})
+        // const toolbarState = useHookstate({viewLimit:100, searchString:''})
         return (
             <GridToolbarContainer className="custom-toolbar">
                 <Box className="sub-title">
@@ -87,51 +88,48 @@ function useAppXXGrid(xxGridOptions: XXGridOptions) {
                                             <GridToolbarExport color="primary" />
                                         </Then>
                                     </If>
-                                    <If
-                                        condition={
-                                            xxGridOptions.toShowViewLimit
-                                        }>
-                                        <Then>
-                                            <Box
-                                                component="span"
-                                                sx={{ ml: theme.spacing(1) }}
-                                                className="view-limit">
-                                                <Typography
-                                                    component="span"
-                                                    variant="body2"
-                                                    sx={{
-                                                        mr: theme.spacing(0.5),
-                                                    }}>
-                                                    View
-                                                </Typography>
-                                                <select
-                                                    value={toolbarState.viewLimit.get() || ''}
-                                                    style={{
-                                                        width: '4rem',
-                                                    }}
-                                                    onChange={(e: any) => {
-                                                        toolbarState.viewLimit.set(e.target.value)
-                                                        xxGridOptions.fetchData()
-                                                        // meta.current.viewLimit = e.target.value
-                                                        // fetchRows(sqlQueryId, sqlQueryArgs)
-                                                        // meta.current.isMounted && setRefresh({})
-                                                    }}
-                                                >
-                                                    <option value={'100'}>
-                                                        100
-                                                    </option>
 
-                                                    <option value={'1000'}>
-                                                        1000
-                                                    </option>
+                                </Box>
+                            </Then>
+                        </If>
+                        <If
+                            condition={
+                                xxGridOptions.toShowViewLimit
+                            }>
+                            <Then>
+                                <Box
+                                    component="span"
+                                    sx={{ ml: theme.spacing(1) }}
+                                    className="view-limit">
+                                    <Typography
+                                        component="span"
+                                        variant="body2"
+                                        sx={{
+                                            mr: theme.spacing(0.5),
+                                        }}>
+                                        View
+                                    </Typography>
+                                    <select
+                                        value={xxGridOptions.sharedXXGridHookstate.rowsViewLimit.get() || ''}
+                                        style={{
+                                            width: '4rem',
+                                        }}
+                                        onChange={(e: any) => {
+                                            xxGridOptions.sharedXXGridHookstate.rowsViewLimit.set(e.target.value)
+                                            xxGridOptions.fetchData()
+                                        }}>
+                                        <option value={'100'}>
+                                            100
+                                        </option>
 
-                                                    <option value={'0'}>
-                                                        All
-                                                    </option>
-                                                </select>
-                                            </Box>
-                                        </Then>
-                                    </If>
+                                        <option value={'1000'}>
+                                            1000
+                                        </option>
+
+                                        <option value={'0'}>
+                                            All
+                                        </option>
+                                    </select>
                                 </Box>
                             </Then>
                         </If>
@@ -141,78 +139,56 @@ function useAppXXGrid(xxGridOptions: XXGridOptions) {
                             onClick={xxGridOptions.fetchData}>
                             <SyncSharpIcon></SyncSharpIcon>
                         </IconButton>
-                        {/* 
-                        
-                        {!!!xxGridOptions.hideViewLimit && (
-                            <div className="view-limit">
-                                <span>View</span>
-                                <select
-                                    value={meta.current.viewLimit || ''}
-                                    style={{
-                                        fontSize: '0.8rem',
-                                        width: '4rem',
-                                        marginLeft: '0.1rem',
+
+                    </Box>
+                    <Box component='span' sx={{ ml: 'auto' }}>
+                        {/* Search box */}
+                        <If condition={isLargeSizeUp}>
+                            <Then>
+                                <TextField
+                                    sx={{ mt: theme.spacing(1) }}
+                                    // inputRef={meta.current.searchTextRef}
+                                    variant="standard"
+                                    autoComplete="off"
+                                    // autoFocus={!meta.current.isFirstTime}
+                                    value={props.value}
+                                    onChange={props.onChange}
+                                    placeholder="Search…"
+                                    className="global-search"
+                                    InputProps={{
+                                        startAdornment: (
+                                            <>
+                                                <Checkbox
+                                                    // checked={pre.isSearchTextOr}
+                                                    // onClick={
+                                                    //     handleOnClickSearchCheckbox
+                                                    // }
+                                                    size="small"
+                                                />
+                                                <SearchIcon fontSize="small" />
+                                            </>
+                                        ),
+                                        endAdornment: (
+                                            <IconButton
+                                                title="Clear"
+                                                aria-label="Clear"
+                                                size="small"
+                                                style={{
+                                                    visibility: props.value
+                                                        ? 'visible'
+                                                        : 'hidden',
+                                                }}
+                                                onClick={props.clearSearch}>
+                                                <CloseIcon fontSize="small" />
+                                            </IconButton>
+                                        ),
                                     }}
-                                    onChange={(e: any) => {
-                                        meta.current.viewLimit = e.target.value
-                                        fetchRows(sqlQueryId, sqlQueryArgs)
-                                        meta.current.isMounted && setRefresh({})
-                                    }}>
-                                    <option value={'100'}>100</option>
-                                    <option value={'1000'}>1000</option>
-                                    <option value={'0'}>All</option>
-                                </select>
-                            </div>
-                        )}
-                        {!!xxGridOptions.toShowReverseCheckbox && (
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        checked={meta.current.isReverseOrder}
-                                        onChange={(e: any) => {
-                                            meta.current.isReverseOrder =
-                                                e.target.checked
-                                            toggleOrder()
-                                            meta.current.isMounted &&
-                                                setRefresh({})
-                                        }}
-                                    />
-                                }
-                                label="Reverse"
-                            />
-                        )}
-                        {!!xxGridOptions.toShowDailySummary && (
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        checked={meta.current.isDailySummary}
-                                        onChange={(e: any) => {
-                                            meta.current.isDailySummary =
-                                                e.target.checked
-                                            injectDailySummary()
-                                        }}
-                                    />
-                                }
-                                label="Daily summary"
-                            />
-                        )}
-                        {!!xxGridOptions.toShowColumnBalanceCheckBox && (
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        checked={meta.current.isColumnBalance}
-                                        onChange={(e: any) => {
-                                            meta.current.isColumnBalance =
-                                                e.target.checked
-                                            fillColumnBalance()
-                                            meta.current.isMounted &&
-                                                setRefresh({})
-                                        }}
-                                    />
-                                }
-                                label="Col balance"
-                            />
-                        )} */}
+                                /></Then>
+                        </If>
+                        {/* Add Button */}
+                        <IconButton color='primary' size='large'>
+                            <AddCircleIcon sx={{ fontSize: theme.spacing(6), ml: theme.spacing(2), mr: theme.spacing(4) }}></AddCircleIcon>
+                        </IconButton>
                     </Box>
                     {/* <Box className="toolbar-right-items">
                         {!!xxGridOptions.toShowAddButton && (
@@ -229,44 +205,7 @@ function useAppXXGrid(xxGridOptions: XXGridOptions) {
                         )}
 
                         
-                        <TextField
-                            inputRef={meta.current.searchTextRef}
-                            variant="standard"
-                            autoComplete="off"
-                            // autoFocus={!meta.current.isFirstTime}
-                            value={props.value}
-                            onChange={props.onChange}
-                            placeholder="Search…"
-                            className="global-search"
-                            InputProps={{
-                                startAdornment: (
-                                    <>
-                                        <Checkbox
-                                            checked={pre.isSearchTextOr}
-                                            onClick={
-                                                handleOnClickSearchCheckbox
-                                            }
-                                            size="small"
-                                        />
-                                        <SearchIcon fontSize="small" />
-                                    </>
-                                ),
-                                endAdornment: (
-                                    <IconButton
-                                        title="Clear"
-                                        aria-label="Clear"
-                                        size="small"
-                                        style={{
-                                            visibility: props.value
-                                                ? 'visible'
-                                                : 'hidden',
-                                        }}
-                                        onClick={props.clearSearch}>
-                                        <CloseIcon fontSize="small" />
-                                    </IconButton>
-                                ),
-                            }}
-                        />
+                        
                     </Box> */}
                 </Box>
             </GridToolbarContainer>
@@ -396,7 +335,7 @@ function useAppXXGrid(xxGridOptions: XXGridOptions) {
             flexDirection: 'column',
             borderBottom: '1px solid lightGrey',
             padding: 0,
-
+            width: '100%',
             '& .sub-title': {
                 width: '100%',
                 display: 'flex',
@@ -451,3 +390,84 @@ export { useAppXXGrid }
 //     draft.unshift(editColumn)
 //     return(draft)
 // }))
+
+// !!!xxGridOptions.hideViewLimit && (
+//     <div className="view-limit">
+//         <span>View</span>
+//         <select
+//             value={meta.current.viewLimit || ''}
+//             style={{
+//                 fontSize: '0.8rem',
+//                 width: '4rem',
+//                 marginLeft: '0.1rem',
+//             }}
+//             onChange={(e: any) => {
+//                 meta.current.viewLimit = e.target.value
+//                 fetchRows(sqlQueryId, sqlQueryArgs)
+//                 meta.current.isMounted && setRefresh({})
+//             }}>
+//             <option value={'100'}>100</option>
+//             <option value={'1000'}>1000</option>
+//             <option value={'0'}>All</option>
+//         </select>
+//     </div>
+// )
+
+// !!xxGridOptions.toShowReverseCheckbox && (
+//     <FormControlLabel
+//         control={
+//             <Checkbox
+//                 checked={meta.current.isReverseOrder}
+//                 onChange={(e: any) => {
+//                     meta.current.isReverseOrder =
+//                         e.target.checked
+//                     toggleOrder()
+//                     meta.current.isMounted &&
+//                         setRefresh({})
+//                 }}
+//             />
+//         }
+//         label="Reverse"
+//     />
+// )
+
+
+
+
+
+// {
+//     !!xxGridOptions.toShowDailySummary && (
+//         <FormControlLabel
+//             control={
+//                 <Checkbox
+//                     checked={meta.current.isDailySummary}
+//                     onChange={(e: any) => {
+//                         meta.current.isDailySummary =
+//                             e.target.checked
+//                         injectDailySummary()
+//                     }}
+//                 />
+//             }
+//             label="Daily summary"
+//         />
+//     )
+// }
+// {
+//     !!xxGridOptions.toShowColumnBalanceCheckBox && (
+//         <FormControlLabel
+//             control={
+//                 <Checkbox
+//                     checked={meta.current.isColumnBalance}
+//                     onChange={(e: any) => {
+//                         meta.current.isColumnBalance =
+//                             e.target.checked
+//                         fillColumnBalance()
+//                         meta.current.isMounted &&
+//                             setRefresh({})
+//                     }}
+//                 />
+//             }
+//             label="Col balance"
+//         />
+//     )
+// }

@@ -32,12 +32,12 @@ function SuperAdminMainClients() {
     const clients = appGlobalState.superAdmin.clients
 
     useEffect(() => {
-        if (clients.rows.get().length === 0) {
+        if (clients.sharedXXGridHookstate.rows.get().length === 0) {
             fetchData()
         }
     }, [])
     return (
-        <If condition={clients.rows.get().length > 0}>
+        <If condition={clients.sharedXXGridHookstate.rows.get().length > 0}>
             <Then>
                 <AppXXGrid
                     columns={getColumns()}
@@ -50,7 +50,8 @@ function SuperAdminMainClients() {
                     isToolbarFilterButton={true}
                     printPreviewMethod={printPreviewMethod}
                     isCheckBoxSelection={true}
-                    rows={appGlobalState.superAdmin.clients.rows.get()}
+                    sharedXXGridHookstate={appGlobalState.superAdmin.clients.sharedXXGridHookstate}
+                    // rows={appGlobalState.superAdmin.clients.rows.get()}
                     title="Persistent datagrid"
                     subTitle="Subtitle of grid"
                 />
@@ -65,9 +66,9 @@ function SuperAdminMainClients() {
         console.log(params.row.clientName)
     }
 
-    function deleteMethod(params: any) {}
+    function deleteMethod(params: any) { }
 
-    function printPreviewMethod(params: any) {}
+    function printPreviewMethod(params: any) { }
 
     async function fetchData() {
         appGlobalState.misc.showLoadingDialog.set(true)
@@ -76,8 +77,8 @@ function SuperAdminMainClients() {
         const data: any[] = getPayloadFromGraphqlObject(ret, 'genericView')
         const rows: any = getRowsWithSwappedId(data)
 
-        clients.set({ rows: [] })
-        data && clients.rows.merge(rows)
+        clients.sharedXXGridHookstate.set({ rows: [], rowsViewLimit:clients.sharedXXGridHookstate.rowsViewLimit.get() })
+        data && clients.sharedXXGridHookstate.rows.merge(rows)
         appGlobalState.misc.showLoadingDialog.set(false)
     }
 

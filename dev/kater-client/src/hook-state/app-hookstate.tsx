@@ -1,4 +1,4 @@
-import {createState, hookstate } from '@hookstate/core'
+import { createState, hookstate } from '@hookstate/core'
 import { sideBarMainMenu } from '../components/app-navigation/side-bar/app-navigation-side-bar-menus'
 // import {createState, hookstate } from '../misc/redirect'
 import _ from 'lodash'
@@ -37,8 +37,11 @@ const appHook = {
     },
 
     superAdmin: {
-        clients:{
-            rows:[]
+        clients: {
+            sharedXXGridHookstate: {
+                rows: [],
+                rowsViewLimit:100,
+            }
         }
     },
 }
