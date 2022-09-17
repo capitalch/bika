@@ -6,6 +6,7 @@ import axios from 'axios'
 import _ from 'lodash'
 import immer from 'immer'
 import messages from './messages.json'
+import ibukiMessages from './ibuki-messages.json'
 import urlJoin from 'url-join'
 export { styled } from '@mui/material/styles'
 export { useConfirm } from 'material-ui-confirm'
@@ -89,6 +90,7 @@ export {
     _,
     AppMaterialDialog,
     axios,
+    ibukiMessages,
     immer,
     messages,
     moment,

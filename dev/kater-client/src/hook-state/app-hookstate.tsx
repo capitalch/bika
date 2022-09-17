@@ -38,16 +38,29 @@ const appHook = {
 
     superAdmin: {
         clients: {
-            sharedXXGridHookstate: {
+            xxGridHookstate: {
                 rows: [],
-                rowsViewLimit:100,
-            }
-        }
+                rowsViewLimit: '100',
+                searchString: '',
+                // fetchData:()=>{}
+            },
+        },
     },
 }
-let clone = _.cloneDeep(appHook)
-
-// const appHookState = hookstate(clone)
-const appHookState = createState(clone)
+let appClone = _.cloneDeep(appHook)
+const appHookState = createState(appClone)
 
 export { appHook, appHookState }
+
+// const xxGridHook = {
+//     superAdmin: {
+//         clients: {
+//             rows: [],
+//             rowsViewLimit: '100',
+//             searchString: '',
+//         },
+//     },
+// }
+// const xxGridClone = _.cloneDeep(xxGridHook)
+// const xxGridHookState = createState(xxGridClone)
+// export { xxGridHook, xxGridHookState }

@@ -4,7 +4,8 @@ import { Box, DataGridPro, useEffect, useTheme } from '../../misc/redirect'
 import { useAppXXGrid } from './app-xx-grid-hook'
 
 function AppXXGrid(xxGridOptions: XXGridOptions) {
-    const { columns, CustomGridToolbar, sxStyles } = useAppXXGrid(xxGridOptions)
+    const { columns, CustomGridToolbar, fetchData, sxStyles } =
+        useAppXXGrid(xxGridOptions)
 
     return (
         <DataGridPro
@@ -14,12 +15,15 @@ function AppXXGrid(xxGridOptions: XXGridOptions) {
             density="compact"
             disableColumnMenu={true}
             disableSelectionOnClick={true}
-            rows={xxGridOptions.sharedXXGridHookstate.rows.get()}
+            rows={xxGridOptions.xxGridState.rows.get()}
             showCellRightBorder={true}
             showColumnRightBorder={true}
             sx={sxStyles}
             components={{
                 Toolbar: CustomGridToolbar,
+            }}
+            componentsProps={{
+                toolbar: { xxGridOptions: xxGridOptions, fetchData: fetchData },
             }}
         />
     )
@@ -30,8 +34,16 @@ interface XXGridOptions {
     columns: any[]
     addMethod?: () => void
     deleteMethod?: (args: any) => void
+
+    doRefresh?: any,
+
     editMethod?: (args: any) => void
-    fetchData: () => void
+
+    exposedMethods?:any
+
+    fetchData?: () => void
+    fetchDataIbukiMessage?: string
+    
     printPreviewMethod?: (args: any) => void
 
     isToolbarColumnsButton?: boolean
@@ -44,8 +56,10 @@ interface XXGridOptions {
     isPrintPreviewDisabled?: boolean
     toShowViewLimit?: boolean
     // rows: any[]
-    sharedXXGridHookstate: any
+    sqlKey?: string
+    sqlArgs?: any
     subTitle?: string
     title?: string
+    xxGridState: any
 }
 export { type XXGridOptions }

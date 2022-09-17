@@ -7,7 +7,9 @@ import {
     Container,
     DataGridPro,
     Else,
+    emit,
     getPayloadFromGraphqlObject,
+    ibukiMessages,
     If,
     immer,
     Tab,
@@ -29,40 +31,38 @@ import { getRowsWithSwappedId } from '../../../misc/global-utils'
 function SuperAdminMainClients() {
     const { queryGraphql } = useAppGraphql()
     const appGlobalState = useHookstate(appHookState)
+    const xxGridState: any = appGlobalState.superAdmin.clients.xxGridHookstate
     const theme = useTheme()
-    const clients = appGlobalState.superAdmin.clients
 
-
-    useEffect(() => {
-        if (clients.sharedXXGridHookstate.rows.get().length === 0) {
-            fetchData()
-        }
-    }, [])
+    // useEffect(() => {}, [])
 
     return (
-        // <If condition={clients.sharedXXGridHookstate.rows.get().length > 0}>
-        //     <Then>
-        <AppXXGrid
-            columns={getColumns()}
-            addMethod={addMethod}
-            deleteMethod={deleteMethod}
-            editMethod={editMethod}
-            fetchData={fetchData}
-            toShowViewLimit={true}
-            isToolbarColumnsButton={true}
-            isToolbarExportButton={true}
-            isToolbarFilterButton={true}
-            printPreviewMethod={printPreviewMethod}
-            isCheckBoxSelection={true}
-            sharedXXGridHookstate={appGlobalState.superAdmin.clients.sharedXXGridHookstate}
-            title="Persistent datagrid"
-            subTitle="Subtitle of grid"
-        />
-        //     </Then>
-        //     <Else>
-        //         <Typography variant="body1">No data</Typography>
-        //     </Else>
-        // </If>
+        <Box>
+            <Button
+                onClick={() => {
+                    emit(ibukiMessages.xxGridFetchData, '')
+                }}>
+                Fetch data
+            </Button>
+            <AppXXGrid
+                columns={getColumns()}
+                addMethod={addMethod}
+                deleteMethod={deleteMethod}
+                editMethod={editMethod}
+                // fetchData={fetchData}
+                fetchDataIbukiMessage={ibukiMessages.xxGridFetchData}
+                toShowViewLimit={true}
+                isToolbarColumnsButton={true}
+                isToolbarExportButton={true}
+                isToolbarFilterButton={true}
+                printPreviewMethod={printPreviewMethod}
+                isCheckBoxSelection={true}
+                xxGridState={xxGridState}
+                title="Persistent datagrid"
+                sqlKey="get-clients"
+                subTitle="Subtitle of grid"
+            />
+        </Box>
     )
 
     function addMethod() {
@@ -73,20 +73,28 @@ function SuperAdminMainClients() {
         console.log(params.row.clientName)
     }
 
-    function deleteMethod(params: any) { }
+    function deleteMethod(params: any) {}
 
-    function printPreviewMethod(params: any) { }
+    function printPreviewMethod(params: any) {}
 
     async function fetchData() {
+        // const clients = xxGridGlobalState.superAdmin.clients
         appGlobalState.misc.showLoadingDialog.set(true)
-        const rowsViewLimit = clients.sharedXXGridHookstate.rowsViewLimit.get()
-        const q = appGraphqlStrings['genericView']({ sqlKey: 'get-clients', args: { no: rowsViewLimit } })
+        const rowsViewLimit = xxGridState.rowsViewLimit.get()
+        // const searchString = xxGridState.searchString.get()
+        const q = appGraphqlStrings['genericView']({
+            sqlKey: 'get-clients',
+            args: { no: rowsViewLimit },
+        })
         const ret = await queryGraphql(q)
         const data: any[] = getPayloadFromGraphqlObject(ret, 'genericView')
         const rows: any = getRowsWithSwappedId(data)
 
-        clients.sharedXXGridHookstate.set({ rows: [], rowsViewLimit: rowsViewLimit })
-        data && clients.sharedXXGridHookstate.rows.merge(rows)
+        xxGridState.set((oldState: any) => ({
+            ...oldState,
+            rows: [],
+        }))
+        data && xxGridState.rows.merge(rows)
         appGlobalState.misc.showLoadingDialog.set(false)
     }
 
@@ -133,12 +141,3 @@ function SuperAdminMainClients() {
     }
 }
 export { SuperAdminMainClients }
-
-// <DataGridPro sx={{'& .header-class':{color:theme.palette.primary.main,  fontWeight:'bolder', fontSize: theme.spacing(1.8)}}}
-//     columns={getColumns()}
-//     density='compact'
-//     rows={appGlobalState.superAdmin.clients.rows.get()}
-//     showCellRightBorder={true}
-//     showColumnRightBorder={true}
-//     autoHeight= {true}
-// />

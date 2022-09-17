@@ -1,7 +1,7 @@
 ## Provide in XX-grid
 																									.. Add method and logic for its display
 .. Search logic
-.. view row logic
+																									.. view row logic
 																									.. Delete logic add confirm message
 																									.. With no data add is not visible because data grid is not visible
 																									-- disable onclick selection
