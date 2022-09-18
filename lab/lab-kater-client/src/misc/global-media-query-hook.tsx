@@ -18,6 +18,21 @@ function useGlobalMediaQuery() {
     const isEqualsXL = useMediaQuery(theme.breakpoints.only('xl'), {
         noSsr: true,
     })
+
+    const isExtraSmallSizeDown = useMediaQuery(theme.breakpoints.down('xs'), {
+        noSsr: true,
+    })
+
+    const isExtraSmallSizeUp = useMediaQuery(theme.breakpoints.up('xs'), {
+        noSsr: true,
+    })
+
+    const isSmallAndMediumSizeUp = useMediaQuery(theme.breakpoints.up('sm'), {
+        noSsr: true,
+    })
+    const isSmallAndMediumSizeDown = useMediaQuery(theme.breakpoints.down('sm'), {
+        noSsr: true,
+    })
     const isMediumSizeUp = useMediaQuery(theme.breakpoints.up('md'), {
         noSsr: true,
     })
@@ -37,7 +52,7 @@ function useGlobalMediaQuery() {
         noSsr: true,
     })
 
-    function getCurrentMediaSize(){
+    function getCurrentMediaSize() {
         let ret = 'xs'
         if (isEqualsSM)
             ret = 'sm'
@@ -63,7 +78,10 @@ function useGlobalMediaQuery() {
         isLargeSizeUp,
         isMediumSizeDown,
         isMediumSizeUp,
-
+        isSmallAndMediumSizeDown,
+        isSmallAndMediumSizeUp,
+        isExtraSmallSizeDown,
+        isExtraSmallSizeUp
     }
 }
 export { useGlobalMediaQuery }

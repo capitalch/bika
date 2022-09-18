@@ -39,6 +39,7 @@ const appHook = {
     superAdmin: {
         clients: {
             xxGridHookstate: {
+                // filteredRows:[],
                 rows: [],
                 rowsViewLimit: '100',
                 searchString: '',

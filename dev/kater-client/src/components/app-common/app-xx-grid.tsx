@@ -4,7 +4,7 @@ import { Box, DataGridPro, useEffect, useTheme } from '../../misc/redirect'
 import { useAppXXGrid } from './app-xx-grid-hook'
 
 function AppXXGrid(xxGridOptions: XXGridOptions) {
-    const { columns, CustomGridToolbar, fetchData, sxStyles } =
+    const { columns, CustomGridToolbar, fetchData, fetchData1,requestSearch, sxStyles } =
         useAppXXGrid(xxGridOptions)
 
     return (
@@ -23,7 +23,7 @@ function AppXXGrid(xxGridOptions: XXGridOptions) {
                 Toolbar: CustomGridToolbar,
             }}
             componentsProps={{
-                toolbar: { xxGridOptions: xxGridOptions, fetchData: fetchData },
+                toolbar: { xxGridOptions: xxGridOptions, fetchData: fetchData, requestSearch: requestSearch, fetchData1: fetchData1 },
             }}
         />
     )

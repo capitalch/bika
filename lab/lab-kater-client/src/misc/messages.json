@@ -9,5 +9,6 @@
     "messNoSpaceOrSpecialChar": "Field cannot have space or special character",
     "messInvalidInput": "Invalid input",
     "messLoginFailed": "Login failed. May be invalid user id or password",
-    "messConnectionError":"Connection error with server"
+    "messConnectionError":"Connection error with server",
+    "messConfirmDelete": "Are you sure to delete this?"
 }

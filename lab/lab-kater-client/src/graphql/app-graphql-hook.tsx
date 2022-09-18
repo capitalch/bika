@@ -5,6 +5,7 @@ import {
     HttpLink,
 } from '@apollo/client'
 import { appHookState, messages, urlJoin, useHookstate, } from '../misc/redirect'
+import _ from 'lodash'
 
 function useAppGraphql() {
     const appGlobalState = useHookstate(appHookState)
@@ -51,7 +52,7 @@ function useAppGraphql() {
             if (error?.networkError?.statusCode === 1007) { //Token expired so reset
                 appGlobalState.loginInfo.merge({ isLoggedIn: false, token: '', userType: '', uid: '' })
             }
-            error.message = error?.networkError?.result?.message || messages.errFetch || error.message
+            error.message = error?.networkError?.result?.message || error.message || messages.errFetch 
             appGlobalState.errorMessage.merge({ show: true, message: error.message })
             console.log(error)
             throw (error)
@@ -59,6 +60,6 @@ function useAppGraphql() {
         return ret
     }
 
-    return { queryGraphql }
+    return { queryGraphql, }
 }
 export { useAppGraphql }

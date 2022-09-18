@@ -32,13 +32,20 @@ import {
     appHookState,
     useAppGraphql,
     useEffect,
+    useRef,
     useState,
     filterOn,
+    debounceFilterOn,
+    ibukiMessages,
+    debounceEmit,
 } from '../../misc/redirect'
 import { XXGridOptions } from './app-xx-grid'
 
 function useAppXXGrid(xxGridOptions: XXGridOptions) {
-    const [, setRefresh] = useState({})
+    // const [, setRefresh] = useState({})
+    const meta: any = useRef({
+        rows: []
+    })
     const columns = _.cloneDeep(xxGridOptions.columns)
     const theme = useTheme()
     const confirm = useConfirm()
@@ -52,7 +59,7 @@ function useAppXXGrid(xxGridOptions: XXGridOptions) {
         if (xxGridOptions.xxGridState.rows.get().length === 0) {
             xxGridOptions.fetchData ? xxGridOptions.fetchData() : fetchData()
         }
-        let subs1:any
+        let subs1: any
         if (xxGridOptions.fetchDataIbukiMessage) {
             subs1 = filterOn(xxGridOptions.fetchDataIbukiMessage).subscribe(() => {
                 xxGridOptions.fetchData
@@ -60,11 +67,18 @@ function useAppXXGrid(xxGridOptions: XXGridOptions) {
                     : fetchData()
             })
         }
-        return(()=>{
-            if(subs1){
+        const subs2 = debounceFilterOn(ibukiMessages.xxGridSearchDebounce).subscribe(
+            (d: any) => {
+                fetchData()
+            }
+        )
+        return (() => {
+            if (subs1) {
                 subs1.unsubscribe()
             }
+            subs2.unsubscribe()
         })
+
 
         // xxGridOptions.xxGridState.doRefresh.set(()=>fetchData)
         // xxGridOptions.exposedMethods.fetchData = fetchData
@@ -98,10 +112,10 @@ function useAppXXGrid(xxGridOptions: XXGridOptions) {
                                 color="secondary"
                                 disabled={xxGridOptions.isEditDisabled}
                                 onClick={
-                                    () => setRefresh({})
-                                    // xxGridOptions.editMethod
-                                    //     ? xxGridOptions.editMethod(params)
-                                    //     : null
+                                    () =>
+                                        xxGridOptions.editMethod
+                                            ? xxGridOptions.editMethod(params)
+                                            : null
                                 }
                                 aria-label="Edit">
                                 <EditIcon />
@@ -181,7 +195,7 @@ function useAppXXGrid(xxGridOptions: XXGridOptions) {
                                             xxGridOptions.deleteMethod(params)
                                         }
                                     })
-                                    .catch(() => {})
+                                    .catch(() => { })
                             }}
                             aria-label="Delete">
                             <DeleteForeverIcon />
@@ -203,7 +217,6 @@ function useAppXXGrid(xxGridOptions: XXGridOptions) {
         const gridState = xxGridOptions.xxGridState
         appGlobalState.misc.showLoadingDialog.set(true)
         const rowsViewLimit = gridState.rowsViewLimit.get()
-        const searchString = gridState.searchString.get()
         const q = appGraphqlStrings['genericView']({
             sqlKey: xxGridOptions.sqlKey,
             args: {
@@ -214,13 +227,107 @@ function useAppXXGrid(xxGridOptions: XXGridOptions) {
         const ret = await queryGraphql(q)
         const data: any[] = getPayloadFromGraphqlObject(ret, 'genericView')
         const rows: any = getRowsWithSwappedId(data)
-        gridState.set((oldState: any) => ({
-            ...oldState,
-            rows: [],
-        }))
-        data && gridState.rows.merge(rows)
+        meta.current.rows = rows
+        const filteredRows: any = rows.map((x: any) => ({ ...x }))
+        
+        gridState.rows.set([])
+        if (data.length > 0) {
+            gridState.rows.merge(filteredRows)
+        }
+        // gridState.merge({rows:[]})
+        // gridState.rows.set([])
         appGlobalState.misc.showLoadingDialog.set(false)
     }
+    // let r = gridState.rows.get()
+        // gridState.set((oldState: any) => ({
+        //     ...oldState,
+        //     rows: [],
+        // }))
+
+    async function fetchData1(){
+        const gridState = xxGridOptions.xxGridState
+        appGlobalState.misc.showLoadingDialog.set(true)
+        const rowsViewLimit = gridState.rowsViewLimit.get()
+        const q = appGraphqlStrings['genericView']({
+            sqlKey: xxGridOptions.sqlKey,
+            args: {
+                ...(xxGridOptions.sqlArgs || {}),
+                ...{ no: rowsViewLimit },
+            },
+        })
+        const ret = await queryGraphql(q)
+        const data: any[] = getPayloadFromGraphqlObject(ret, 'genericView')
+        const rows: any = getRowsWithSwappedId(data)
+        meta.current.rows = rows
+        const filteredRows: any = rows.map((x: any) => ({ ...x }))
+        gridState.nested('rows').value = [] //set([])
+        // gridState.merge({rows:null}) 
+        //rows.set(()=>[])
+        // if (data.length > 0) {
+        //     gridState.rows.merge(filteredRows)
+        // }
+        // gridState.rows.set([])
+        appGlobalState.misc.showLoadingDialog.set(false)
+    }
+
+    function anotherRequestSearch(){
+        // xxGridOptions.xxGridState.rows.set([])
+        requestSearch()
+    }
+    
+    async function requestSearch() {
+        const gridState = xxGridOptions.xxGridState
+        // const searchString = xxGridOptions.xxGridState.searchString.get()
+        // const rowsViewLimit = gridState.rowsViewLimit.get()
+        
+
+
+       
+        // appGlobalState.misc.showLoadingDialog.set(true)
+        // const q = appGraphqlStrings['genericView']({
+        //     sqlKey: xxGridOptions.sqlKey,
+        //     args: {
+        //         ...(xxGridOptions.sqlArgs || {}),
+        //         ...{ no: rowsViewLimit },
+        //     },
+        // })
+        // const ret = await queryGraphql(q)
+        // const data: any[] = getPayloadFromGraphqlObject(ret, 'genericView')
+        // const rows: any = getRowsWithSwappedId(data)
+        // meta.current.rows = rows
+        // const filteredRows: any = rows.map((x: any) => ({ ...x }))
+        
+        
+        gridState.rows.set([])
+        // gridState.rows.merge([{}])
+        // if (data.length > 0) {
+        //     gridState.rows.merge(filteredRows)
+        // }
+        appGlobalState.misc.showLoadingDialog.set(false)
+
+
+        // await fetchData()
+
+        // if (searchString) {
+        //     const arr = searchString.toLowerCase().split(/\W/).filter((x: any) => x) // filter used to remove emty elements
+        //     // const rows: any = meta.current.rows
+        //     const filteredRows = meta.current.rows.filter((row: any) => arr.every((x: string) => Object.values(row).toString().toLowerCase().includes(x.toLowerCase())))
+        //     let r = gridState.rows.get()
+
+        //     r = gridState.rows.get()
+        //     r = gridState.rows.get()
+        //     const x = 0
+        // }
+    }
+    // gridState.rows.set([])
+    // gridState.set((oldState: any) => ({
+    //     ...oldState,
+    //     rows: [],
+    // }))
+    // gridState.rows.merge(filteredRows)
+    // gridState.merge({rows:filteredRows})
+    // gridState.nested('rows').set([])
+    // gridState.rows.set([])
 
     const sxStyles: SxProps = {
         '& .header-style': {
@@ -265,11 +372,11 @@ function useAppXXGrid(xxGridOptions: XXGridOptions) {
         },
     }
 
-    return { columns, CustomGridToolbar, fetchData, sxStyles }
+    return { columns, CustomGridToolbar, fetchData, fetchData1, requestSearch, sxStyles }
 }
 export { useAppXXGrid }
 
-function CustomGridToolbar({ xxGridOptions, fetchData }: any) {
+function CustomGridToolbar({ xxGridOptions, fetchData, requestSearch, fetchData1 }: any) {
     const theme = useTheme()
 
     const { isMediumSizeUp, isLargeSizeUp, isSmallAndMediumSizeUp } =
@@ -394,6 +501,7 @@ function CustomGridToolbar({ xxGridOptions, fetchData }: any) {
                                     xxGridOptions.xxGridState.searchString.set(
                                         e.target.value
                                     )
+                                    debounceEmit(ibukiMessages.xxGridSearchDebounce, '')
                                 }}
                                 placeholder="Search…"
                                 InputProps={{
@@ -434,11 +542,19 @@ function CustomGridToolbar({ xxGridOptions, fetchData }: any) {
                     </If>
                     <If condition={!!xxGridOptions.addMethod}>
                         <Then>
-                            {/* Add Button */}
+                            {/* Add Button */}   
                             <IconButton
                                 color="primary"
                                 size="medium"
-                                onClick={xxGridOptions.addMethod}>
+                                onClick={
+                                    // xxGridOptions.addMethod
+                                    () => {
+                                        xxGridOptions.xxGridState.searchString.set(
+                                            'b'
+                                        )
+                                        fetchData1()
+                                    }
+                                }>
                                 <AddCircleIcon
                                     sx={{
                                         fontSize: theme.spacing(6),
@@ -467,89 +583,3 @@ function CustomGridToolbar({ xxGridOptions, fetchData }: any) {
         </GridToolbarContainer>
     )
 }
-
-// setColumns((old: any[]) => {
-//     old.unshift(editColumn)
-//     return [...old]
-// })
-// setColumns(immer((draft:any)=>{
-//     draft.unshift(editColumn)
-//     return(draft)
-// }))
-
-// !!!xxGridOptions.hideViewLimit && (
-//     <div className="view-limit">
-//         <span>View</span>
-//         <select
-//             value={meta.current.viewLimit || ''}
-//             style={{
-//                 fontSize: '0.8rem',
-//                 width: '4rem',
-//                 marginLeft: '0.1rem',
-//             }}
-//             onChange={(e: any) => {
-//                 meta.current.viewLimit = e.target.value
-//                 fetchRows(sqlQueryId, sqlQueryArgs)
-//                 meta.current.isMounted && setRefresh({})
-//             }}>
-//             <option value={'100'}>100</option>
-//             <option value={'1000'}>1000</option>
-//             <option value={'0'}>All</option>
-//         </select>
-//     </div>
-// )
-
-// !!xxGridOptions.toShowReverseCheckbox && (
-//     <FormControlLabel
-//         control={
-//             <Checkbox
-//                 checked={meta.current.isReverseOrder}
-//                 onChange={(e: any) => {
-//                     meta.current.isReverseOrder =
-//                         e.target.checked
-//                     toggleOrder()
-//                     meta.current.isMounted &&
-//                         setRefresh({})
-//                 }}
-//             />
-//         }
-//         label="Reverse"
-//     />
-// )
-
-// {
-//     !!xxGridOptions.toShowDailySummary && (
-//         <FormControlLabel
-//             control={
-//                 <Checkbox
-//                     checked={meta.current.isDailySummary}
-//                     onChange={(e: any) => {
-//                         meta.current.isDailySummary =
-//                             e.target.checked
-//                         injectDailySummary()
-//                     }}
-//                 />
-//             }
-//             label="Daily summary"
-//         />
-//     )
-// }
-// {
-//     !!xxGridOptions.toShowColumnBalanceCheckBox && (
-//         <FormControlLabel
-//             control={
-//                 <Checkbox
-//                     checked={meta.current.isColumnBalance}
-//                     onChange={(e: any) => {
-//                         meta.current.isColumnBalance =
-//                             e.target.checked
-//                         fillColumnBalance()
-//                         meta.current.isMounted &&
-//                             setRefresh({})
-//                     }}
-//                 />
-//             }
-//             label="Col balance"
-//         />
-//     )
-// }
