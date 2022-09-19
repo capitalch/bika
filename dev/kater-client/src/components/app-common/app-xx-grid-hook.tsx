@@ -260,7 +260,8 @@ function useAppXXGrid(xxGridOptions: XXGridOptions) {
         const rows: any = getRowsWithSwappedId(data)
         meta.current.rows = rows
         const filteredRows: any = rows.map((x: any) => ({ ...x }))
-        gridState.nested('rows').value = [] //set([])
+        
+        gridState.set(filteredRows)
         // gridState.merge({rows:null}) 
         //rows.set(()=>[])
         // if (data.length > 0) {

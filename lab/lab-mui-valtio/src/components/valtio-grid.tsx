@@ -1,24 +1,41 @@
-import { DataGridPro } from "@mui/x-data-grid-pro"
+import { DataGridPro } from '@mui/x-data-grid-pro'
 import { proxy, useSnapshot } from 'valtio'
 import { useEffect } from 'react'
+import produce from 'immer'
 const state: { rows: any[any] } = proxy({
-    rows: [ {
-        id: 1,
-        clientName: 'aaakkk'
-    }]
+    rows: [
+        {
+            id: 1,
+            clientName: 'aaakkk',
+        },
+        {
+            id: 2,
+            clientName: 'aaakkk',
+        },
+    ],
 })
-
-
 
 function ValtioGrid() {
     const snap = useSnapshot(state)
 
     useEffect(() => {
         // state.rows = []
+        state.rows =
+            // [...state.rows, {
+            //     id: 2,
+            //     clientName: 'aaakkk1',
+            // },]
 
+            produce(state.rows, (draft: any) => {
+                draft.push({
+                    id: 2,
+                    clientName: 'aaakkk',
+                })
+                draft.pop()
+            })
         // state.rows = [{
-        //     id: 2,
-        //     clientName: 'baaa'
+        // id: 2,
+        // clientName: 'baaa'
 
         // },
         // {
@@ -55,7 +72,7 @@ function ValtioGrid() {
     )
 
     function getColumns() {
-        return ([
+        return [
             {
                 headerName: '#',
                 width: 60,
@@ -67,7 +84,7 @@ function ValtioGrid() {
                 field: 'clientName',
                 headerClassName: 'header-class',
             },
-        ])
+        ]
     }
 }
 export { ValtioGrid }

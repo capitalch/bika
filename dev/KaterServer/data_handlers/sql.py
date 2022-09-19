@@ -4,7 +4,7 @@ allSqls = {
     ''',
 
     "get-clients":'''
-        select * from "ClientM" where "shortCode" = 'bikafoods'
+        select * from "ClientM"
     ''',
 
     "get-clients1":'''
