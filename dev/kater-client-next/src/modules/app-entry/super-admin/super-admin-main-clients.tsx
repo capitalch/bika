@@ -1,23 +1,16 @@
 import { XXGrid } from '../../../components/app-common/xx-grid/xx-grid'
 import {
-    appGraphqlStrings,
-    appHookState,
     Box,
     Button,
     emit,
-    getPayloadFromGraphqlObject,
     ibukiMessages,
-    useAppGraphql,
-    useHookstate,
-    useTheme,
 } from '../../../misc/redirect'
-import { getRowsWithSwappedId } from '../../../misc/global-utils'
+import { globalStore } from '../../../global-store/global-store'
+import { useSnapshot } from 'valtio'
 
 function SuperAdminMainClients() {
-    const { queryGraphql } = useAppGraphql()
-    const appGlobalState = useHookstate(appHookState)
-    const xxGridState: any = appGlobalState.superAdmin.clients.xxGridHookstate
-
+    const xxGridState = globalStore.superAdmin.clients.xxGridState
+    useSnapshot(xxGridState) // This is undocumented. But this is necessary otherwise no data displayed
     return (
         <Box>
             <Button
@@ -55,30 +48,30 @@ function SuperAdminMainClients() {
         console.log(params.row.clientName)
     }
 
-    function deleteMethod(params: any) {}
+    function deleteMethod(params: any) { }
 
-    function printPreviewMethod(params: any) {}
+    function printPreviewMethod(params: any) { }
 
-    async function fetchData() {
-        // const clients = xxGridGlobalState.superAdmin.clients
-        appGlobalState.misc.showLoadingDialog.set(true)
-        const rowsViewLimit = xxGridState.rowsViewLimit.get()
-        // const searchString = xxGridState.searchString.get()
-        const q = appGraphqlStrings['genericView']({
-            sqlKey: 'get-clients',
-            args: { no: rowsViewLimit },
-        })
-        const ret = await queryGraphql(q)
-        const data: any[] = getPayloadFromGraphqlObject(ret, 'genericView')
-        const rows: any = getRowsWithSwappedId(data)
+    // async function fetchData() {
+    //     const clients = xxGridglobalStore.superAdmin.clients
+    //     appglobalStore.misc.showLoadingDialog.set(true)
+    //     const rowsViewLimit = xxGridState.rowsViewLimit.get()
+    //     const searchString = xxGridState.searchString.get()
+    //     const q = appGraphqlStrings['genericView']({
+    //         sqlKey: 'get-clients',
+    //         args: { no: rowsViewLimit },
+    //     })
+    //     const ret = await queryGraphql(q)
+    //     const data: any[] = getPayloadFromGraphqlObject(ret, 'genericView')
+    //     const rows: any = getRowsWithSwappedId(data)
 
-        xxGridState.set((oldState: any) => ({
-            ...oldState,
-            rows: [],
-        }))
-        data && xxGridState.rows.merge(rows)
-        appGlobalState.misc.showLoadingDialog.set(false)
-    }
+    //     // xxGridState.set((oldState: any) => ({
+    //     //     ...oldState,
+    //     //     rows: [],
+    //     // }))
+    //     // data && xxGridState.rows.merge(rows)
+    //     appglobalStore.misc.showLoadingDialog.set(false)
+    // }
 
     function getColumns() {
         return [

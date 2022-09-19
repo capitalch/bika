@@ -1,18 +1,19 @@
-import { appHookState } from '../../global-state/app-hookstate'
+// import { appHookState } from '../../global-state/app-hookstate'
 import {
     CloseIcon,
     Dialog,
     DialogContent,
     DialogTitle,
+    globalStore,
     IconButton,
     Typography,
-    useHookstate,
+    useSnapshot,
 } from '../../misc/redirect'
 
 function AppMaterialDialog({ Content, isClosable }: any) {
-    const appGlobalState = useHookstate(appHookState)
+    const snap = useSnapshot(globalStore.dialog)
     return (
-        <Dialog open={appGlobalState.dialog.showDialog.get()}>
+        <Dialog open={snap.showDialog}>
             <DialogTitle
                 sx={{
                     display: 'flex',
@@ -20,7 +21,7 @@ function AppMaterialDialog({ Content, isClosable }: any) {
                     alignItems: 'center',
                 }}>
                 <Typography sx={{ fontWeight: 'bold' }}>
-                    {appGlobalState.dialog.title.get()}
+                    {snap.title}
                 </Typography>
                 {isClosable && (
                     <IconButton
@@ -40,7 +41,7 @@ function AppMaterialDialog({ Content, isClosable }: any) {
     )
 
     function handleClose() {
-        appGlobalState.dialog.showDialog.set(false)
+        globalStore.dialog.showDialog = false
     }
 }
 export { AppMaterialDialog }

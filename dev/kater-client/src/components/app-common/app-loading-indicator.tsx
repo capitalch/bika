@@ -1,4 +1,4 @@
-import { appHookState, } from '../../hook-state/app-hookstate'
+import { appHookState, } from '../../global-state/app-hookstate'
 import { Backdrop, CircularProgress, useHookstate } from '../../misc/redirect'
 
 function AppLoadingIndicator() {

@@ -1,13 +1,13 @@
 import { CSSProperties } from '@mui/styled-engine'
 import {
     appGraphqlStrings,
-    appHookState,
     AppMaterialDialog,
     Box,
     Button,
     CloseIcon,
     cryptoEncrypt,
     getPayloadFromGraphqlObject,
+    globalStore,
     globalValidators,
     IconButton,
     InputAdornment,
@@ -24,24 +24,20 @@ import {
     useAppGraphql,
     useEffect,
     useHookstate,
+    useSnapshot,
     useTheme,
 } from '../../misc/redirect'
 import { Buffer } from 'buffer'
-import _ from 'lodash'
-import { appHook } from '../../global-state/app-hookstate'
 
 function UserLoginWelcome() {
-    const appGlobalState = useHookstate(appHookState)
+    const snapLoginInfo = useSnapshot(globalStore.loginInfo)
     useEffect(() => {
-        appGlobalState.dialog.showDialog.set(
-            !appGlobalState.loginInfo.isLoggedIn.get()
-        )
+        globalStore.dialog.showDialog = !snapLoginInfo.isLoggedIn
     })
-    const isLoggedIn = appGlobalState.loginInfo.isLoggedIn.get()
     return (
         <AppMaterialDialog
-            isClosable={isLoggedIn ? true : false}
-            Content={isLoggedIn ? WelcomeContent : LoginContent}
+            isClosable={snapLoginInfo.isLoggedIn ? true : false}
+            Content={snapLoginInfo.isLoggedIn ? WelcomeContent : LoginContent}
         />
     )
 }
@@ -51,7 +47,6 @@ export { UserLoginWelcome }
 function LoginContent() {
     const theme = useTheme()
     const { queryGraphql } = useAppGraphql()
-    const appGlobalState = useHookstate(appHookState)
     const { checkPwdError, checkUidError } = globalValidators()
     const userLocalState = useHookstate({
         uid: 'superAdmin',
@@ -61,7 +56,7 @@ function LoginContent() {
         serverError: '',
     })
     useEffect(() => {
-        appGlobalState.dialog.title.set('User login')
+        globalStore.dialog.title = 'User login'
     })
 
     const isSubmitDisabled =
@@ -185,17 +180,17 @@ function LoginContent() {
     }
 
     async function handleSubmit() {
-        checkUidError(userLocalState.uid.get())
-        checkPwdError(userLocalState.pwd.get())
+        userLocalState.uidError.set(checkUidError(userLocalState.uid.get()))
+        userLocalState.pwdError.set(checkPwdError(userLocalState.pwd.get()))
         if (
             userLocalState.uidError.get().length === 0 &&
             userLocalState.pwdError.get().length === 0
         ) {
-            appGlobalState.misc.showLoadingDialog.set(true)
+            globalStore.misc.showLoadingDialog = true
             const utcTime = new Date().getTime().toString()
             const encryptedUtcTime = cryptoEncrypt(utcTime)
 
-            appGlobalState.loginInfo.token.set(encryptedUtcTime)
+            globalStore.loginInfo.token = encryptedUtcTime
             const cred = userLocalState.uid
                 .get()
                 .concat(':', userLocalState.pwd.get())
@@ -211,7 +206,7 @@ function LoginContent() {
                 resetAllStates()
                 userLocalState.serverError.set(e.message)
             } finally {
-                appGlobalState.misc.showLoadingDialog.set(false)
+                globalStore.misc.showLoadingDialog = false
             }
         }
 
@@ -219,14 +214,15 @@ function LoginContent() {
             if (ret) {
                 const payload = getPayloadFromGraphqlObject(ret, 'doLogin')
                 if (payload.isSuccess) {
-                    appGlobalState.loginInfo.merge({
+                    globalStore.loginInfo = {
                         isLoggedIn: true,
                         token: payload.token,
                         uid: userLocalState.uid.get(),
                         userType: payload.userType,
-                    })
-                    if(appGlobalState.loginInfo.userType.get()==='S'){
-                        appGlobalState.misc.currentComponentName.set('superAdminTenant')
+                    }
+                    globalStore.dialog.showDialog= false
+                    if (globalStore.loginInfo.userType === 'S') {
+                        globalStore.misc.currentComponentName = 'superAdminTenant'
                     }
                 } else {
                     userLocalState.serverError.set(messages.messLoginFailed)
@@ -255,25 +251,30 @@ function LoginContent() {
             uidError: '',
             pwdError: '',
         })
-        appGlobalState.loginInfo.merge({
+        // appglobalStore.loginInfo.merge({
+        // isLoggedIn: false,
+        // token: '',
+        // userType: '',
+        // uid: '',
+        // })
+        globalStore.loginInfo = {
             isLoggedIn: false,
             token: '',
             userType: '',
             uid: '',
-        })
-        appGlobalState.misc.merge({
-            currentComponentName:''
-        })
+        }
+        globalStore.misc.currentComponentName = ''
+        // appglobalStore.misc.merge({
+        //     currentComponentName: ''
+        // })
     }
 }
 
 function WelcomeContent() {
     const theme = useTheme()
-    const appGlobalState = useHookstate(appHookState)
+    const snapLoginInfo = useSnapshot(globalStore.loginInfo)
     useEffect(() => {
-        appGlobalState.dialog.title.set(
-            `Welcome ${appGlobalState.loginInfo.uid.get()}`
-        )
+        globalStore.dialog.title = `Welcome ${snapLoginInfo.uid}`
     })
     return (
         <Box sx={getStyles()}>
@@ -328,16 +329,16 @@ function WelcomeContent() {
     }
     // logout
     function handleSubmit() {
-        const clone = _.cloneDeep(appHook)
-        appGlobalState.merge(clone)
-        
-        // appGlobalState.loginInfo.merge({
+        // const clone = _.cloneDeep(appHook)
+        // appglobalStore.merge(clone)
+
+        // appglobalStore.loginInfo.merge({
         //     isLoggedIn: false,
         //     token: '',
         //     userType: '',
         //     uid: '',
         // })
-        // appGlobalState.misc.merge({
+        // appglobalStore.misc.merge({
         //     open:false,
         //     currentComponentName: ''
         // })

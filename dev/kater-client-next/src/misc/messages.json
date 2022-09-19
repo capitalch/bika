@@ -1,0 +1,14 @@
+{
+    "errFetch": "Could not fetch data from server",
+
+    "messRequired": "Field is required",
+    "messAtLease6Chars": "Field must be at least 6 characters long",
+    "messMustHaveOneLetter": "Field must have at least one letter",
+    "messMustHaveOneDigit": "Field must have a digit",
+    "messMustHaveOneSpecialChar": "Field must have a special character",
+    "messNoSpaceOrSpecialChar": "Field cannot have space or special character",
+    "messInvalidInput": "Invalid input",
+    "messLoginFailed": "Login failed. May be invalid user id or password",
+    "messConnectionError":"Connection error with server",
+    "messConfirmDelete": "Are you sure to delete this?"
+}

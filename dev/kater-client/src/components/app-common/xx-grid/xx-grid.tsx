@@ -1,11 +1,10 @@
-import { GridToolbar } from '@mui/x-data-grid-pro'
-import _ from 'lodash'
-import { Box, DataGridPro, useEffect, useTheme } from '../../misc/redirect'
-import { useAppXXGrid } from './app-xx-grid-hook'
+import { DataGridPro,} from '../../../misc/redirect'
+import { useXXGrid } from './xx-grid-hook'
+import { XXGridToolbar } from './xx-grid-toolbar'
 
-function AppXXGrid(xxGridOptions: XXGridOptions) {
-    const { columns, CustomGridToolbar, fetchData, fetchData1,requestSearch, sxStyles } =
-        useAppXXGrid(xxGridOptions)
+function XXGrid(xxGridOptions: XXGridOptions) {
+    const { columns, fetchData, requestSearch, sxStyles } =
+        useXXGrid(xxGridOptions)
 
     return (
         <DataGridPro
@@ -20,15 +19,15 @@ function AppXXGrid(xxGridOptions: XXGridOptions) {
             showColumnRightBorder={true}
             sx={sxStyles}
             components={{
-                Toolbar: CustomGridToolbar,
+                Toolbar: XXGridToolbar,
             }}
             componentsProps={{
-                toolbar: { xxGridOptions: xxGridOptions, fetchData: fetchData, requestSearch: requestSearch, fetchData1: fetchData1 },
+                toolbar: { xxGridOptions: xxGridOptions, fetchData: fetchData, requestSearch: requestSearch, },
             }}
         />
     )
 }
-export { AppXXGrid }
+export { XXGrid }
 
 interface XXGridOptions {
     columns: any[]
@@ -39,11 +38,11 @@ interface XXGridOptions {
 
     editMethod?: (args: any) => void
 
-    exposedMethods?:any
+    exposedMethods?: any
 
     fetchData?: () => void
     fetchDataIbukiMessage?: string
-    
+
     printPreviewMethod?: (args: any) => void
 
     isToolbarColumnsButton?: boolean
