@@ -9,7 +9,7 @@ import {
 import { AppNavigationMain } from './main/app-navigation-main'
 import { AppNavigationHeader } from './header/app-navigation-header'
 import { AppNavigationSideBar } from './side-bar/app-navigation-side-bar'
-import { AppLoadingIndicator } from '../app-common/app-loading-indicator'
+import { AppLoadingIndicator } from '../app-components/app-loading-indicator'
 
 function AppNavigation() {
     

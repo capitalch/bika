@@ -1,6 +1,6 @@
 import { globalStore, styled,  useSnapshot } from '../../../shared-utils/redirect'
 import { componentMaps } from './app-navigation-main-component-maps'
-import { AppErrorMessage } from '../../app-common/app-error-message'
+import { AppErrorMessage } from '../../app-components/app-error-message'
 
 const drawerWidth = 240
 const Main: any = styled(

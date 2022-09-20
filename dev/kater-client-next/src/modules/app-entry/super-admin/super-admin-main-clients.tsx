@@ -1,4 +1,4 @@
-import { XXGrid } from '../../../common/app-common/xx-grid/xx-grid'
+import { XXGrid } from '../../../common/app-components/xx-grid/xx-grid'
 import {
     Box,
     Button,
