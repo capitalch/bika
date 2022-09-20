@@ -8,7 +8,7 @@ import {
     IconButton,
     Typography,
     useSnapshot,
-} from '../../misc/redirect'
+} from '../../shared-utils/redirect'
 
 function AppMaterialDialog({ Content, isClosable }: any) {
     const snap = useSnapshot(globalStore.dialog)

@@ -1,10 +1,10 @@
-import { XXGrid } from '../../../components/app-common/xx-grid/xx-grid'
+import { XXGrid } from '../../../common/app-common/xx-grid/xx-grid'
 import {
     Box,
     Button,
     emit,
     ibukiMessages,
-} from '../../../misc/redirect'
+} from '../../../shared-utils/redirect'
 import { globalStore } from '../../../global-store/global-store'
 import { useSnapshot } from 'valtio'
 

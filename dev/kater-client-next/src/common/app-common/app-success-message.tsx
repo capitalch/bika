@@ -1,4 +1,4 @@
-import { Alert, globalStore, Snackbar,  useSnapshot } from '../../misc/redirect'
+import { Alert, globalStore, Snackbar,  useSnapshot } from '../../shared-utils/redirect'
 function AppSuccessMessage() {
     const snapSuccessMessage = useSnapshot(globalStore.successMessage)
     return (<Snackbar

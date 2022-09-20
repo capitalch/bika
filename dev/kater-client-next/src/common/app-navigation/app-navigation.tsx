@@ -5,7 +5,7 @@ import {
     useEffect,
     useSnapshot,
     globalStore,
-} from '../../misc/redirect'
+} from '../../shared-utils/redirect'
 import { AppNavigationMain } from './main/app-navigation-main'
 import { AppNavigationHeader } from './header/app-navigation-header'
 import { AppNavigationSideBar } from './side-bar/app-navigation-side-bar'

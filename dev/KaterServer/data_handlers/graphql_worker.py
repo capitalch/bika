@@ -12,9 +12,11 @@ def context_value(request):
         raiseGenericException('errOperationMissing')
     elif (operationName == 'login'):
         diff = getClientServerTimeDiff(auth)
-        return {}
+        # return {}
         if (diff > 1):
             raiseGenericException('errTimeDiff')
+        else:
+            return {}
     else:  # process token
         payload = validateTokenAndGetPayload(auth)
         payload['operationName'] = operationName

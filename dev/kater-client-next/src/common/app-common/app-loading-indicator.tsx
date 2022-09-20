@@ -1,5 +1,5 @@
 // import { appHookState, } from '../../global-state/app-hookstate'
-import { Backdrop, CircularProgress, globalStore,  useSnapshot } from '../../misc/redirect'
+import { Backdrop, CircularProgress, globalStore,  useSnapshot } from '../../shared-utils/redirect'
 
 function AppLoadingIndicator() {
     const snap = useSnapshot(globalStore.misc)

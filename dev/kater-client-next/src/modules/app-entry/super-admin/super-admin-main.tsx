@@ -1,4 +1,4 @@
-import { Box, Tab, TabContext, TabList, TabPanel, useState } from '../../../misc/redirect'
+import { Box, Tab, TabContext, TabList, TabPanel, useState } from '../../../shared-utils/redirect'
 import { SuperAdminMainClients } from './super-admin-main-clients'
 
 function SuperAdminMain() {

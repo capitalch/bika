@@ -1,4 +1,4 @@
-import { globalStore, styled,  useSnapshot } from '../../../misc/redirect'
+import { globalStore, styled,  useSnapshot } from '../../../shared-utils/redirect'
 import { componentMaps } from './app-navigation-main-component-maps'
 import { AppErrorMessage } from '../../app-common/app-error-message'
 

@@ -10,6 +10,7 @@ import {
     globalStore,
     globalValidators,
     IconButton,
+    immer,
     InputAdornment,
     List,
     ListItem,
@@ -19,6 +20,7 @@ import {
     messages,
     PasswordIcon,
     PersonIcon,
+    proxy,
     TextField,
     Typography,
     useAppGraphql,
@@ -26,8 +28,9 @@ import {
     useHookstate,
     useSnapshot,
     useTheme,
-} from '../../misc/redirect'
+} from '../../shared-utils/redirect'
 import { Buffer } from 'buffer'
+import { resetGlobalStore } from '../../global-store/global-store'
 
 function UserLoginWelcome() {
     const snapLoginInfo = useSnapshot(globalStore.loginInfo)
@@ -44,10 +47,21 @@ function UserLoginWelcome() {
 
 export { UserLoginWelcome }
 
+// const localStore = proxy({
+//     uid: 'superAdmin',
+//     pwd: 'superAdmin@123',
+//     uidError: '',
+//     pwdError: '',
+//     serverError: '',
+// })
+
 function LoginContent() {
     const theme = useTheme()
     const { queryGraphql } = useAppGraphql()
     const { checkPwdError, checkUidError } = globalValidators()
+    
+    // const snapLocalStore = useSnapshot(localStore)
+
     const userLocalState = useHookstate({
         uid: 'superAdmin',
         pwd: 'superAdmin@123',
@@ -64,6 +78,11 @@ function LoginContent() {
         userLocalState.pwd.get().length === 0 ||
         userLocalState.uidError.get().length > 0 ||
         userLocalState.pwdError.get().length > 0
+
+        // snapLocalStore.uid.length === 0 ||
+        // snapLocalStore.pwd.length === 0 ||
+        // snapLocalStore.uidError.length > 0 ||
+        // snapLocalStore.pwdError.length > 0
 
     return (
         <Box sx={getStyles()}>
@@ -85,13 +104,20 @@ function LoginContent() {
                 autoFocus
                 required
                 onChange={(e: any) => {
-                    userLocalState.uidError.set(
-                        checkUidError(e.target.value) ?? ''
-                    )
-                    userLocalState.uid.set(e.target.value)
-                    userLocalState.serverError.set('')
+                    // userLocalState.uidError.set(
+                    //     checkUidError(e.target.value) ?? ''
+                    // )
+                    // userLocalState.uid.set(e.target.value)
+                    // userLocalState.serverError.set('')
+
+                    // localStore.uidError = checkUidError(e.target.value) ?? ''
+                    // localStore.uid = e.target.value
+                    // localStore.serverError = ''
                 }}
-                value={userLocalState.uid.get()}
+                value={
+                    userLocalState.uid.get()
+                    // snapLocalStore.uid
+                }
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
@@ -106,7 +132,10 @@ function LoginContent() {
                 }}
                 helperText={
                     <Typography component="span" variant="caption">
-                        {userLocalState.uidError.get()}
+                        {
+                        // userLocalState.uidError.get()
+                        // snapLocalStore.uidError
+                        }
                     </Typography>
                 }></TextField>
 
@@ -128,7 +157,10 @@ function LoginContent() {
                 autoComplete="new-password"
                 size="small"
                 type="password"
-                error={userLocalState.pwdError.get().length > 0}
+                error={
+                    userLocalState.pwdError.get().length > 0
+                    // snapLocalStore.pwdError.length > 0
+                }
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
@@ -143,15 +175,25 @@ function LoginContent() {
                 }}
                 helperText={
                     <Typography component="span" variant="caption">
-                        {userLocalState.pwdError.get()}
+                        {
+                        // userLocalState.pwdError.get()
+                        // snapLocalStore.pwdError
+                        }
                     </Typography>
                 }
                 onChange={(e: any) => {
-                    userLocalState.pwdError.set(checkPwdError(e.target.value))
-                    userLocalState.pwd.set(e.target.value)
-                    userLocalState.serverError.set('')
+                    // userLocalState.pwdError.set(checkPwdError(e.target.value))
+                    // userLocalState.pwd.set(e.target.value)
+                    // userLocalState.serverError.set('')
+
+                    // localStore.pwdError = checkPwdError(e.target.value)
+                    // localStore.pwd = e.target.value
+                    // localStore.serverError = ''
                 }}
-                value={userLocalState.pwd.get()}></TextField>
+                value={
+                    userLocalState.pwd.get()
+                    // snapLocalStore.pwd
+                    }></TextField>
 
             {/* Submit */}
             <Button
@@ -214,15 +256,20 @@ function LoginContent() {
             if (ret) {
                 const payload = getPayloadFromGraphqlObject(ret, 'doLogin')
                 if (payload.isSuccess) {
-                    globalStore.loginInfo = {
-                        isLoggedIn: true,
-                        token: payload.token,
-                        uid: userLocalState.uid.get(),
-                        userType: payload.userType,
-                    }
-                    globalStore.dialog.showDialog= false
+                    globalStore.loginInfo.isLoggedIn = true
+                    globalStore.loginInfo.token = payload.token
+                    globalStore.loginInfo.uid = userLocalState.uid.get()
+                    globalStore.loginInfo.userType = payload.userType
+                    // globalStore.loginInfo = {
+                    //     isLoggedIn: true,
+                    //     token: payload.token,
+                    //     uid: userLocalState.uid.get(),
+                    //     userType: payload.userType,
+                    // }
+                    globalStore.dialog.showDialog = false
                     if (globalStore.loginInfo.userType === 'S') {
-                        globalStore.misc.currentComponentName = 'superAdminTenant'
+                        globalStore.misc.currentComponentName =
+                            'superAdminTenant'
                     }
                 } else {
                     userLocalState.serverError.set(messages.messLoginFailed)
@@ -251,22 +298,12 @@ function LoginContent() {
             uidError: '',
             pwdError: '',
         })
-        // appglobalStore.loginInfo.merge({
-        // isLoggedIn: false,
-        // token: '',
-        // userType: '',
-        // uid: '',
-        // })
-        globalStore.loginInfo = {
-            isLoggedIn: false,
-            token: '',
-            userType: '',
-            uid: '',
-        }
-        globalStore.misc.currentComponentName = ''
-        // appglobalStore.misc.merge({
-        //     currentComponentName: ''
-        // })
+        globalStore.resetLoginInfo()
+        // globalStore.loginInfo.isLoggedIn=false
+        // globalStore.loginInfo.token =''
+        // globalStore.loginInfo.userType=''
+        // globalStore.loginInfo.uid=''
+        // globalStore.misc.currentComponentName = ''
     }
 }
 
@@ -329,9 +366,11 @@ function WelcomeContent() {
     }
     // logout
     function handleSubmit() {
+        globalStore.resetLoginInfo()
+        globalStore.dialog.showDialog=false
+        resetGlobalStore()
         // const clone = _.cloneDeep(appHook)
         // appglobalStore.merge(clone)
-
         // appglobalStore.loginInfo.merge({
         //     isLoggedIn: false,
         //     token: '',

@@ -1,6 +1,6 @@
-import { proxy, } from 'valtio'
+import { proxy } from 'valtio'
 import _ from 'lodash'
-import { sideBarMainMenu } from '../components/app-navigation/side-bar/app-navigation-side-bar-menus'
+import { sideBarMainMenu } from '../common/app-navigation/side-bar/app-navigation-side-bar-menus'
 
 const appStore = {
     dialog: {
@@ -18,6 +18,13 @@ const appStore = {
         token: '',
         userType: '',
         uid: '',
+    },
+
+    resetLoginInfo: () => {
+        globalStore.loginInfo.isLoggedIn = false
+        globalStore.loginInfo.token = ''
+        globalStore.loginInfo.userType = ''
+        globalStore.loginInfo.uid = ''
     },
 
     misc: {
@@ -45,10 +52,22 @@ const appStore = {
         },
     },
 }
-let appStateClone = _.cloneDeep(appStore)
+let appStoreClone = _.cloneDeep(appStore)
 
-const globalStore = proxy(
-    appStateClone
-)
+let globalStore = proxy(appStoreClone)
 
-export { globalStore }
+function resetGlobalStore(){
+    appStoreClone = _.cloneDeep(appStore)
+    globalStore = proxy(appStoreClone)
+    globalStore.resetLoginInfo()
+}
+
+const localStore = proxy({
+    uid: 'superAdmin',
+    pwd: 'superAdmin@123',
+    uidError: '',
+    pwdError: '',
+    serverError: '',
+})
+
+export { globalStore, localStore, resetGlobalStore }

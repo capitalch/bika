@@ -4,19 +4,19 @@ import {
     InMemoryCache,
     HttpLink,
 } from '@apollo/client'
-import {  globalStore, messages, urlJoin, } from '../misc/redirect'
-import _ from 'lodash'
+import { globalStore, messages, urlJoin } from '../shared-utils/redirect'
+// import _ from 'lodash'
 
 function useAppGraphql() {
     function getClient() {
         const token = globalStore.loginInfo.token
         const url: any =
-            (process.env.NODE_ENV === 'development')
+            process.env.NODE_ENV === 'development'
                 ? process.env.REACT_APP_LOCAL_SERVER_URL
                 : window.location.href
 
         const link = new HttpLink({
-            uri: urlJoin(url, 'graphql')
+            uri: urlJoin(url, 'graphql'),
         })
 
         const authLink = new ApolloLink((operation: any, forward: any) => {
@@ -48,17 +48,26 @@ function useAppGraphql() {
                 query: q,
             })
         } catch (error: any) {
-            if (error?.networkError?.statusCode === 1007) { //Token expired so reset
-                globalStore.loginInfo = { isLoggedIn: false, token: '', userType: '', uid: '' }
+            if (error?.networkError?.statusCode === 1007) {
+                //Token expired so reset
+                // globalStore.loginInfo.isLoggedIn = false
+                // globalStore.loginInfo.token = ''
+                // globalStore.loginInfo.userType = ''
+                // globalStore.loginInfo.uid = ''
+                globalStore.resetLoginInfo()
             }
-            error.message = error?.networkError?.result?.message || error.message || messages.errFetch
-            globalStore.errorMessage =  { show: true, message: error.message }
+            error.message =
+                error?.networkError?.result?.message ||
+                error.message ||
+                messages.errFetch
+            globalStore.errorMessage.show = true
+            globalStore.errorMessage.message = error.message
             console.log(error)
-            throw (error)
+            throw error
         }
         return ret
     }
 
-    return { queryGraphql, }
+    return { queryGraphql }
 }
 export { useAppGraphql }

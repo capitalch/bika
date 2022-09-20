@@ -18,7 +18,7 @@ import {
     AddCircleIcon,
     ibukiMessages,
     debounceEmit,
-} from '../../../misc/redirect'
+} from '../../../shared-utils/redirect'
 
 function XXGridToolbar({ xxGridOptions, fetchData}: any) {
     const theme = useTheme()

@@ -1,4 +1,4 @@
-import { Alert, globalStore, Snackbar,useSnapshot } from '../../misc/redirect'
+import { Alert, globalStore, Snackbar,useSnapshot } from '../../shared-utils/redirect'
 function AppErrorMessage() {
 
     const snapErrorMessage = useSnapshot(globalStore.errorMessage)
@@ -17,7 +17,8 @@ function AppErrorMessage() {
     </Snackbar>)
 
     function handleClose() {
-        globalStore.errorMessage = { message: '', show: false }
+        globalStore.errorMessage.message = ''
+        globalStore.errorMessage.show = false
     }
 }
 export { AppErrorMessage }

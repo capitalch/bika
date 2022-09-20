@@ -1,4 +1,4 @@
-import { Box, Button, Typography, useAppGraphql, useEffect, } from '../../../misc/redirect'
+import { Box, Button, Typography, useAppGraphql, useEffect, } from '../../../shared-utils/redirect'
 import { gql } from '@apollo/client'
 
 function AppHome() {
@@ -10,9 +10,7 @@ function AppHome() {
             }
         }
     `
-    // const { loading, error, data } = useQuery(query)
-    // console.log(data)
-    // console.log(process.env.NODE_ENV)
+    
     useEffect(() => {
         // fetchData()
     }, [])

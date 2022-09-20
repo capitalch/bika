@@ -1,5 +1,5 @@
 import { usingIbuki } from './ibuki'
-import { AppMaterialDialog } from '../components/app-common/app-material-dialog'
+import { AppMaterialDialog } from '../common/app-common/app-material-dialog'
 import MuiAppBar from '@mui/material/AppBar'
 import moment from 'moment'
 import axios from 'axios'

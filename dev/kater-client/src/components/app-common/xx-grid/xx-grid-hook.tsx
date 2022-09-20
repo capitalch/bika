@@ -237,6 +237,11 @@ function useXXGrid(xxGridOptions: XXGridOptions) {
             const filteredRows = meta.current.rows.filter((row: any) => arr.every((x: string) => Object.values(row).toString().toLowerCase().includes(x.toLowerCase())))
             gridState.rows.set([])
             gridState.rows.set(filteredRows)
+            // xxGridOptions.xxGridState.set({
+            //     rows:filteredRows,
+            //     rowsViewLimit:100,
+            //     searchString: 'b'
+            // })
         }
     }
 
