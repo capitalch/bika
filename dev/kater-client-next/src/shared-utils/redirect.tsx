@@ -111,11 +111,15 @@ export { globalValidators } from './global-validators'
 export { useGlobalMediaQuery } from './global-media-query-hook'
 export { If, Then, Else, Switch } from 'react-if'
 export { useHookstate } from '@hookstate/core'
-// export { appHookState } from '../global-state/app-hookstate'
-export { UserLoginWelcome } from '../modules/app-entry/login/user-login-welcome'
 export { useAppGraphql } from '../graphql/app-graphql-hook'
 export { appGraphqlStrings } from '../graphql/app-graphql-strings'
 export { gql } from '@apollo/client'
-export { cryptoEncrypt, getPayloadFromGraphqlObject } from './global-utils'
+export {
+    cryptoEncrypt,
+    getPayloadFromGraphqlObject,
+    getRowsWithSwappedId,
+    loadComponent,
+    showDialog,
+} from './global-utils'
 export { globalStore } from '../global-store/global-store'
 export { proxy, useSnapshot } from 'valtio'

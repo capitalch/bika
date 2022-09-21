@@ -4,13 +4,15 @@ import {
     Button,
     emit,
     ibukiMessages,
+    showDialog,
 } from '../../../shared-utils/redirect'
 import { globalStore } from '../../../global-store/global-store'
 import { useSnapshot } from 'valtio'
+import { SuperAdminClientForm } from './super-admin-clients-form'
 
 function SuperAdminMainClients() {
     const xxGridState = globalStore.superAdmin.clients.xxGridState
-    useSnapshot(xxGridState) // This is undocumented. But this is necessary otherwise no data displayed
+    useSnapshot(xxGridState)
     return (
         <Box>
             <Button
@@ -33,15 +35,18 @@ function SuperAdminMainClients() {
                 printPreviewMethod={printPreviewMethod}
                 isCheckBoxSelection={true}
                 xxGridState={xxGridState}
-                title="Persistent datagrid"
+                title="Super admin clients"
                 sqlKey="get-clients"
-                subTitle="Subtitle of grid"
+                subTitle="All clients for the current app"
             />
         </Box>
     )
 
     function addMethod() {
-        console.log('add')
+        showDialog({
+            title:'New client',
+            content:SuperAdminClientForm
+        })
     }
 
     function editMethod(params: any) {

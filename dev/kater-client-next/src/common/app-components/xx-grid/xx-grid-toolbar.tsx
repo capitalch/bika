@@ -19,8 +19,15 @@ import {
     ibukiMessages,
     debounceEmit,
 } from '../../../shared-utils/redirect'
+import { XXGridOptions } from './xx-grid'
 
-function XXGridToolbar({ xxGridOptions, fetchData}: any) {
+function XXGridToolbar({
+    xxGridOptions,
+    fetchData,
+}: {
+    xxGridOptions: XXGridOptions
+    fetchData: () => void
+}) {
     const theme = useTheme()
     const { isMediumSizeUp, isLargeSizeUp, isSmallAndMediumSizeUp } =
         useGlobalMediaQuery()
@@ -89,14 +96,16 @@ function XXGridToolbar({ xxGridOptions, fetchData}: any) {
                                 <select
                                     value={
                                         xxGridOptions.xxGridState.rowsViewLimit
-                                            ? xxGridOptions.xxGridState.rowsViewLimit
+                                            ? xxGridOptions.xxGridState
+                                                  .rowsViewLimit
                                             : '0'
                                     }
                                     style={{
                                         width: '4rem',
                                     }}
                                     onChange={(e: any) => {
-                                        xxGridOptions.xxGridState.rowsViewLimit = e.target.value
+                                        xxGridOptions.xxGridState.rowsViewLimit =
+                                            e.target.value
                                         xxGridOptions.fetchData
                                             ? xxGridOptions.fetchData()
                                             : fetchData()
@@ -131,8 +140,12 @@ function XXGridToolbar({ xxGridOptions, fetchData}: any) {
                                 autoComplete="off"
                                 value={xxGridOptions.xxGridState.searchString}
                                 onChange={(e: any) => {
-                                    xxGridOptions.xxGridState.searchString = e.target.value
-                                    debounceEmit(ibukiMessages.xxGridSearchDebounce, '')
+                                    xxGridOptions.xxGridState.searchString =
+                                        e.target.value
+                                    debounceEmit(
+                                        ibukiMessages.xxGridSearchDebounce,
+                                        ''
+                                    )
                                 }}
                                 placeholder="Search…"
                                 InputProps={{
@@ -154,14 +167,18 @@ function XXGridToolbar({ xxGridOptions, fetchData}: any) {
                                             aria-label="Clear"
                                             size="small"
                                             style={{
-                                                visibility:
-                                                    xxGridOptions.xxGridState.searchString
-                                                        ? 'visible'
-                                                        : 'hidden',
+                                                visibility: xxGridOptions
+                                                    .xxGridState.searchString
+                                                    ? 'visible'
+                                                    : 'hidden',
                                             }}
                                             onClick={() => {
-                                                xxGridOptions.xxGridState.searchString = ''
-                                                debounceEmit(ibukiMessages.xxGridSearchDebounce, '')
+                                                xxGridOptions.xxGridState.searchString =
+                                                    ''
+                                                debounceEmit(
+                                                    ibukiMessages.xxGridSearchDebounce,
+                                                    ''
+                                                )
                                             }}>
                                             <CloseIcon fontSize="small" />
                                         </IconButton>
@@ -176,11 +193,7 @@ function XXGridToolbar({ xxGridOptions, fetchData}: any) {
                             <IconButton
                                 color="primary"
                                 size="medium"
-                                onClick={
-                                    () => {
-                                       
-                                    }
-                                }>
+                                onClick={xxGridOptions.addMethod}>
                                 <AddCircleIcon
                                     sx={{
                                         fontSize: theme.spacing(6),

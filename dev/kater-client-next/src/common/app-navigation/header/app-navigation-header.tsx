@@ -1,3 +1,5 @@
+import { LoginContent } from '../../../modules/app-entry/login/login-content'
+import { WelcomeContent } from '../../../modules/app-entry/login/welcome-content'
 import {
     ArrowDropDownIcon,
     Box,
@@ -10,10 +12,12 @@ import {
     styled,
     Toolbar,
     useTheme,
-    UserLoginWelcome,
     Typography,
     useSnapshot,
     globalStore,
+    AppMaterialDialog,
+    useEffect,
+    showDialog,
 } from '../../../shared-utils/redirect'
 import { sideBarMainMenu } from '../side-bar/app-navigation-side-bar-menus'
 const drawerWidth = 240
@@ -42,6 +46,17 @@ function AppNavigationHeader() {
     const userMap: any = { S: 'Super admin', A: 'Admin', B: 'Business user' }
     const userType: string = snapLoginInfo.userType || ''
     const userTypeName = userMap[userType || ''] || ''
+
+    useEffect(() => {
+        if (!snapLoginInfo.isLoggedIn) {
+            showDialog({
+                title: 'User login',
+                isClosable: false,
+                content: LoginContent,
+            })
+        }
+    })
+
     return (
         <AppBar position="fixed" open={snapMisc.open}>
             <Toolbar>
@@ -98,7 +113,7 @@ function AppNavigationHeader() {
                     </Box>
                 </Box>
             </Toolbar>
-            <UserLoginWelcome />
+            <AppMaterialDialog />
         </AppBar>
     )
 
@@ -107,7 +122,11 @@ function AppNavigationHeader() {
     }
 
     function handleLogoutClick() {
-        globalStore.dialog.showDialog = true
+        showDialog({
+            title: `Welcome ${snapLoginInfo.uid}`,
+            content: WelcomeContent,
+            isClosable: true,
+        })
     }
 
     function handleDrawerOpen() {

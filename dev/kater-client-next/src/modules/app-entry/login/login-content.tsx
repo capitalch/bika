@@ -10,6 +10,7 @@ import {
     globalValidators,
     IconButton,
     InputAdornment,
+    loadComponent,
     messages,
     TextField,
     Typography,
@@ -20,6 +21,7 @@ import {
     useTheme,
 } from '../../../shared-utils/redirect'
 import { Buffer } from 'buffer'
+import { SuperAdminMain } from '../super-admin/super-admin-main'
 
 function LoginContent() {
     const [, setRefresh] = useState({})
@@ -205,8 +207,7 @@ function LoginContent() {
 
                     globalStore.dialog.showDialog = false
                     if (globalStore.loginInfo.userType === 'S') {
-                        globalStore.misc.currentComponentName =
-                            'superAdminTenant'
+                        loadComponent(SuperAdminMain)
                     }
                 } else {
                     pre.serverError = messages.messLoginFailed

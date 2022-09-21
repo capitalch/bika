@@ -1,11 +1,19 @@
-import { proxy } from 'valtio'
+import { proxy, ref } from 'valtio'
 import _ from 'lodash'
 import { sideBarMainMenu } from '../common/app-navigation/side-bar/app-navigation-side-bar-menus'
 
 const appStore = {
     dialog: {
+        content: () => <></>,
+        isClosable: true,
         showDialog: false,
         title: '',
+    },
+    resetDialog: () => {
+        globalStore.dialog.content = () => <></>
+        globalStore.dialog.isClosable = true
+        globalStore.dialog.showDialog = false
+        globalStore.dialog.title = ''
     },
 
     errorMessage: {
@@ -30,6 +38,7 @@ const appStore = {
     misc: {
         branchId: 1,
         currentComponentName: '',
+        currentComponent: () => <></>,
         dbSchemaName: 'demo',
         headerMainMenuName: '',
         open: false, // drawer open or close
@@ -56,18 +65,10 @@ let appStoreClone = _.cloneDeep(appStore)
 
 let globalStore = proxy(appStoreClone)
 
-function resetGlobalStore(){
+function resetGlobalStore() {
     appStoreClone = _.cloneDeep(appStore)
     globalStore = proxy(appStoreClone)
     globalStore.resetLoginInfo()
 }
 
-const localStore = proxy({
-    uid: 'superAdmin',
-    pwd: 'superAdmin@123',
-    uidError: '',
-    pwdError: '',
-    serverError: '',
-})
-
-export { globalStore, localStore, resetGlobalStore }
+export { globalStore, resetGlobalStore }
