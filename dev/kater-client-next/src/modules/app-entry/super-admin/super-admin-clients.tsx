@@ -1,17 +1,18 @@
-import { XXGrid } from '../../../common/app-components/xx-grid/xx-grid'
+import { XXGrid } from '../../../common/components/xx-grid/xx-grid'
 import {
     Box,
     Button,
     emit,
     ibukiMessages,
     showDialog,
-} from '../../../shared-utils/redirect'
-import { globalStore } from '../../../global-store/global-store'
+} from '../../../common/misc/redirect'
+// import { globalStore } from '../../../stores/global-store'
 import { useSnapshot } from 'valtio'
 import { SuperAdminClientForm } from './super-admin-clients-form'
+import { superAdminStore } from '../../../stores/super-admin-store'
 
-function SuperAdminMainClients() {
-    const xxGridState = globalStore.superAdmin.clients.xxGridState
+function SuperAdminClients() {
+    const xxGridState = superAdminStore.clients.xxGridState
     useSnapshot(xxGridState)
     return (
         <Box>
@@ -43,6 +44,7 @@ function SuperAdminMainClients() {
     )
 
     function addMethod() {
+        superAdminStore.clients.resetForm()
         showDialog({
             title:'New client',
             content:SuperAdminClientForm
@@ -50,7 +52,16 @@ function SuperAdminMainClients() {
     }
 
     function editMethod(params: any) {
-        console.log(params.row.clientName)
+        const row = params.row
+        const clientForm = superAdminStore.clients.form
+        clientForm.id = row.id1
+        clientForm.clientName = row.clientName
+        clientForm.shortCode = row.shortCode
+        clientForm.remarks = row.remarks
+        showDialog({
+            title:'Edit client',
+            content:SuperAdminClientForm
+        })
     }
 
     function deleteMethod(params: any) { }
@@ -120,4 +131,4 @@ function SuperAdminMainClients() {
         ]
     }
 }
-export { SuperAdminMainClients }
+export { SuperAdminClients }

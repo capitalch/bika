@@ -18,7 +18,7 @@ import {
     AddCircleIcon,
     ibukiMessages,
     debounceEmit,
-} from '../../../shared-utils/redirect'
+} from '../../misc/redirect'
 import { XXGridOptions } from './xx-grid'
 
 function XXGridToolbar({

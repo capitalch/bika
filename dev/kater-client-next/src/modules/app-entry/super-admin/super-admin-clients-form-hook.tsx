@@ -1,13 +1,45 @@
-import { SxProps, useState, useTheme } from '../../../shared-utils/redirect'
+import { closeDialog,globalValidators, SxProps, useSnapshot, useTheme } from '../../../common/misc/redirect'
+import {  superAdminStore } from '../../../stores/super-admin-store'
 function useSuperAdminClientsForm() {
     const theme = useTheme()
-    const [localState, setLocalState] = useState({
-        id: undefined,
-        clientName: '',
-        shortCode: '',
-        remarks: '',
-        isActive: true,
-    })
+    const snapForm = useSnapshot(superAdminStore.clients.form)
+    const clientForm = superAdminStore.clients.form
+    const { checkNoSpaceOrSpecialChar, checkRequired, } = globalValidators()
+
+    function checkErrors() {
+
+        function checkShortCode(value: string) {
+            clientForm.shortCodeError = checkRequired(value) || checkNoSpaceOrSpecialChar(value)
+            return (clientForm.shortCodeError)
+        }
+
+        function checkClientName(value: string) {
+            clientForm.clientNameError = checkRequired(value)
+            return (snapForm.clientNameError)
+        }
+
+        function checkAllErrors() {
+            return (checkClientName(snapForm.clientName) || checkShortCode(snapForm.shortCode))
+        }
+
+        return ({ checkAllErrors, checkClientName, checkShortCode })
+    }
+
+    function onCancel() {
+        superAdminStore.clients.resetForm()
+        closeDialog()
+    }
+
+    function onSubmit() {
+        const err = checkErrors().checkAllErrors()
+        if (!err) {
+            // proceed for save
+            // clientForm.serverError = 'abcd'
+            superAdminStore.clients.resetForm()
+            closeDialog()
+        }
+    }
+
     function getSxStyles(): SxProps {
         return {
             display: 'flex',
@@ -18,9 +50,21 @@ function useSuperAdminClientsForm() {
                 width: '100%',
                 color: theme.palette.primary.main,
             },
+            '& .cancel-submit': {
+                display:'flex',
+                justifyContent:'space-between'
+            },
+            '& .button':{
+                width: '48%',
+                mt:1,
+            },
+            '& .server-error':{
+                mt:1
+            }
+
         }
     }
 
-    return { getSxStyles }
+    return {checkErrors, getSxStyles, onCancel, onSubmit }
 }
 export { useSuperAdminClientsForm }

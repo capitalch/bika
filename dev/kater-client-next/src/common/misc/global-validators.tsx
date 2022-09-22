@@ -59,7 +59,6 @@ function globalValidators() {
 
     function checkNoSpaceOrSpecialChar(input: string) {
         let error = ''
-        // const re = /^[\w-_@.]*$/
         if (input.search(/^[\w-_]*$/) < 0) {
             error = messages.messNoSpaceOrSpecialChar
         }
@@ -80,6 +79,6 @@ function globalValidators() {
     }
 
 
-    return ({ checkPwdError, checkUidError })
+    return ({ checkPwdError,checkNoSpaceOrSpecialChar, checkRequired, checkUidError })
 }
 export { globalValidators }

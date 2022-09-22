@@ -13,8 +13,8 @@ import {
     useEffect,
     useSnapshot,
     useTheme,
-} from '../../../shared-utils/redirect'
-import { resetGlobalStore } from '../../../global-store/global-store'
+} from '../../../common/misc/redirect'
+import { resetGlobalStore } from '../../../stores/global-store'
 
 function WelcomeContent() {
     const theme = useTheme()

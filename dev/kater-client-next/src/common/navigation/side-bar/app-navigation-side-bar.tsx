@@ -21,7 +21,7 @@ import {
     useHookstate,
     useSnapshot,
     useTheme,
-} from '../../../shared-utils/redirect'
+} from '../../misc/redirect'
 
 import { iconMaps } from './app-navigation-side-bar-menu-icon-maps'
 

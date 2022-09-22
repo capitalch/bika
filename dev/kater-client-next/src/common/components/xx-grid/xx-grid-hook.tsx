@@ -1,4 +1,4 @@
-import { getRowsWithSwappedId } from '../../../shared-utils/global-utils'
+import { getRowsWithSwappedId } from '../../misc/global-utils'
 
 import {
     _,
@@ -21,7 +21,7 @@ import {
     debounceFilterOn,
     ibukiMessages,
     useState,
-} from '../../../shared-utils/redirect'
+} from '../../misc/redirect'
 import { XXGridOptions } from './xx-grid'
 
 function useXXGrid(xxGridOptions: XXGridOptions) {

@@ -4,7 +4,7 @@ import {
     InMemoryCache,
     HttpLink,
 } from '@apollo/client'
-import { globalStore, messages, urlJoin } from '../shared-utils/redirect'
+import { globalStore, messages, urlJoin } from '../common/misc/redirect'
 // import _ from 'lodash'
 
 function useAppGraphql() {

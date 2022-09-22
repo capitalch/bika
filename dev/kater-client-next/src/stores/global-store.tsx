@@ -1,6 +1,6 @@
 import { proxy, ref } from 'valtio'
 import _ from 'lodash'
-import { sideBarMainMenu } from '../common/app-navigation/side-bar/app-navigation-side-bar-menus'
+import { sideBarMainMenu } from '../common/navigation/side-bar/app-navigation-side-bar-menus'
 
 const appStore = {
     dialog: {
@@ -49,17 +49,7 @@ const appStore = {
     successMessage: {
         show: false,
         message: 'Operation successful',
-    },
-
-    superAdmin: {
-        clients: {
-            xxGridState: {
-                rows: [],
-                rowsViewLimit: '100',
-                searchString: '',
-            },
-        },
-    },
+    }
 }
 let appStoreClone = _.cloneDeep(appStore)
 

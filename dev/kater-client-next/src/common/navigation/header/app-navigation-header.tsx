@@ -18,7 +18,7 @@ import {
     AppMaterialDialog,
     useEffect,
     showDialog,
-} from '../../../shared-utils/redirect'
+} from '../../misc/redirect'
 import { sideBarMainMenu } from '../side-bar/app-navigation-side-bar-menus'
 const drawerWidth = 240
 const AppBar: any = styled(

@@ -1,4 +1,4 @@
-import { gql } from '../shared-utils/redirect'
+import { gql } from '../common/misc/redirect'
 import _ from 'lodash'
 const appGraphqlStrings: any = {
     genericView: (val: GenericViewValues, moduleName: string = 'appEntry') => {

@@ -1,5 +1,5 @@
-import { Box, Tab, TabContext, TabList, TabPanel, useState } from '../../../shared-utils/redirect'
-import { SuperAdminMainClients } from './super-admin-main-clients'
+import { Box, Tab, TabContext, TabList, TabPanel, useState } from '../../../common/misc/redirect'
+import { SuperAdminClients } from './super-admin-clients'
 
 function SuperAdminMain() {
     const [value, setValue] = useState('1')
@@ -17,7 +17,7 @@ function SuperAdminMain() {
                         <Tab label="Association" value="3" />
                     </TabList>
                 </Box>
-                <TabPanel value="1" sx={{ ml: 0, pl: 0 }}> <SuperAdminMainClients />
+                <TabPanel value="1" sx={{ ml: 0, pl: 0 }}> <SuperAdminClients />
                 </TabPanel>
                 <TabPanel value="2">Users</TabPanel>
                 <TabPanel value="3">Association</TabPanel>

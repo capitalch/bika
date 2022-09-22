@@ -19,7 +19,7 @@ import {
     useRef,
     useState,
     useTheme,
-} from '../../../shared-utils/redirect'
+} from '../../../common/misc/redirect'
 import { Buffer } from 'buffer'
 import { SuperAdminMain } from '../super-admin/super-admin-main'
 

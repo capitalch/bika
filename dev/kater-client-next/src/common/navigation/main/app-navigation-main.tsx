@@ -1,6 +1,5 @@
-import { globalStore, styled,  useEffect,  useSnapshot } from '../../../shared-utils/redirect'
-import { componentMaps } from '../../../temp/app-navigation-main-component-maps'
-import { AppErrorMessage } from '../../app-components/app-error-message'
+import { globalStore, styled, useSnapshot } from '../../misc/redirect'
+import { AppErrorMessage } from '../../components/app-error-message'
 
 const drawerWidth = 240
 const Main: any = styled(
@@ -33,11 +32,9 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }))
 function AppNavigationMain({ open }: any) {
     const snapMisc = useSnapshot(globalStore.misc)
-    const currentComponentName: string = snapMisc.currentComponentName
     return (
         <Main open={snapMisc.open}>
             <DrawerHeader />
-            {/* {componentMaps[currentComponentName] || null} */}
             <globalStore.misc.currentComponent />
             <AppErrorMessage />
         </Main>

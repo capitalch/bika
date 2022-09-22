@@ -5,11 +5,11 @@ import {
     useEffect,
     useSnapshot,
     globalStore,
-} from '../../shared-utils/redirect'
+} from '../misc/redirect'
 import { AppNavigationMain } from './main/app-navigation-main'
 import { AppNavigationHeader } from './header/app-navigation-header'
 import { AppNavigationSideBar } from './side-bar/app-navigation-side-bar'
-import { AppLoadingIndicator } from '../app-components/app-loading-indicator'
+import { AppLoadingIndicator } from '../components/app-loading-indicator'
 
 function AppNavigation() {
     

@@ -1,5 +1,18 @@
-import { globalStore, immer } from './redirect'
+import { globalStore, produce } from './redirect'
 const Cryptojs = require('crypto-js')
+
+function changeState( state:any, setState:any, changeObj:any ) {
+    const newState:any = produce(state, (draft:any)=>{
+        for (const prop in changeObj){
+            draft[prop] = changeObj[prop]
+        }
+    })
+    setState(newState)
+}
+
+function closeDialog(){
+    globalStore.dialog.showDialog = false
+}
 
 function cryptoEncrypt(text: string) {
     const privateKey: any = process.env.REACT_APP_LOGIN_TIME_KEY || ''
@@ -19,7 +32,7 @@ function getRowsWithSwappedId(rows: any[]) {
     function inc() {
         return ++cnt
     }
-    const out: any[] = immer(rows, (draft: any) => {
+    const out: any[] = produce(rows, (draft: any) => {
         for (const row of draft) {
             row['id1'] = row['id']
             row['id'] = inc()
@@ -48,11 +61,9 @@ function showDialog({
     globalStore.dialog.showDialog = true
 }
 
-// function showForm({title,content}:{title:string;content:()=>any}){
-// showDialog
-// }
-
 export {
+    changeState,
+    closeDialog,
     cryptoEncrypt,
     getPayloadFromGraphqlObject,
     getRowsWithSwappedId,

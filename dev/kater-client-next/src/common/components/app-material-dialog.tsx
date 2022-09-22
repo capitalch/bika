@@ -10,7 +10,7 @@ import {
     Typography,
     useSnapshot,
     useTheme,
-} from '../../shared-utils/redirect'
+} from '../misc/redirect'
 
 function AppMaterialDialog() {
     const snap = useSnapshot(globalStore.dialog)
@@ -25,19 +25,17 @@ function AppMaterialDialog() {
                     // borderBottom:'1px solid lightgrey',
                     // ml:theme.spacing(4)
                 }}>
-                <Typography color='GrayText' sx={{ fontWeight: 'bold',  }}>
-                    {snap.title}
-                </Typography>
+                <Typography variant='dialogTitle'>{snap.title}   </Typography>
                 <If condition={globalStore.dialog.isClosable}>
                     <Then>
-                    <IconButton
-                        sx={{ mr: -1.8 }}
-                        size="small"
-                        color="default"
-                        onClick={handleClose}
-                        aria-label="close">
-                        <CloseIcon />
-                    </IconButton>
+                        <IconButton
+                            sx={{ mr: -1.8 }}
+                            size="small"
+                            color="default"
+                            onClick={handleClose}
+                            aria-label="close">
+                            <CloseIcon />
+                        </IconButton>
                     </Then>
                 </If>
             </DialogTitle>

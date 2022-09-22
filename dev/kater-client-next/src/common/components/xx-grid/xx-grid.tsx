@@ -1,4 +1,4 @@
-import { DataGridPro, } from '../../../shared-utils/redirect'
+import { DataGridPro, } from '../../misc/redirect'
 import { useXXGrid } from './xx-grid-hook'
 import { XXGridToolbar } from './xx-grid-toolbar'
 

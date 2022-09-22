@@ -1,4 +1,4 @@
-import { Box, Button, Typography, useAppGraphql, useEffect, } from '../../../shared-utils/redirect'
+import { Box, Button, Typography, useAppGraphql, useEffect, } from '../../../common/misc/redirect'
 import { gql } from '@apollo/client'
 
 function AppHome() {

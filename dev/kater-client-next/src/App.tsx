@@ -2,11 +2,17 @@ import { createTheme, ThemeProvider } from '@mui/material'
 import { LicenseInfo } from '@mui/x-data-grid-pro'
 import { ConfirmProvider } from 'material-ui-confirm'
 import './App.scss'
-import { AppNavigation } from './common/app-navigation/app-navigation'
+import { AppNavigation } from './common/navigation/app-navigation'
 
 declare module '@mui/material/Button' {
     interface ButtonPropsVariantOverrides {
         menuButton: true
+    }
+}
+
+declare module '@mui/material/Typography'{
+    interface TypographyPropsVariantOverrides {
+        dialogTitle: true
     }
 }
 
@@ -32,17 +38,31 @@ function App() {
     const theme: any = createTheme({
         typography: {
             subtitle1: {
-                fontWeight: 'bold'
+                fontWeight: 'bold',
+                fontSize: '16px'
             },
             subtitle2: {
                 fontSize: '14px',
             },
             caption: {
                 color: globalTheme.palette.error.light
-            }
+            },
+            
 
         },
         components: {
+            MuiTypography:{
+                variants: [
+                    {
+                        props: {variant: 'dialogTitle'},
+                        style:{
+                            fontSize: '20px',
+                            color: globalTheme.palette.primary.main,
+                            fontWeight:'bold',
+                        }
+                    }
+                ]
+            },
             MuiButton: {
                 styleOverrides: {
                     root: {

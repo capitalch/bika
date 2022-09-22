@@ -1,15 +1,15 @@
 import { usingIbuki } from './ibuki'
-import { AppMaterialDialog } from '../common/app-components/app-material-dialog'
+import { AppMaterialDialog } from '../components/app-material-dialog'
 import MuiAppBar from '@mui/material/AppBar'
 import moment from 'moment'
 import axios from 'axios'
 import _ from 'lodash'
-import immer from 'immer'
 import messages from './messages.json'
 import ibukiMessages from './ibuki-messages.json'
 import urlJoin from 'url-join'
 export { styled } from '@mui/material/styles'
 export { useConfirm } from 'material-ui-confirm'
+export { produce } from 'immer'
 export {
     AddCircle as AddCircleIcon,
     ArrowDropDown as ArrowDropDownIcon,
@@ -91,7 +91,6 @@ export {
     AppMaterialDialog,
     axios,
     ibukiMessages,
-    immer,
     messages,
     moment,
     MuiAppBar,
@@ -111,15 +110,17 @@ export { globalValidators } from './global-validators'
 export { useGlobalMediaQuery } from './global-media-query-hook'
 export { If, Then, Else, Switch } from 'react-if'
 export { useHookstate } from '@hookstate/core'
-export { useAppGraphql } from '../graphql/app-graphql-hook'
-export { appGraphqlStrings } from '../graphql/app-graphql-strings'
+export { useAppGraphql } from '../../graphql/app-graphql-hook'
+export { appGraphqlStrings } from '../../graphql/app-graphql-strings'
 export { gql } from '@apollo/client'
 export {
+    changeState,
+    closeDialog,
     cryptoEncrypt,
     getPayloadFromGraphqlObject,
     getRowsWithSwappedId,
     loadComponent,
     showDialog,
 } from './global-utils'
-export { globalStore } from '../global-store/global-store'
+export { globalStore } from '../../stores/global-store'
 export { proxy, useSnapshot } from 'valtio'
