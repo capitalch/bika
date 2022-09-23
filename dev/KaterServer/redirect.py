@@ -33,9 +33,3 @@ entryDb = config.get('authentication').get('entryDb')
 global_settings = {
     # 'authDbName': ''
 }
-
-# def getdbName():
-#     return(global_settings['dbName'])
-
-# def setDbName(dbName):
-#     global_settings['dbName'] = dbName
