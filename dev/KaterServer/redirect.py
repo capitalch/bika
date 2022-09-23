@@ -28,7 +28,7 @@ from datetime import timezone
 config = None
 with open('config.json') as f:
     config = json.load(f)
-entryDb = config.get('authentication').get('entryDb')
+entryDbName = config.get('authentication').get('entryDbName')
 # dbName = config['baseConnection']['database']
 global_settings = {
     # 'authDbName': ''

@@ -1,6 +1,6 @@
 from redirect import Blueprint, demjson, graphql_sync, gql, json, load_schema_from_path, make_executable_schema, ObjectType, PLAYGROUND_HTML, MutationType, QueryType, request
 from redirect import jsonify
-from .graphql_worker import context_value, doLogin, processGenericView
+from .graphql_worker import context_value, doLogin, processGenericUpdate, processGenericView
 
 graphqlMain = Blueprint('graphqlMain', __name__)
 
@@ -32,7 +32,6 @@ appServerQuery = ObjectType('AppServerQuery')
 mutation = MutationType()
 appServerMutation = ObjectType('AppServerMutation')
 
-
 @query.field('appServer')
 def resolve_server(*_):
     return {}
@@ -62,9 +61,8 @@ def resolve_people(parent, info):
 
 @appServerMutation.field("genericUpdate")
 def resolve_generic_update(parent, info, value):
-    print(value)
-    return (value)
-
+    ret = processGenericUpdate(info.context, value)
+    return (ret)
 
 schema = make_executable_schema(
     type_defs, appServerMutation, appServerQuery, mutation, query,)

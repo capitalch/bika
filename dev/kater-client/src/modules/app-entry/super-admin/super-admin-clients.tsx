@@ -53,6 +53,7 @@ function SuperAdminClients() {
 
     function editMethod(params: any) {
         const row = params.row
+        superAdminStore.clients.resetForm()
         const clientForm = superAdminStore.clients.form
         clientForm.id = row.id1
         clientForm.clientName = row.clientName

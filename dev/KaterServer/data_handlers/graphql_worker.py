@@ -1,4 +1,4 @@
-from redirect import allSqls, base64, bcrypt, config, cryptoDecrypt, datetime, demjson, entryDb, GenericException, jwt, logger, messages, timezone, unquote
+from redirect import allSqls, base64, bcrypt, config, datetime, demjson, entryDbName, GenericException, jwt, logger, messages, timezone, unquote
 from .graphql_sub_worker import getClientServerTimeDiff, raiseGenericException, raiseGenericExceptionFn, validateTokenAndGetPayload
 from .postgres import execSql
 
@@ -69,7 +69,7 @@ def doLogin(info, credentials):
     # c = getBundle(uidOrEmail, pwd)
     if (isSuperAdmin(uidOrEmail, pwd)):
         token = createToken({"userType": "S"})
-        info.context['dbName'] = entryDb
+        info.context['dbName'] = entryDbName
         # info.context['dbName'] = 'appEntry'
 
     # ret = execSql(allSqls['get-states'], schema='demo')
@@ -82,6 +82,19 @@ def doLogin(info, credentials):
             'isSuccess': False
         }
 
+def processGenericUpdate(context, value):
+    try:
+        value = unquote(value)
+        sqlObject = demjson.decode(value)
+        operationName = context['operationName']
+        if(operationName == 'appEntry'):
+            context['dbName'] = entryDbName
+        # No sql key is required for update. valueDict is the args
+        
+        pass
+    except Exception as error:
+        raiseGenericExceptionFn('errProcessGenericUpdate', error.message)        
+
 
 def processGenericView(context, value):
     try:
@@ -89,7 +102,7 @@ def processGenericView(context, value):
         valueDict = demjson.decode(value)
         operationName = context['operationName']
         if(operationName == 'appEntry'):
-            context['dbName'] = entryDb
+            context['dbName'] = entryDbName
         sqlKey = valueDict.get('sqlKey', None)
         if (sqlKey is None):
             raiseGenericException('errNoSqlKeyProvided')
@@ -97,8 +110,6 @@ def processGenericView(context, value):
         if (sqlString is None):
             raiseGenericException('errNoSqlStringForSqlKey')
         args = valueDict.get('args', None)
-        return execSql(context['dbName'], sqlString=sqlString, args=args)
-        # if (valueDict.get('args') is None):
-        #     valueDict['args'] = {}
+        return execSql(context, sqlString=sqlString, args=args)
     except Exception as error:
         raiseGenericExceptionFn('errProcessGenericView', error.message)

@@ -3,12 +3,11 @@ from psycopg2 import pool
 from core.generic_classes import GenericException
 
 poolStore = {}
-# dbName = ''
 
-
-def execSql(dbName, sqlString, args=None, isMultipleRows=True,  autoCommitMode=False, schema='public'):
+def execSql(context, sqlString, args=None, isMultipleRows=True,  autoCommitMode=False, schema='public'):
     out = None
     connection = None
+    dbName = context['dbName']
     searchPathSql = getSchemaSearchPath(schema)
     try:
         connection, cursor, pool = getConnectionCursor(dbName,
@@ -37,6 +36,9 @@ def execSql(dbName, sqlString, args=None, isMultipleRows=True,  autoCommitMode=F
             connection.close()
     return out
 
+def execSqlObject(context, sqlObject):
+    dbName = context['dbName']
+    pass
 
 def getConnectionCursor(dbName, autoCommitMode=False):
     pool = getPool(dbName)

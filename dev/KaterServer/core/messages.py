@@ -11,5 +11,6 @@ messages = {
     'errNoSqlKeyProvided': (1009, "No sql key is provided with query"),
     'errNoSqlStringForSqlKey':(1010, "There is no sql string available against sql key"),
     'errProcessGenericView': (lambda mess: (1011, f"Could not process generic view: {mess}")),
+    'errProcessGenericUpdate': (lambda mess: (1012, f"Could not process generic update: {mess}")),
 }
 

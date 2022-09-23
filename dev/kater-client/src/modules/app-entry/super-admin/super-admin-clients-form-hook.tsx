@@ -1,8 +1,8 @@
-import { appGraphqlStrings, closeDialog,globalValidators, SxProps, useAppGraphql, useSnapshot, useTheme } from '../../../common/misc/redirect'
-import {  superAdminStore } from '../../../stores/super-admin-store'
+import { appGraphqlStrings, closeDialog, globalValidators, SxProps, useAppGraphql, useSnapshot, useTheme } from '../../../common/misc/redirect'
+import { superAdminStore } from '../../../stores/super-admin-store'
 function useSuperAdminClientsForm() {
     const theme = useTheme()
-    const {mutateGraphql} = useAppGraphql()
+    const { mutateGraphql } = useAppGraphql()
     const snapForm = useSnapshot(superAdminStore.clients.form)
     const clientForm = superAdminStore.clients.form
     const { checkNoSpaceOrSpecialChar, checkRequired, } = globalValidators()
@@ -35,12 +35,12 @@ function useSuperAdminClientsForm() {
         const err = checkErrors().checkAllErrors()
         if (!err) {
             const data = {
-                clientName : snapForm.clientName,
+                clientName: snapForm.clientName,
                 shortCode: snapForm.shortCode,
                 isActive: snapForm.isActive
             }
             const q = appGraphqlStrings.genericUpdate(data)
-            
+
             const ret = await mutateGraphql(q)
             console.log(ret)
             // proceed for save
@@ -61,20 +61,20 @@ function useSuperAdminClientsForm() {
                 color: theme.palette.primary.main,
             },
             '& .cancel-submit': {
-                display:'flex',
-                justifyContent:'space-between'
+                display: 'flex',
+                justifyContent: 'space-between'
             },
-            '& .button':{
+            '& .button': {
                 width: '48%',
-                mt:1,
+                mt: 1,
             },
-            '& .server-error':{
-                mt:1
+            '& .server-error': {
+                mt: 1
             }
 
         }
     }
 
-    return {checkErrors, getSxStyles, onCancel, onSubmit }
+    return { checkErrors, getSxStyles, onCancel, onSubmit }
 }
 export { useSuperAdminClientsForm }

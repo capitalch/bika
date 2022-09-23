@@ -30,7 +30,7 @@
             "algorithm": "HS256",
             "expiryInWeeks": 1
         },
-        "entryDb":"appEntry"
+        "entryDbName":"appEntry"
     },
     "comments": "Super admin uid:password is superAdmin:superAdmin@123"
 }
