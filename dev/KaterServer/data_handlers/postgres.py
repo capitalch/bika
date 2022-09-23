@@ -49,9 +49,6 @@ def getConnectionCursor(dbName, autoCommitMode=False):
 
 def getPool(dbName):
     ref = config['baseConnection']
-    # dbName = global_settings.get('dbName', None)
-    # if (dbName in (None, '')):
-    #     dbName = 'authentication'
     if not dbName in poolStore:
         poolStore[dbName] = pool.ThreadedConnectionPool(
             1, 500, user=ref['user'], password=ref['password'], host=ref['host'], port=ref['port'], database=dbName)

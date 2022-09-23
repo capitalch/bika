@@ -1,15 +1,9 @@
 import {
-    _,
     Box,
-    DeleteForeverIcon,
-    EditIcon,
-    GridCellParams,
     GridToolbarContainer,
     IconButton,
-    PrintIcon,
     Typography,
     SyncSharpIcon,
-    SxProps,
     useTheme,
     GridToolbarColumnsButton,
     Checkbox,
@@ -22,25 +16,19 @@ import {
     GridToolbarExport,
     useGlobalMediaQuery,
     AddCircleIcon,
-    useConfirm,
-    messages,
-    appGraphqlStrings,
-    getPayloadFromGraphqlObject,
-    useHookstate,
-    appHookState,
-    useAppGraphql,
-    useEffect,
-    useRef,
-    // useState,
-    filterOn,
-    debounceFilterOn,
     ibukiMessages,
     debounceEmit,
-} from '../../../misc/redirect'
+} from '../../misc/redirect'
+import { XXGridOptions } from './xx-grid'
 
-function XXGridToolbar({ xxGridOptions, fetchData, requestSearch, fetchData1 }: any) {
+function XXGridToolbar({
+    xxGridOptions,
+    fetchData,
+}: {
+    xxGridOptions: XXGridOptions
+    fetchData: () => void
+}) {
     const theme = useTheme()
-
     const { isMediumSizeUp, isLargeSizeUp, isSmallAndMediumSizeUp } =
         useGlobalMediaQuery()
     return (
@@ -108,16 +96,16 @@ function XXGridToolbar({ xxGridOptions, fetchData, requestSearch, fetchData1 }: 
                                 <select
                                     value={
                                         xxGridOptions.xxGridState.rowsViewLimit
-                                            ? xxGridOptions.xxGridState.rowsViewLimit.get()
+                                            ? xxGridOptions.xxGridState
+                                                  .rowsViewLimit
                                             : '0'
                                     }
                                     style={{
                                         width: '4rem',
                                     }}
                                     onChange={(e: any) => {
-                                        xxGridOptions.xxGridState.rowsViewLimit.set(
+                                        xxGridOptions.xxGridState.rowsViewLimit =
                                             e.target.value
-                                        )
                                         xxGridOptions.fetchData
                                             ? xxGridOptions.fetchData()
                                             : fetchData()
@@ -148,17 +136,16 @@ function XXGridToolbar({ xxGridOptions, fetchData, requestSearch, fetchData1 }: 
                         <Then>
                             <TextField
                                 sx={{ mt: theme.spacing(1) }}
-                                // inputRef={meta.current.searchTextRef}
                                 variant="standard"
                                 autoComplete="off"
-                                // autoFocus={!meta.current.isFirstTime}
-                                value={xxGridOptions.xxGridState.searchString.get()}
-                                // onChange={props.onChange}
+                                value={xxGridOptions.xxGridState.searchString}
                                 onChange={(e: any) => {
-                                    xxGridOptions.xxGridState.searchString.set(
+                                    xxGridOptions.xxGridState.searchString =
                                         e.target.value
+                                    debounceEmit(
+                                        ibukiMessages.xxGridSearchDebounce,
+                                        ''
                                     )
-                                    debounceEmit(ibukiMessages.xxGridSearchDebounce, '')
                                 }}
                                 placeholder="Search…"
                                 InputProps={{
@@ -180,16 +167,19 @@ function XXGridToolbar({ xxGridOptions, fetchData, requestSearch, fetchData1 }: 
                                             aria-label="Clear"
                                             size="small"
                                             style={{
-                                                visibility:
-                                                    xxGridOptions.xxGridState.searchString.get()
-                                                        ? 'visible'
-                                                        : 'hidden',
+                                                visibility: xxGridOptions
+                                                    .xxGridState.searchString
+                                                    ? 'visible'
+                                                    : 'hidden',
                                             }}
-                                            onClick={() =>
-                                                xxGridOptions.xxGridState.searchString.set(
+                                            onClick={() => {
+                                                xxGridOptions.xxGridState.searchString =
+                                                    ''
+                                                debounceEmit(
+                                                    ibukiMessages.xxGridSearchDebounce,
                                                     ''
                                                 )
-                                            }>
+                                            }}>
                                             <CloseIcon fontSize="small" />
                                         </IconButton>
                                     ),
@@ -199,19 +189,11 @@ function XXGridToolbar({ xxGridOptions, fetchData, requestSearch, fetchData1 }: 
                     </If>
                     <If condition={!!xxGridOptions.addMethod}>
                         <Then>
-                            {/* Add Button */}   
+                            {/* Add Button */}
                             <IconButton
                                 color="primary"
                                 size="medium"
-                                onClick={
-                                    // xxGridOptions.addMethod
-                                    () => {
-                                        xxGridOptions.xxGridState.searchString.set(
-                                            'b'
-                                        )
-                                        fetchData1()
-                                    }
-                                }>
+                                onClick={xxGridOptions.addMethod}>
                                 <AddCircleIcon
                                     sx={{
                                         fontSize: theme.spacing(6),
@@ -226,4 +208,4 @@ function XXGridToolbar({ xxGridOptions, fetchData, requestSearch, fetchData1 }: 
         </GridToolbarContainer>
     )
 }
-export {XXGridToolbar}
+export { XXGridToolbar }

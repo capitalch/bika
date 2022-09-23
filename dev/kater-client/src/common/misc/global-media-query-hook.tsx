@@ -1,6 +1,6 @@
 import { useMediaQuery, useTheme } from './redirect'
 
-type breakpointType = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+// type breakpointType = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 function useGlobalMediaQuery() {
     const theme = useTheme()
     const isEqualsXS = useMediaQuery(theme.breakpoints.only('xs'), {

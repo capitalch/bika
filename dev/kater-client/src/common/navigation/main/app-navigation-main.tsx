@@ -1,8 +1,5 @@
-import { styled, useHookstate } from '../../../misc/redirect'
-import { appHookState } from '../../../global-state/app-hookstate'
-import { componentMaps } from './app-navigation-main-component-maps'
-import { AppErrorMessage } from '../../app-common/app-error-message'
-// import { UserLogin } from '../../modules/authentication/user-login'
+import { globalStore, styled, useSnapshot } from '../../misc/redirect'
+import { AppErrorMessage } from '../../components/app-error-message'
 
 const drawerWidth = 240
 const Main: any = styled(
@@ -34,13 +31,11 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     justifyContent: 'flex-end',
 }))
 function AppNavigationMain({ open }: any) {
-    const appGlobalState = useHookstate(appHookState)
-    const currentComponentName: string = appGlobalState.misc.currentComponentName.get()
+    const snapMisc = useSnapshot(globalStore.misc)
     return (
-        <Main open={appGlobalState.misc.open.get()}>
+        <Main open={snapMisc.open}>
             <DrawerHeader />
-            {/* <UserLogIn /> */}
-            {componentMaps[currentComponentName] || null}
+            <globalStore.misc.currentComponent />
             <AppErrorMessage />
         </Main>
     )

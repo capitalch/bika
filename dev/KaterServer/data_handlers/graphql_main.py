@@ -1,4 +1,4 @@
-from redirect import Blueprint, demjson, graphql_sync, gql, json, load_schema_from_path, make_executable_schema, ObjectType, PLAYGROUND_HTML, QueryType, request
+from redirect import Blueprint, demjson, graphql_sync, gql, json, load_schema_from_path, make_executable_schema, ObjectType, PLAYGROUND_HTML, MutationType, QueryType, request
 from redirect import jsonify
 from .graphql_worker import context_value, doLogin, processGenericView
 
@@ -29,28 +29,27 @@ type_defs = load_schema_from_path('data_handlers')
 query = QueryType()  # or query = ObjectType('Query')
 appServerQuery = ObjectType('AppServerQuery')
 
+mutation = MutationType()
+appServerMutation = ObjectType('AppServerMutation')
+
 
 @query.field('appServer')
 def resolve_server(*_):
     return {}
 
+@mutation.field('appServer')
+def resolve_server(*_):
+    return {}
 
 @appServerQuery.field("doLogin")
 def resolve_doLogin(parent, info, credentials):
-    return doLogin(info,credentials)
-    # cred = unquote(credentials)
-    # credObj = demjson.decode(cred)
-    # return 'success'
+    return doLogin(info, credentials)
 
 
 @appServerQuery.field("genericView")
 def resolve_generic_view(parent, info, value):
     ret = processGenericView(info.context, value)
     return ret
-    # return [
-    #     {"id": 1, "firstName": "Sushant", "lastName": "Agrawal", "age": 58},
-    #     {"id": 2, "firstName": "Prashant", "lastName": "Agrawal", "age": 58}
-    # ]
 
 
 @appServerQuery.field("genericViewTest")
@@ -61,7 +60,14 @@ def resolve_people(parent, info):
     ]
 
 
-schema = make_executable_schema(type_defs, appServerQuery, query)
+@appServerMutation.field("genericUpdate")
+def resolve_generic_update(parent, info, value):
+    print(value)
+    return (value)
+
+
+schema = make_executable_schema(
+    type_defs, appServerMutation, appServerQuery, mutation, query,)
 
 # Graphql process
 # Step 1: Define all type in file .graphql. load the file using load_schema_from_path

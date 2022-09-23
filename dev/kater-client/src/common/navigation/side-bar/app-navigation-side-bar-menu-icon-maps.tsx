@@ -1,4 +1,4 @@
-import { BusinessIcon, HomeIcon, MiscellaneousServicesIcon, ReportIcon, SettingsIcon, SettingsApplicationsIcon, SummarizeIcon, ViewListIcon } from '../../../misc/redirect'
+import { BusinessIcon, HomeIcon, MiscellaneousServicesIcon, ReportIcon, SettingsIcon, SettingsApplicationsIcon, SummarizeIcon, ViewListIcon } from '../../misc/redirect'
 const iconMaps: any = {
     home: <HomeIcon />,
     masters: <ViewListIcon />,

@@ -1,23 +1,19 @@
-import { XXGrid } from '../../../components/app-common/xx-grid/xx-grid'
+import { XXGrid } from '../../../common/components/xx-grid/xx-grid'
 import {
-    appGraphqlStrings,
-    appHookState,
     Box,
     Button,
     emit,
-    getPayloadFromGraphqlObject,
     ibukiMessages,
-    useAppGraphql,
-    useHookstate,
-    useTheme,
-} from '../../../misc/redirect'
-import { getRowsWithSwappedId } from '../../../misc/global-utils'
+    showDialog,
+} from '../../../common/misc/redirect'
+// import { globalStore } from '../../../stores/global-store'
+import { useSnapshot } from 'valtio'
+import { SuperAdminClientForm } from './super-admin-clients-form'
+import { superAdminStore } from '../../../stores/super-admin-store'
 
-function SuperAdminMainClients() {
-    const { queryGraphql } = useAppGraphql()
-    const appGlobalState = useHookstate(appHookState)
-    const xxGridState: any = appGlobalState.superAdmin.clients.xxGridHookstate
-
+function SuperAdminClients() {
+    const xxGridState = superAdminStore.clients.xxGridState
+    useSnapshot(xxGridState)
     return (
         <Box>
             <Button
@@ -40,45 +36,58 @@ function SuperAdminMainClients() {
                 printPreviewMethod={printPreviewMethod}
                 isCheckBoxSelection={true}
                 xxGridState={xxGridState}
-                title="Persistent datagrid"
+                title="Super admin clients"
                 sqlKey="get-clients"
-                subTitle="Subtitle of grid"
+                subTitle="All clients for the current app"
             />
         </Box>
     )
 
     function addMethod() {
-        console.log('add')
+        superAdminStore.clients.resetForm()
+        showDialog({
+            title:'New client',
+            content:SuperAdminClientForm
+        })
     }
 
     function editMethod(params: any) {
-        console.log(params.row.clientName)
-    }
-
-    function deleteMethod(params: any) {}
-
-    function printPreviewMethod(params: any) {}
-
-    async function fetchData() {
-        // const clients = xxGridGlobalState.superAdmin.clients
-        appGlobalState.misc.showLoadingDialog.set(true)
-        const rowsViewLimit = xxGridState.rowsViewLimit.get()
-        // const searchString = xxGridState.searchString.get()
-        const q = appGraphqlStrings['genericView']({
-            sqlKey: 'get-clients',
-            args: { no: rowsViewLimit },
+        const row = params.row
+        const clientForm = superAdminStore.clients.form
+        clientForm.id = row.id1
+        clientForm.clientName = row.clientName
+        clientForm.shortCode = row.shortCode
+        clientForm.remarks = row.remarks
+        showDialog({
+            title:'Edit client',
+            content:SuperAdminClientForm
         })
-        const ret = await queryGraphql(q)
-        const data: any[] = getPayloadFromGraphqlObject(ret, 'genericView')
-        const rows: any = getRowsWithSwappedId(data)
-
-        xxGridState.set((oldState: any) => ({
-            ...oldState,
-            rows: [],
-        }))
-        data && xxGridState.rows.merge(rows)
-        appGlobalState.misc.showLoadingDialog.set(false)
     }
+
+    function deleteMethod(params: any) { }
+
+    function printPreviewMethod(params: any) { }
+
+    // async function fetchData() {
+    //     const clients = xxGridglobalStore.superAdmin.clients
+    //     appglobalStore.misc.showLoadingDialog.set(true)
+    //     const rowsViewLimit = xxGridState.rowsViewLimit.get()
+    //     const searchString = xxGridState.searchString.get()
+    //     const q = appGraphqlStrings['genericView']({
+    //         sqlKey: 'get-clients',
+    //         args: { no: rowsViewLimit },
+    //     })
+    //     const ret = await queryGraphql(q)
+    //     const data: any[] = getPayloadFromGraphqlObject(ret, 'genericView')
+    //     const rows: any = getRowsWithSwappedId(data)
+
+    //     // xxGridState.set((oldState: any) => ({
+    //     //     ...oldState,
+    //     //     rows: [],
+    //     // }))
+    //     // data && xxGridState.rows.merge(rows)
+    //     appglobalStore.misc.showLoadingDialog.set(false)
+    // }
 
     function getColumns() {
         return [
@@ -122,4 +131,4 @@ function SuperAdminMainClients() {
         ]
     }
 }
-export { SuperAdminMainClients }
+export { SuperAdminClients }

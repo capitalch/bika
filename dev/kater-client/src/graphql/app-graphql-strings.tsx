@@ -1,6 +1,28 @@
-import { gql } from '../misc/redirect'
+import { gql } from '../common/misc/redirect'
 import _ from 'lodash'
 const appGraphqlStrings: any = {
+    genericUpdate: (val: any, moduleName: string = 'appEntry') => {
+        const value = encodeObj(val)
+        return gql`
+        mutation ${moduleName} {
+            appServer {
+                genericUpdate(value:"${value}")
+            }
+        }
+        `
+    },
+
+    genericUpdate1: (val: any, moduleName: string = 'appEntry') => {
+        const value = encodeObj(val)
+        return gql`
+        query ${moduleName} {
+            appServer {
+                genericUpdate(value:"${value}")
+            }
+        }
+        `
+    },
+
     genericView: (val: GenericViewValues, moduleName: string = 'appEntry') => {
         const value = encodeObj(val)
         return gql`

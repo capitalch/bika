@@ -4,20 +4,20 @@ import {
     InMemoryCache,
     HttpLink,
 } from '@apollo/client'
-import { appHookState, messages, urlJoin, useHookstate, } from '../misc/redirect'
-import _ from 'lodash'
+import { Exception } from 'sass'
+import { globalStore, messages, urlJoin } from '../common/misc/redirect'
+// import _ from 'lodash'
 
 function useAppGraphql() {
-    const appGlobalState = useHookstate(appHookState)
     function getClient() {
-        const token = appGlobalState.loginInfo.token.get()
+        const token = globalStore.loginInfo.token
         const url: any =
-            (process.env.NODE_ENV === 'development')
+            process.env.NODE_ENV === 'development'
                 ? process.env.REACT_APP_LOCAL_SERVER_URL
                 : window.location.href
 
         const link = new HttpLink({
-            uri: urlJoin(url, 'graphql')
+            uri: urlJoin(url, 'graphql'),
         })
 
         const authLink = new ApolloLink((operation: any, forward: any) => {
@@ -41,6 +41,33 @@ function useAppGraphql() {
         return client
     }
 
+    function handleError(error: any) {
+        if (error?.networkError?.statusCode === 1007) {
+            globalStore.resetLoginInfo()
+        }
+        error.message =
+            error?.networkError?.result?.message ||
+            error.message ||
+            messages.errFetch
+        globalStore.errorMessage.show = true
+        globalStore.errorMessage.message = error.message
+        console.log(error)
+        throw error
+    }
+
+    async function mutateGraphql(q: any) {
+        const client = getClient()
+        let ret: any
+        try {
+            ret = await client.mutate({
+                mutation: q,
+            })
+        } catch (error: any) {
+            handleError(error)
+        }
+        return ret
+    }
+
     async function queryGraphql(q: any) {
         const client = getClient()
         let ret: any
@@ -49,17 +76,11 @@ function useAppGraphql() {
                 query: q,
             })
         } catch (error: any) {
-            if (error?.networkError?.statusCode === 1007) { //Token expired so reset
-                appGlobalState.loginInfo.merge({ isLoggedIn: false, token: '', userType: '', uid: '' })
-            }
-            error.message = error?.networkError?.result?.message || error.message || messages.errFetch 
-            appGlobalState.errorMessage.merge({ show: true, message: error.message })
-            console.log(error)
-            throw (error)
+            handleError(error)
         }
         return ret
     }
 
-    return { queryGraphql, }
+    return { mutateGraphql, queryGraphql }
 }
 export { useAppGraphql }

@@ -3,5 +3,5 @@ type Mutation {
 }
 
 type AppServerMutation {
-    genericUpdateMaster: Generic
+    genericUpdate(value:Generic): Generic
 }

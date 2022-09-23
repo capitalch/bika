@@ -7,6 +7,7 @@ import {
     Collapse,
     Divider,
     Drawer,
+    globalStore,
     IconButton,
     InboxIcon,
     List,
@@ -18,10 +19,10 @@ import {
     Typography,
     useGlobalMediaQuery,
     useHookstate,
+    useSnapshot,
     useTheme,
-} from '../../../misc/redirect'
+} from '../../misc/redirect'
 
-import { appHookState } from '../../../global-state/app-hookstate'
 import { iconMaps } from './app-navigation-side-bar-menu-icon-maps'
 
 const drawerWidth = 240
@@ -37,12 +38,12 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 function AppNavigationSideBar() {
     const theme = useTheme()
     const { isExtraLargeSizeUp } = useGlobalMediaQuery()
-    const appGlobalState = useHookstate(appHookState)
+    const snapMisc = useSnapshot(globalStore.misc)
     const sideBarLocalState = useHookstate({
         selectedControlId: 0,
         expandedControlId: 0,
     })
-    const menu = appGlobalState.misc.sideBarMenu.get()
+    const menu = snapMisc.sideBarMenu
 
     return (
         <Drawer
@@ -62,7 +63,7 @@ function AppNavigationSideBar() {
             variant="persistent"
             anchor="left"
             transitionDuration={300}
-            open={appGlobalState.misc.open.get()}>
+            open={snapMisc.open}>
             <DrawerHeader
                 sx={{
                     display: 'flex',
@@ -144,7 +145,7 @@ function AppNavigationSideBar() {
                             }
                             timeout="auto"
                             unmountOnExit>
-                            <List                                
+                            <List
                                 disablePadding
                                 component="div"
                                 sx={{ pl: theme.spacing(2), pt: 0 }}>
@@ -174,14 +175,14 @@ function AppNavigationSideBar() {
 
     function handleDrawerCloseIfRequired() {
         if (!isExtraLargeSizeUp) {
-            if (appGlobalState.misc.open.get()) {
-                appGlobalState.misc.open.set(false)
+            if (snapMisc.open) {
+                globalStore.misc.open = false
             }
         }
     }
 
     function handleDrawerClose() {
-        appGlobalState.misc.open.set(false)
+        globalStore.misc.open = false
     }
 
     function handleListItemButtonclick(item: any) {
@@ -193,7 +194,7 @@ function AppNavigationSideBar() {
             sideBarLocalState.expandedControlId.set(expandedControlId)
         } else {
             sideBarLocalState.selectedControlId.set(item.controlId)
-            appGlobalState.misc.currentComponentName.set(item.componentName)
+            globalStore.misc.currentComponentName = item.componentName
             handleDrawerCloseIfRequired()
         }
     }

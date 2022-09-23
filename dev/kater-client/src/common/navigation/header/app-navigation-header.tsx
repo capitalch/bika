@@ -1,5 +1,6 @@
+import { LoginContent } from '../../../modules/app-entry/login/login-content'
+import { WelcomeContent } from '../../../modules/app-entry/login/welcome-content'
 import {
-    appHookState,
     ArrowDropDownIcon,
     Box,
     Button,
@@ -10,13 +11,15 @@ import {
     PersonIcon,
     styled,
     Toolbar,
-    useHookstate,
     useTheme,
-    UserLoginWelcome,
     Typography,
-} from '../../../misc/redirect'
+    useSnapshot,
+    globalStore,
+    AppMaterialDialog,
+    useEffect,
+    showDialog,
+} from '../../misc/redirect'
 import { sideBarMainMenu } from '../side-bar/app-navigation-side-bar-menus'
-
 const drawerWidth = 240
 const AppBar: any = styled(
     MuiAppBar,
@@ -37,13 +40,25 @@ const AppBar: any = styled(
 }))
 
 function AppNavigationHeader() {
-    const appGlobalState = useHookstate(appHookState)
+    const snapLoginInfo = useSnapshot(globalStore.loginInfo)
+    const snapMisc = useSnapshot(globalStore.misc)
     const theme = useTheme()
-    const userMap: any = { 'S': 'Super admin', 'A': 'Admin', 'B': 'Business user' }
-    const userType: string = appGlobalState.loginInfo.userType.get() || ''
-    const userTypeName = userMap[userType] || ''
+    const userMap: any = { S: 'Super admin', A: 'Admin', B: 'Business user' }
+    const userType: string = snapLoginInfo.userType || ''
+    const userTypeName = userMap[userType || ''] || ''
+
+    useEffect(() => {
+        if (!snapLoginInfo.isLoggedIn) {
+            showDialog({
+                title: 'User login',
+                isClosable: false,
+                content: LoginContent,
+            })
+        }
+    })
+
     return (
-        <AppBar position="fixed" open={appGlobalState.misc.open.get()}>
+        <AppBar position="fixed" open={snapMisc.open}>
             <Toolbar>
                 <IconButton
                     color="inherit"
@@ -52,7 +67,7 @@ function AppNavigationHeader() {
                     edge="start"
                     sx={{
                         mr: 2,
-                        ...(appGlobalState.misc.open.get() && {
+                        ...(snapMisc.open && {
                             display: 'none',
                         }),
                     }}>
@@ -70,12 +85,17 @@ function AppNavigationHeader() {
                         variant="menuButton"
                         size="large"
                         onClick={handleCateringClick}>
-                        {appGlobalState.misc.headerMainMenuName.get()}
+                        {snapMisc.headerMainMenuName}
                     </Button>
                     <Box>
-                        <Typography variant='body2' component='span' color='beige'>{userTypeName}</Typography>
+                        <Typography
+                            variant="body2"
+                            component="span"
+                            color="beige">
+                            {userTypeName}
+                        </Typography>
                         <IconButton onClick={handleLogoutClick}>
-                            {appGlobalState.loginInfo.isLoggedIn.get() ? (
+                            {snapLoginInfo.isLoggedIn ? (
                                 <LogoutIcon
                                     sx={{
                                         color: theme.palette.common.white,
@@ -93,30 +113,34 @@ function AppNavigationHeader() {
                     </Box>
                 </Box>
             </Toolbar>
-            <UserLoginWelcome />
+            <AppMaterialDialog />
         </AppBar>
     )
 
     function handleCateringClick() {
-        appGlobalState.misc.sideBarMenu.set(sideBarMainMenu)
+        globalStore.misc.sideBarMenu = sideBarMainMenu
     }
 
     function handleLogoutClick() {
-        appGlobalState.dialog.showDialog.set(true)
+        showDialog({
+            title: `Welcome ${snapLoginInfo.uid}`,
+            content: WelcomeContent,
+            isClosable: true,
+        })
     }
 
     function handleDrawerOpen() {
         // Drawer can only be opened if user logged in and not super admin
-        // const userType = appGlobalState.loginInfo.userType.get()
-        if (appGlobalState.loginInfo.isLoggedIn.get() && (!isSuperAdmin())) {
-            appGlobalState.misc.open.set(true)
+        // const userType = appglobalStore.loginInfo.userType.get()
+        if (snapLoginInfo.isLoggedIn && !isSuperAdmin()) {
+            globalStore.misc.open = true
         } else {
-            // appGlobalState.dialog.showDialog.set(true)
+            // appglobalStore.dialog.showDialog.set(true)
         }
     }
 
     function isSuperAdmin() {
-        return (appGlobalState.loginInfo.userType.get() === 'S')
+        return snapLoginInfo.userType === 'S'
     }
 }
 export { AppNavigationHeader }

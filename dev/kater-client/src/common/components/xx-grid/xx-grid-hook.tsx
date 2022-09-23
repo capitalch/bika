@@ -1,58 +1,41 @@
-import { getRowsWithSwappedId } from '../../../misc/global-utils'
+import { getRowsWithSwappedId } from '../../misc/global-utils'
+
 import {
     _,
     Box,
     DeleteForeverIcon,
     EditIcon,
+    globalStore,
     GridCellParams,
-    GridToolbarContainer,
     IconButton,
     PrintIcon,
-    Typography,
-    SyncSharpIcon,
     SxProps,
     useTheme,
-    GridToolbarColumnsButton,
-    Checkbox,
-    TextField,
-    SearchIcon,
-    CloseIcon,
-    If,
-    Then,
-    GridToolbarFilterButton,
-    GridToolbarExport,
-    useGlobalMediaQuery,
-    AddCircleIcon,
     useConfirm,
     messages,
     appGraphqlStrings,
     getPayloadFromGraphqlObject,
-    useHookstate,
-    appHookState,
     useAppGraphql,
     useEffect,
-    useRef,
-    // useState,
     filterOn,
     debounceFilterOn,
     ibukiMessages,
-    debounceEmit,
-} from '../../../misc/redirect'
+    useState,
+} from '../../misc/redirect'
 import { XXGridOptions } from './xx-grid'
 
 function useXXGrid(xxGridOptions: XXGridOptions) {
-    const meta: any = useRef({
-        rows: []
-    })
     const columns = _.cloneDeep(xxGridOptions.columns)
     const theme = useTheme()
     const confirm = useConfirm()
     const { queryGraphql } = useAppGraphql()
-    const appGlobalState = useHookstate(appHookState)
+    const [filteredRows, setFilteredRows] = useState([])
 
     useEffect(() => {
-        if (xxGridOptions.xxGridState.rows.get().length === 0) {
+        if (xxGridOptions.xxGridState.rows.length === 0) {
             xxGridOptions.fetchData ? xxGridOptions.fetchData() : fetchData()
+        } else {
+            requestSearch()
         }
         let subs1: any
         if (xxGridOptions.fetchDataIbukiMessage) {
@@ -78,8 +61,8 @@ function useXXGrid(xxGridOptions: XXGridOptions) {
 
     async function fetchData() {
         const gridState = xxGridOptions.xxGridState
-        appGlobalState.misc.showLoadingDialog.set(true)
-        const rowsViewLimit = gridState.rowsViewLimit.get()
+        globalStore.misc.showLoadingDialog = true
+        const rowsViewLimit = gridState.rowsViewLimit
         const q = appGraphqlStrings['genericView']({
             sqlKey: xxGridOptions.sqlKey,
             args: {
@@ -90,14 +73,9 @@ function useXXGrid(xxGridOptions: XXGridOptions) {
         const ret = await queryGraphql(q)
         const data: any[] = getPayloadFromGraphqlObject(ret, 'genericView')
         const rows: any = getRowsWithSwappedId(data)
-        meta.current.rows = rows
-        const filteredRows: any = rows.map((x: any) => ({ ...x }))
-
-        gridState.rows.set([])
-        if (data.length > 0) {
-            gridState.rows.set(filteredRows)
-        }
-        appGlobalState.misc.showLoadingDialog.set(false)
+        gridState.rows = rows
+        requestSearch()
+        globalStore.misc.showLoadingDialog = false
     }
 
     function preProcess() {
@@ -161,7 +139,6 @@ function useXXGrid(xxGridOptions: XXGridOptions) {
                             <IconButton
                                 size="small"
                                 color="success"
-                                // className="delete"
                                 disabled={!!xxGridOptions.isPrintPreviewDisabled}
                                 onClick={() =>
                                     xxGridOptions.printPreviewMethod
@@ -231,18 +208,10 @@ function useXXGrid(xxGridOptions: XXGridOptions) {
 
     async function requestSearch() {
         const gridState = xxGridOptions.xxGridState
-        const searchString = xxGridOptions.xxGridState.searchString.get()
-        if (searchString) {
-            const arr = searchString.toLowerCase().split(/\W/).filter((x: any) => x) // filter used to remove emty elements
-            const filteredRows = meta.current.rows.filter((row: any) => arr.every((x: string) => Object.values(row).toString().toLowerCase().includes(x.toLowerCase())))
-            gridState.rows.set([])
-            gridState.rows.set(filteredRows)
-            // xxGridOptions.xxGridState.set({
-            //     rows:filteredRows,
-            //     rowsViewLimit:100,
-            //     searchString: 'b'
-            // })
-        }
+        const searchString = xxGridOptions.xxGridState.searchString
+        const arr = searchString.toLowerCase().split(/\W/).filter((x: any) => x) // filter used to remove emty elements
+        const fRows = gridState.rows.filter((row: any) => arr.every((x: string) => Object.values(row).toString().toLowerCase().includes(x.toLowerCase())))
+        setFilteredRows(fRows)
     }
 
     const sxStyles: SxProps = {
@@ -288,6 +257,6 @@ function useXXGrid(xxGridOptions: XXGridOptions) {
         },
     }
 
-    return { columns, fetchData, requestSearch, sxStyles }
+    return { columns, fetchData, filteredRows, requestSearch, sxStyles }
 }
 export { useXXGrid }

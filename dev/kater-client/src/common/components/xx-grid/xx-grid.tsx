@@ -1,9 +1,9 @@
-import { DataGridPro,} from '../../../misc/redirect'
+import { DataGridPro, } from '../../misc/redirect'
 import { useXXGrid } from './xx-grid-hook'
 import { XXGridToolbar } from './xx-grid-toolbar'
 
 function XXGrid(xxGridOptions: XXGridOptions) {
-    const { columns, fetchData, requestSearch, sxStyles } =
+    const { columns, fetchData, filteredRows,requestSearch, sxStyles } =
         useXXGrid(xxGridOptions)
 
     return (
@@ -14,7 +14,7 @@ function XXGrid(xxGridOptions: XXGridOptions) {
             density="compact"
             disableColumnMenu={true}
             disableSelectionOnClick={true}
-            rows={xxGridOptions.xxGridState.rows.get()}
+            rows={filteredRows}
             showCellRightBorder={true}
             showColumnRightBorder={true}
             sx={sxStyles}
@@ -54,7 +54,7 @@ interface XXGridOptions {
     isDeleteDisabled?: boolean
     isPrintPreviewDisabled?: boolean
     toShowViewLimit?: boolean
-    // rows: any[]
+
     sqlKey?: string
     sqlArgs?: any
     subTitle?: string
