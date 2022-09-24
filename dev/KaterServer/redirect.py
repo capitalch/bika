@@ -13,7 +13,7 @@ from werkzeug import exceptions
 from datetime import datetime
 from urllib.parse import unquote
 import demjson3 as demjson
-
+from itertools import repeat
 from core.logger import logger
 
 from core.generic_classes import GenericException

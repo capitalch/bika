@@ -34,12 +34,17 @@ function useSuperAdminClientsForm() {
     async function onSubmit() {
         const err = checkErrors().checkAllErrors()
         if (!err) {
-            const data = {
-                clientName: snapForm.clientName,
-                shortCode: snapForm.shortCode,
-                isActive: snapForm.isActive
-            }
-            const q = appGraphqlStrings.genericUpdate(data)
+            const sqlObject = {
+                tableName:'ClientM',
+                generateId:true,
+                idTableName: 'LastIdCounter',
+                data:{
+                    clientName: snapForm.clientName,
+                    shortCode: snapForm.shortCode,
+                    isActive: snapForm.isActive
+                }
+            } 
+            const q = appGraphqlStrings.genericUpdate(sqlObject)
 
             const ret = await mutateGraphql(q)
             console.log(ret)

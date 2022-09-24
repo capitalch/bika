@@ -1,6 +1,6 @@
 from redirect import allSqls, base64, bcrypt, config, datetime, demjson, entryDbName, GenericException, jwt, logger, messages, timezone, unquote
 from .graphql_sub_worker import getClientServerTimeDiff, raiseGenericException, raiseGenericExceptionFn, validateTokenAndGetPayload
-from .postgres import execSql
+from .postgres import execSql, execSqlObject
 
 
 def context_value(request):
@@ -90,10 +90,15 @@ def processGenericUpdate(context, value):
         if(operationName == 'appEntry'):
             context['dbName'] = entryDbName
         # No sql key is required for update. valueDict is the args
-        
-        pass
+        ret = execSqlObject(context, sqlObject)
+        return(ret)
     except Exception as error:
-        raiseGenericExceptionFn('errProcessGenericUpdate', error.message)        
+        message = ''
+        if(hasattr(error, 'message')):
+            message = error.message
+        elif(hasattr(error,'args')):
+            message = error.args[0]
+        raiseGenericExceptionFn('errProcessGenericUpdate', message)        
 
 
 def processGenericView(context, value):
