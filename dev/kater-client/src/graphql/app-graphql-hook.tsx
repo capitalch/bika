@@ -5,7 +5,7 @@ import {
     HttpLink,
 } from '@apollo/client'
 import { Exception } from 'sass'
-import { globalStore, messages, urlJoin } from '../common/misc/redirect'
+import { globalStore, messages, showErrorMessage, urlJoin } from '../common/misc/redirect'
 // import _ from 'lodash'
 
 function useAppGraphql() {
@@ -49,8 +49,7 @@ function useAppGraphql() {
             error?.networkError?.result?.message ||
             error.message ||
             messages.errFetch
-        globalStore.errorMessage.show = true
-        globalStore.errorMessage.message = error.message
+        showErrorMessage({message:error.message})
         console.log(error)
         throw error
     }

@@ -9,6 +9,14 @@ const appStore = {
         showDialog: false,
         title: '',
     },
+
+    dialog1: {
+        content: () => <></>,
+        isClosable: true,
+        showDialog: false,
+        title: '',
+    },
+
     resetDialog: () => {
         globalStore.dialog.content = () => <></>
         globalStore.dialog.isClosable = true

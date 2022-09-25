@@ -11,6 +11,7 @@ const superAdmin = {
             clientName: '',
             clientNameError: '',
             id: undefined,
+            isEditMode: false,
             remarks: '',
             serverError: '',
             shortCode: '',
@@ -22,6 +23,7 @@ const superAdmin = {
             superAdminStore.clients.form.clientName = ''
             superAdminStore.clients.form.clientNameError = ''
             superAdminStore.clients.form.id = undefined
+            superAdminStore.clients.form.isEditMode= false
             superAdminStore.clients.form.remarks = ''
             superAdminStore.clients.form.serverError = ''
             superAdminStore.clients.form.shortCode = ''

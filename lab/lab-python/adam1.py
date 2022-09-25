@@ -1,5 +1,5 @@
-value1 = {}
-value2 = value1.message if(value1 and ('x' in value1)) else ''
+from psycopg2.extensions import AsIs
+
 
 # U2FsdGVkX1//GZNe8k1rlXJDbvfHU4H99lHLbduy5Fll+KToIkF8I4nLQxJ2P/b3
 # from Crypto import Random

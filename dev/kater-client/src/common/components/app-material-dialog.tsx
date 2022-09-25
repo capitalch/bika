@@ -6,23 +6,22 @@ import {
     globalStore,
     IconButton,
     If,
+    MaterialDialog,
     Then,
     Typography,
-    useSnapshot,
 } from '../misc/redirect'
 
-function AppMaterialDialog() {
-    const snap = useSnapshot(globalStore.dialog)
+function AppMaterialDialog({ Content, isClosable, showDialog, title }: MaterialDialog) {    
     return (
-        <Dialog open={snap.showDialog}>
+        <Dialog open={showDialog}>
             <DialogTitle
                 sx={{
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
                 }}>
-                <Typography variant='dialogTitle'>{snap.title}   </Typography>
-                <If condition={globalStore.dialog.isClosable}>
+                <Typography variant='dialogTitle'>{title}   </Typography>
+                <If condition={isClosable}>
                     <Then>
                         <IconButton
                             sx={{ mr: -1.8 }}
@@ -36,7 +35,7 @@ function AppMaterialDialog() {
                 </If>
             </DialogTitle>
             <DialogContent>
-                <globalStore.dialog.content />
+                <Content />
             </DialogContent>
         </Dialog>
     )

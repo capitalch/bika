@@ -18,7 +18,7 @@ function SuperAdminClients() {
         <Box>
             <Button
                 onClick={() => {
-                    emit(ibukiMessages.xxGridFetchData, '')
+                    emit(ibukiMessages.superAdminClientsXXGridFetchData, '')
                 }}>
                 Fetch data
             </Button>
@@ -28,7 +28,7 @@ function SuperAdminClients() {
                 deleteMethod={deleteMethod}
                 editMethod={editMethod}
                 // fetchData={fetchData}
-                fetchDataIbukiMessage={ibukiMessages.xxGridFetchData}
+                fetchDataIbukiMessage={ibukiMessages.superAdminClientsXXGridFetchData}
                 toShowViewLimit={true}
                 isToolbarColumnsButton={true}
                 isToolbarExportButton={true}
@@ -45,6 +45,7 @@ function SuperAdminClients() {
 
     function addMethod() {
         superAdminStore.clients.resetForm()
+        superAdminStore.clients.form.isEditMode= false
         showDialog({
             title:'New client',
             content:SuperAdminClientForm
@@ -56,6 +57,7 @@ function SuperAdminClients() {
         superAdminStore.clients.resetForm()
         const clientForm = superAdminStore.clients.form
         clientForm.id = row.id1
+        clientForm.isEditMode = true
         clientForm.clientName = row.clientName
         clientForm.shortCode = row.shortCode
         clientForm.remarks = row.remarks

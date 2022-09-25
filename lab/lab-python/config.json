@@ -1,0 +1,36 @@
+{
+    "env": "local",
+    "local": {
+        "url": "http://localhost:5000"
+    },
+    "staging": {
+        "url": "https://stage.cloudjiffy.net"
+    },
+    "development": {
+        "url": "https://develop.cloudjiffy.net"
+    },
+    "production": {
+        "url": "https://flask.cloudjiffy.net"
+    },
+    "baseConnection": {
+        "user": "webadmin",
+        "password": "KTAgnn15797",
+        "host": "node113022-kater-db.cloudjiffy.net",
+        "port": "11301",
+        "database": ""
+    },
+    "authentication": {
+        "superAdmin": {
+            "uid": "superAdmin",
+            "email": "a@a.com",
+            "hash": "$2a$12$U.FiHvgtQYcT8DJVxYTni.0uzgWQK8GXPX60uBYopmuJ0.0ZgYaiy"
+        },
+        "jwt": {
+            "secret": "secret",
+            "algorithm": "HS256",
+            "expiryInWeeks": 1
+        },
+        "entryDbName":"appEntry"
+    },
+    "comments": "Super admin uid:password is superAdmin:superAdmin@123"
+}

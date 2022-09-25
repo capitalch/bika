@@ -122,6 +122,9 @@ export {
     getRowsWithSwappedId,
     loadComponent,
     showDialog,
+    showErrorMessage,
+    showSuccessMessage
 } from './global-utils'
 export { globalStore } from '../../stores/global-store'
 export { proxy, useSnapshot } from 'valtio'
+export { type ErrorMessage, type MaterialDialog, type SqlObject } from './interfaces'

@@ -1,5 +1,4 @@
-from redirect import config,  getSchemaSearchPath, global_settings, logger, messages, psycopg2,  RealDictCursor, repeat
-from psycopg2 import pool
+from redirect import allSqls, AsIs, config, demjson,  getSchemaSearchPath, global_settings, json, jsonify, logger, messages, pool, psycopg2, RealDictCursor, repeat
 from core.generic_classes import GenericException
 
 poolStore = {}
@@ -8,11 +7,14 @@ poolStore = {}
 def execSql(context, sqlString, args=None, isMultipleRows=True,  autoCommitMode=False, schema='public'):
     out = None
     connection = None
-    dbName = context['dbName']
+    dbName = context.get('dbName', None)
+    cursor = context.get('cursor', None)
+    connection = context.get('connection', None)
     searchPathSql = getSchemaSearchPath(schema)
     try:
-        connection, cursor, pool = getConnectionCursor(dbName,
-                                                       autoCommitMode)
+        if ((cursor is None) or (connection is None)):
+            connection, cursor, pool = getConnectionCursor(dbName,
+                                                           autoCommitMode)
         cursor.execute(f'{searchPathSql};{sqlString}', args)
         try:
             if isMultipleRows:
@@ -37,28 +39,42 @@ def execSql(context, sqlString, args=None, isMultipleRows=True,  autoCommitMode=
             connection.close()
     return out
 
-# details always has data. The data may not have details
+# details always has 'data' object. The data may not have 'details' object
 
 
-def execSqlObject(context, sqlObject, fkeyValue=None):
+def execSqlObject(context, sqlObject, fkeyValue=None, schema='public'):
     ret = None
     dbName = context['dbName']
-    _, cursor, _ = getConnectionCursor(dbName)
+    connection, cursor, _ = getConnectionCursor(dbName)
     context['cursor'] = cursor
+    context['connection'] = connection
+    context['schema'] = schema
     try:
-        if 'deletedIds' in sqlObject:
-            processDeletedIds(context, sqlObject)
-        data = sqlObject.get('data', None)
-        if (data):
-            if type(data) is list:
-                for dat in data:
-                    ret = processData(context, dat, sqlObject, fkeyValue)
-            else:
-                ret = processData(context, data, sqlObject, fkeyValue)
-
+        ret = execSqlObjectWorker(context, sqlObject, fkeyValue)
+        connection.commit()
     except (Exception) as error:
+        if (connection):
+            connection.rollback()
         raise Exception(error)
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()
 
+    return (ret)
+
+
+def execSqlObjectWorker(context, sqlObject, fkeyValue):
+    ret = None
+    if 'deletedIds' in sqlObject:
+        processDeletedIds(context, sqlObject)
+    data = sqlObject.get('data', None)
+    if (data):
+        if type(data) is list:
+            for dataItem in data:
+                ret = processData(context, sqlObject, dataItem,  fkeyValue)
+        else:
+            ret = processData(context, sqlObject, data, fkeyValue)
     return (ret)
 
 
@@ -71,8 +87,37 @@ def getConnectionCursor(dbName, autoCommitMode=False):
     return connection, cursor, pool
 
 
-def getInsertSql(data, tableName, fkeyName, fkeyValue):
+def getGeneratedId(context, sqlObject):
+    id = None
+    schema = context.get('schema')
+    cursor = context.get('cursor')
+    idGeneratorTableName = ''
+    tableName = sqlObject.get('tableName', None)
+    searchPathSql = getSchemaSearchPath(schema)
+    if (sqlObject.get('generateId', None)):
+        idGeneratorTableName = sqlObject.get('idGeneratorTableName', '')
+    if (idGeneratorTableName):
+        sqlString = allSqls['get-generated-id']
+        paramsDict = {
+            'idGeneratorTableName': AsIs(f'"{idGeneratorTableName}"'),
+            'tableName': tableName
+        }
+        # ret = cursor.mogrify(f'{searchPathSql};{sqlString}', paramsDict)
+        # print(ret)
+        cursor.execute(f'{searchPathSql};{sqlString}', paramsDict)
+        record = cursor.fetchone()
+        jsonString = json.dumps(record)
+        jsonObj = json.loads(jsonString)
+        id = jsonObj.get('id', None)
+    return (id)
+
+
+def getInsertSql(sqlObject, data, fkeyValue):
+    tableName = sqlObject.get('tableName')
+    # cursor = context.get('cursor')
+    fkeyName = sqlObject.get('fkeyName')
     fieldsList = list(data.keys())
+
     if fkeyName and fkeyValue:
         fieldsList.append(fkeyName)
 
@@ -99,35 +144,39 @@ def getPool(dbName):
     return poolStore[dbName]
 
 
-def getSql(sqlObject, fkeyValue):
+def getSql(context, sqlObject, fkeyValue):
     sql = None
     valuesTuple = None
     data = sqlObject.get('data')
     updateCodeBlock = sqlObject.get('updateCodeBlock', None)
     customCodeBlock = sqlObject.get('customCodeBlock', None)
     insertCodeBlock = sqlObject.get('insertCodeBlock', None)
+
+    id = getGeneratedId(context, sqlObject)
+    if (id):  # generated id from LastIdTable
+        data['id'] = id
+        sqlObject['idInsert'] = True
+
     if (customCodeBlock):
         sql, valuesTuple = (customCodeBlock, data)
     elif (data.get('id', None)):
         if (updateCodeBlock):
             sql, valuesTuple = (updateCodeBlock, data)
         elif sqlObject.get('idInsert'):
-            sql, valuesTuple = getInsertSql(data.copy(), sqlObject.get(
-                'tableName'), sqlObject.get('fkeyName'), fkeyValue)
+            sql, valuesTuple = getInsertSql(sqlObject, data.copy(), fkeyValue)
         else:
             sql, valuesTuple = getUpdateSql(data, sqlObject.get('tableName'))
     else:
         if (insertCodeBlock):
             sql, valuesTuple = (insertCodeBlock, data)
         else:
-            sql, valuesTuple = getInsertSql(data.copy(), sqlObject.get(
-                'tableName'), sqlObject.get('fkeyName'), fkeyValue)
+            sql, valuesTuple = getInsertSql(sqlObject, data.copy(), fkeyValue)
     return (sql, valuesTuple)
 
 
 def getUpdateSql(data, tableName):
     def getUpdateKeyValues(dataCopy):
-        idValue = dataCopy['id']
+        # idValue = dataCopy['id']
         dataCopy.pop('id')  # remove id property
         str = ''
         for it in dataCopy:
@@ -144,22 +193,48 @@ def getUpdateSql(data, tableName):
     return (sql, valuesTuple)
 
 
-def processData(context, data, sqlObject, fkeyValue):
+def updateLastId(context, sqlObject, data):
+    sqlString = allSqls['update-last-id']
+    cursor = context.get('cursor')
+    lastId = data.get('id', None)
+    schema = context.get('schema')
+    idGeneratorTableName = sqlObject.get('idGeneratorTableName')
+    searchPathSql = getSchemaSearchPath(schema)
+    paramsObj = {
+        'idGeneratorTableName': AsIs(f'"{idGeneratorTableName}"'),
+        'lastId': lastId,
+        'tableName': sqlObject.get('tableName')
+    }
+    # print(cursor.mogrify(f'{searchPathSql};{sqlString}', paramsObj))
+    cursor.execute(f'{searchPathSql};{sqlString}', paramsObj)
+    print(1)
+
+
+def processData(context, sqlObject, data,  fkeyValue):
     id = None
     cursor = context.get('cursor')
-    sql, tup = getSql(sqlObject, fkeyValue)
+    schema = context.get('schema')
+    searchPathSql = getSchemaSearchPath(schema)
+    sql, tup = getSql(context, sqlObject, fkeyValue)
+    # sql = '''update "ClientM" set "clientName" ='demo1' where id = 1 returning id'''
     if (sql):
-        cursor.execute(sql, tup)
+        cursor.execute(f'{searchPathSql};{sql}', tup)
         if (cursor.rowcount > 0):
             record = cursor.fetchone()
-            id = record[0]
-    details = data.pop(details, None)
+            jsonString = demjson.encode(record)
+            jsonObj = demjson.decode(jsonString)
+            id = jsonObj.get('id', None)
+
+            if (sqlObject.get('idGeneratorTableName', None) and (sqlObject.get('generateId', None))):
+                updateLastId(context, sqlObject, data)
+    # details = data.pop(details, None)
+    details = data.get('details', None)
     if (details):
         if (type(details) is list):
-            for detail in details:
-                execSqlObject(context, detail, id)
+            for detailsItem in details:
+                execSqlObjectWorker(context, detailsItem, id)
         else:
-            execSqlObject(context, details, id)
+            execSqlObjectWorker(context, details, id)
     return (id)
 
 

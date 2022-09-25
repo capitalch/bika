@@ -1,4 +1,4 @@
-import { appGraphqlStrings, closeDialog, globalValidators, SxProps, useAppGraphql, useSnapshot, useTheme } from '../../../common/misc/redirect'
+import { appGraphqlStrings, closeDialog, emit, globalValidators, ibukiMessages, showSuccessMessage, SqlObject, SxProps, useAppGraphql, useSnapshot, useTheme } from '../../../common/misc/redirect'
 import { superAdminStore } from '../../../stores/super-admin-store'
 function useSuperAdminClientsForm() {
     const theme = useTheme()
@@ -34,20 +34,28 @@ function useSuperAdminClientsForm() {
     async function onSubmit() {
         const err = checkErrors().checkAllErrors()
         if (!err) {
-            const sqlObject = {
-                tableName:'ClientM',
-                generateId:true,
-                idTableName: 'LastIdCounter',
-                data:{
+            const sqlObject: SqlObject = {
+                tableName: 'ClientM',
+                generateId: snapForm.id ? false : true,
+                idGeneratorTableName: 'IdGeneratorTable',
+                data: {
+                    id: snapForm.id,
                     clientName: snapForm.clientName,
+                    remarks: snapForm.remarks,
                     shortCode: snapForm.shortCode,
-                    isActive: snapForm.isActive
+                    isActive: snapForm.isActive,
                 }
-            } 
+            }
+            if(!snapForm.isEditMode){
+                sqlObject.data.dbName = sqlObject.data.shortCode.concat('_db')
+            }
+            
             const q = appGraphqlStrings.genericUpdate(sqlObject)
 
             const ret = await mutateGraphql(q)
             console.log(ret)
+            showSuccessMessage()
+            emit(ibukiMessages.superAdminClientsXXGridFetchData,'')
             // proceed for save
             // clientForm.serverError = 'abcd'
             superAdminStore.clients.resetForm()

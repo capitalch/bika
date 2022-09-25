@@ -12,7 +12,7 @@ allSqls = {
     ''',
 
     "get-generated-id":'''
-       insert into %(idGeneratorTableName)s ("tableName", "lastId")
+        insert into %(idGeneratorTableName)s ("tableName", "lastId")
             select %(tableName)s as "tableName", 0 as "lastId"
                 where not exists(select 1 from %(idGeneratorTableName)s where "tableName" = %(tableName)s);
             select "lastId" + 1 as "id" from %(idGeneratorTableName)s
@@ -20,10 +20,14 @@ allSqls = {
     ''',
 
     'update-last-id':'''
-        update %(idGeneratorTableName)s
+        update %(generateIdTableName)s
             set "lastId" = %(lastId)s
-                where "tableName" = %(tableName)s
+                where "tableName" = 'ClientM'
+    ''',
+
+    'update-last-id1':'''
+        update {table}
+            set "lastId" = %s
+                where "tableName" = 'ClientM'
     '''
 }
-
-# --LOCK TABLE "IdGeneratorTable" IN ACCESS EXCLUSIVE MODE;

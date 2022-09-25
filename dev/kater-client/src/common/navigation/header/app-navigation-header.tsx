@@ -15,7 +15,6 @@ import {
     Typography,
     useSnapshot,
     globalStore,
-    AppMaterialDialog,
     useEffect,
     showDialog,
 } from '../../misc/redirect'
@@ -42,6 +41,8 @@ const AppBar: any = styled(
 function AppNavigationHeader() {
     const snapLoginInfo = useSnapshot(globalStore.loginInfo)
     const snapMisc = useSnapshot(globalStore.misc)
+    // const snapDialog = useSnapshot(globalStore.dialog)
+    // const snapDialog1 = useSnapshot(globalStore.dialog1) // 2nd dialog
     const theme = useTheme()
     const userMap: any = { S: 'Super admin', A: 'Admin', B: 'Business user' }
     const userType: string = snapLoginInfo.userType || ''
@@ -112,8 +113,7 @@ function AppNavigationHeader() {
                         </IconButton>
                     </Box>
                 </Box>
-            </Toolbar>
-            <AppMaterialDialog />
+            </Toolbar>            
         </AppBar>
     )
 

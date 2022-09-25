@@ -1,4 +1,4 @@
 {
-    "xxGridFetchData":"XX-GRID-HOOK:fetchData",
+    "superAdminClientsXXGridFetchData":"SUPER-ADMIN-CLIENTS:XX-GRID-HOOK:fetchData",
     "xxGridSearchDebounce":"XX-GRID-SEARCH-DEBOUNCE"
 }

@@ -1,5 +1,6 @@
-import { globalStore, styled, useSnapshot } from '../../misc/redirect'
+import { AppMaterialDialog, globalStore, styled, useSnapshot } from '../../misc/redirect'
 import { AppErrorMessage } from '../../components/app-error-message'
+import { AppSuccessMessage } from '../../components/app-success-message'
 
 const drawerWidth = 240
 const Main: any = styled(
@@ -32,11 +33,16 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }))
 function AppNavigationMain({ open }: any) {
     const snapMisc = useSnapshot(globalStore.misc)
+    const snapDialog = useSnapshot(globalStore.dialog)
+    const snapDialog1 = useSnapshot(globalStore.dialog1) // 2nd dialog
     return (
         <Main open={snapMisc.open}>
             <DrawerHeader />
             <globalStore.misc.currentComponent />
+            <AppMaterialDialog Content={snapDialog.content} isClosable={snapDialog.isClosable} showDialog={snapDialog.showDialog} title={snapDialog.title} />
+            <AppMaterialDialog Content={snapDialog1.content} isClosable={snapDialog1.isClosable} showDialog={snapDialog1.showDialog} title={snapDialog1.title} />
             <AppErrorMessage />
+            <AppSuccessMessage />
         </Main>
     )
 }

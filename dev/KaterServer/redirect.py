@@ -2,6 +2,9 @@
 from data_handlers.sql import allSqls
 from psycopg2.extras import RealDictCursor
 import psycopg2
+from psycopg2 import pool
+from psycopg2.extensions import AsIs
+# from psycopg2 import sql as psycopg2Sql
 import bcrypt
 import jwt
 import simplejson as json

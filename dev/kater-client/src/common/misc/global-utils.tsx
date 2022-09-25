@@ -1,16 +1,16 @@
-import { globalStore, produce } from './redirect'
+import { ErrorMessage, globalStore, produce } from './redirect'
 const Cryptojs = require('crypto-js')
 
-function changeState( state:any, setState:any, changeObj:any ) {
-    const newState:any = produce(state, (draft:any)=>{
-        for (const prop in changeObj){
+function changeState(state: any, setState: any, changeObj: any) {
+    const newState: any = produce(state, (draft: any) => {
+        for (const prop in changeObj) {
             draft[prop] = changeObj[prop]
         }
     })
     setState(newState)
 }
 
-function closeDialog(){
+function closeDialog() {
     globalStore.dialog.showDialog = false
 }
 
@@ -61,6 +61,15 @@ function showDialog({
     globalStore.dialog.showDialog = true
 }
 
+function showErrorMessage(errorMessage: ErrorMessage) {
+    globalStore.errorMessage.message = errorMessage.message
+    globalStore.errorMessage.show = true
+}
+
+function showSuccessMessage(){
+    globalStore.successMessage.show=true
+}
+
 export {
     changeState,
     closeDialog,
@@ -69,4 +78,6 @@ export {
     getRowsWithSwappedId,
     loadComponent,
     showDialog,
+    showErrorMessage,
+    showSuccessMessage
 }
