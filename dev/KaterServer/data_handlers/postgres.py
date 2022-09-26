@@ -39,7 +39,7 @@ def execSql(context, sqlString, args=None, isMultipleRows=True,  autoCommitMode=
             connection.close()
     return out
 
-# details always has 'data' object. The data may not have 'details' object
+# xDetails always has 'xData' object. The xData may not have 'xDetails' object
 
 
 def execSqlObject(context, sqlObject, fkeyValue=None, schema='public'):
@@ -68,13 +68,13 @@ def execSqlObjectWorker(context, sqlObject, fkeyValue):
     ret = None
     if 'deletedIds' in sqlObject:
         processDeletedIds(context, sqlObject)
-    data = sqlObject.get('data', None)
-    if (data):
-        if type(data) is list:
-            for dataItem in data:
-                ret = processData(context, sqlObject, dataItem,  fkeyValue)
+    xData = sqlObject.get('xData', None)
+    if (xData):
+        if type(xData) is list:
+            for item in xData:
+                ret = processData(context, sqlObject, item,  fkeyValue)
         else:
-            ret = processData(context, sqlObject, data, fkeyValue)
+            ret = processData(context, sqlObject, xData, fkeyValue)
     return (ret)
 
 
@@ -112,10 +112,10 @@ def getGeneratedId(context, sqlObject):
     return (id)
 
 
-def getInsertSql(sqlObject, data, fkeyValue):
+def getInsertSql(sqlObject, xData, fkeyValue):
     tableName = sqlObject.get('tableName')
     fkeyName = sqlObject.get('fkeyName')
-    fieldsList = list(data.keys())
+    fieldsList = list(xData.keys())
 
     if fkeyName and fkeyValue:
         fieldsList.append(fkeyName)
@@ -125,7 +125,7 @@ def getInsertSql(sqlObject, data, fkeyValue):
         fieldsList))  # surround fields with ""
     placeholdersForValues = ', '.join(list(repeat('%s', fieldsCount)))
 
-    valuesList = list(data.values())
+    valuesList = list(xData.values())
     if fkeyName and fkeyValue:
         valuesList.append(fkeyValue)
     valuesTuple = tuple(valuesList)
@@ -146,34 +146,34 @@ def getPool(dbName):
 def getSql(context, sqlObject, fkeyValue):
     sql = None
     valuesTuple = None
-    data = sqlObject.get('data')
+    xData = sqlObject.get('xData')
     updateCodeBlock = sqlObject.get('updateCodeBlock', None)
     customCodeBlock = sqlObject.get('customCodeBlock', None)
     insertCodeBlock = sqlObject.get('insertCodeBlock', None)
 
     id = getGeneratedId(context, sqlObject)
     if (id):  # generated id from LastIdTable
-        data['id'] = id
+        xData['id'] = id
         sqlObject['idInsert'] = True
 
     if (customCodeBlock):
-        sql, valuesTuple = (customCodeBlock, data)
-    elif (data.get('id', None)):
+        sql, valuesTuple = (customCodeBlock, xData)
+    elif (xData.get('id', None)):
         if (updateCodeBlock):
-            sql, valuesTuple = (updateCodeBlock, data)
+            sql, valuesTuple = (updateCodeBlock, xData)
         elif sqlObject.get('idInsert'):
-            sql, valuesTuple = getInsertSql(sqlObject, data.copy(), fkeyValue)
+            sql, valuesTuple = getInsertSql(sqlObject, xData.copy(), fkeyValue)
         else:
-            sql, valuesTuple = getUpdateSql(data, sqlObject.get('tableName'))
+            sql, valuesTuple = getUpdateSql(xData, sqlObject.get('tableName'))
     else:
         if (insertCodeBlock):
-            sql, valuesTuple = (insertCodeBlock, data)
+            sql, valuesTuple = (insertCodeBlock, xData)
         else:
-            sql, valuesTuple = getInsertSql(sqlObject, data.copy(), fkeyValue)
+            sql, valuesTuple = getInsertSql(sqlObject, xData.copy(), fkeyValue)
     return (sql, valuesTuple)
 
 
-def getUpdateSql(data, tableName):
+def getUpdateSql(xData, tableName):
     def getUpdateKeyValues(dataCopy):
         dataCopy.pop('id')  # remove id property
         str = ''
@@ -184,17 +184,17 @@ def getUpdateSql(data, tableName):
         valuesTuple = tuple(valuesList)
         return (str, valuesTuple)
 
-    str, valuesTuple = getUpdateKeyValues(data.copy())
+    str, valuesTuple = getUpdateKeyValues(xData.copy())
     sql = f'''update "{tableName}" set {str}
-        where id = {data['id']} returning {"id"}
+        where id = {xData['id']} returning {"id"}
     '''
     return (sql, valuesTuple)
 
 
-def updateLastId(context, sqlObject, data):
+def updateLastId(context, sqlObject, xData):
     sqlString = allSqls['update-last-id']
     cursor = context.get('cursor')
-    lastId = data.get('id', None)
+    lastId = xData.get('id', None)
     schema = context.get('schema')
     idGeneratorTableName = sqlObject.get('idGeneratorTableName')
     searchPathSql = getSchemaSearchPath(schema)
@@ -208,15 +208,15 @@ def updateLastId(context, sqlObject, data):
     print(1)
 
 
-def processData(context, sqlObject, data,  fkeyValue):
+def processData(context, sqlObject, xData,  fkeyValue):
     id = None
-    details = None
+    xDetails = None
     cursor = context.get('cursor')
     schema = context.get('schema')
     searchPathSql = getSchemaSearchPath(schema)
-    data = sqlObject.get('data')
-    if ('details' in data):
-        details = data.pop('details') # remove details from data otherwise 'details' will be treated as column
+    xData = sqlObject.get('xData')
+    if ('xDetails' in xData):
+        xDetails = xData.pop('xDetails') # remove xDetails from xData otherwise 'xDetails' will be treated as column
     sql, tup = getSql(context, sqlObject, fkeyValue)
     if (sql):
         cursor.execute(f'{searchPathSql};{sql}', tup)
@@ -227,14 +227,14 @@ def processData(context, sqlObject, data,  fkeyValue):
             id = jsonObj.get('id', None)
 
             if (sqlObject.get('idGeneratorTableName', None) and (sqlObject.get('generateId', None))):
-                updateLastId(context, sqlObject, data)
+                updateLastId(context, sqlObject, xData)
 
-    if (details):
-        if (type(details) is list):
-            for detailsItem in details:
-                execSqlObjectWorker(context, detailsItem, id)
+    if (xDetails):
+        if (type(xDetails) is list):
+            for item in xDetails:
+                execSqlObjectWorker(context, item, id)
         else:
-            execSqlObjectWorker(context, details, id)
+            execSqlObjectWorker(context, xDetails, id)
     return (id)
 
 

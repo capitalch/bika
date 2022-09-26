@@ -38,7 +38,7 @@ function useSuperAdminClientsForm() {
                 tableName: 'ClientM',
                 generateId: snapForm.id ? false : true,
                 idGeneratorTableName: 'IdGeneratorTable',
-                data: {
+                xData: {
                     id: snapForm.id,
                     clientName: snapForm.clientName,
                     remarks: snapForm.remarks,
@@ -47,7 +47,7 @@ function useSuperAdminClientsForm() {
                 }
             }
             if(!snapForm.isEditMode){
-                sqlObject.data.dbName = sqlObject.data.shortCode.concat('_db')
+                sqlObject.xData.dbName = sqlObject.xData.shortCode.concat('_db')
             }
             
             const q = appGraphqlStrings.genericUpdate(sqlObject)

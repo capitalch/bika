@@ -11,7 +11,7 @@ function DemoMasterDetails() {
     function handleButtonMasterEntry() {
         const sqlObject: SqlObject = {
             tableName: 'Master1',
-            data: {
+            xData: {
                 'master1Col': 'master col 1'
             }
         }
@@ -21,12 +21,12 @@ function DemoMasterDetails() {
     function handleButtonMasterDetailsEntry() {
         const sqlObject: SqlObject = {
             tableName: 'Master1',
-            data: {
+            xData: {
                 'master1Col': 'master col data 1',
-                details:[{
+                xDetails:[{
                     tableName:'Details1',
                     fkeyName: 'master1Id',
-                    data: {
+                    xData: {
                         'details1Col': 'details1 col data 1'
                     }
                 }]
@@ -38,17 +38,17 @@ function DemoMasterDetails() {
     function handleButtonMasterDetailDetailsEntry() {
         const sqlObject: SqlObject = {
             tableName: 'Master1',
-            data: {
+            xData: {
                 'master1Col': 'master col data 1',
-                details:[{
+                xDetails:[{
                     tableName:'Details1',
                     fkeyName: 'master1Id',
-                    data: {
+                    xData: {
                         'details1Col': 'details1 col data 1',
-                        details:[{
+                        xDetails:[{
                             tableName:'Details11',
                             fkeyName:'details1Id',
-                            data:{
+                            xData:{
                                 details11Col:'details11 col data 1'
                             }
                         }]
@@ -62,19 +62,19 @@ function DemoMasterDetails() {
     function handleButtonOneMasterMultipleDetailsEntry() {
         const sqlObject: SqlObject = {
             tableName: 'Master1',
-            data: {
+            xData: {
                 'master1Col': 'master col data 1',
-                details:[{
+                xDetails:[{
                     tableName:'Details1',
                     fkeyName: 'master1Id',
-                    data: {
+                    xData: {
                         'details1Col': 'details1 col data 1',
                     }
                 },
                 {
                     tableName:'Details2',
                     fkeyName: 'master1Id',
-                    data: {
+                    xData: {
                         'details2Col': 'details2 col data 1',
                     }
                 }
@@ -87,17 +87,17 @@ function DemoMasterDetails() {
     function handleButtonOneMasterMultipleDetailsDetailsEntry() {
         const sqlObject: SqlObject = {
             tableName: 'Master1',
-            data: {
+            xData: {
                 'master1Col': 'master col data 1',
-                details:[{
+                xDetails:[{
                     tableName:'Details1',
                     fkeyName: 'master1Id',
-                    data: {
+                    xData: {
                         'details1Col': 'details1 col data 1',
-                        details:[{
+                        xDetails:[{
                             tableName:'Details11',
                             fkeyName:'details1Id',
-                            data:{
+                            xData:{
                                 details11Col:'details11 col data 1'
                             }
                         }]
@@ -106,12 +106,12 @@ function DemoMasterDetails() {
                 {
                     tableName:'Details2',
                     fkeyName: 'master1Id',
-                    data: {
+                    xData: {
                         'details2Col': 'details2 col data 1',
-                        details:[{
+                        xDetails:[{
                             tableName:'Details22',
                             fkeyName:'details2Id',
-                            data:{
+                            xData:{
                                 details22Col:'details22 col data 1'
                             }
                         }]

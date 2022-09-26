@@ -8,7 +8,7 @@ interface MaterialDialog{
     title: string    
 }
 interface SqlObject {
-    data: SqlObjectData
+    xData: SqlObjectData
     deletedIds?: string[]
     fkeyName?: string
     generateId?: boolean
@@ -18,7 +18,7 @@ interface SqlObject {
 }
 
 interface SqlObjectData {
-    details?: SqlObject[]
+    xDetails?: SqlObject[]
     [key:string]: any
 }
 
