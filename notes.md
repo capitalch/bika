@@ -48,3 +48,5 @@ bika
 ## Accounts interface: 2 weeks
 ### idea8958
 ### KTAgnn15797
+
+# pg_dump -d appEntry -h node113022-kater-db.cloudjiffy.net -p 11301 -n public -f c:\projects\bika\dbcreate\appEntry.sql -U webadmin --inserts
