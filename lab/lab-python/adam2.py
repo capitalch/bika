@@ -42,12 +42,6 @@ def doProcess():
     try:
         ret = cursor.mogrify(sqlString, dictObj)
         print(ret)
-
-        # ret1 = cursor.mogrify(sql.SQL(sqlString1).format(table=sql.Identifier('LastIdCounter')), [lastId])
-        # print(ret1)
-        # cursor.execute('select * from "ClientM"', {})
-        # out = cursor.fetchone()
-        # print(out)
     except (Exception) as error:
         if (connection):
             connection.rollback()

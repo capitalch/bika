@@ -114,7 +114,6 @@ def getGeneratedId(context, sqlObject):
 
 def getInsertSql(sqlObject, data, fkeyValue):
     tableName = sqlObject.get('tableName')
-    # cursor = context.get('cursor')
     fkeyName = sqlObject.get('fkeyName')
     fieldsList = list(data.keys())
 
@@ -176,7 +175,6 @@ def getSql(context, sqlObject, fkeyValue):
 
 def getUpdateSql(data, tableName):
     def getUpdateKeyValues(dataCopy):
-        # idValue = dataCopy['id']
         dataCopy.pop('id')  # remove id property
         str = ''
         for it in dataCopy:
@@ -212,11 +210,14 @@ def updateLastId(context, sqlObject, data):
 
 def processData(context, sqlObject, data,  fkeyValue):
     id = None
+    details = None
     cursor = context.get('cursor')
     schema = context.get('schema')
     searchPathSql = getSchemaSearchPath(schema)
+    data = sqlObject.get('data')
+    if ('details' in data):
+        details = data.pop('details') # remove details from data otherwise 'details' will be treated as column
     sql, tup = getSql(context, sqlObject, fkeyValue)
-    # sql = '''update "ClientM" set "clientName" ='demo1' where id = 1 returning id'''
     if (sql):
         cursor.execute(f'{searchPathSql};{sql}', tup)
         if (cursor.rowcount > 0):
@@ -227,8 +228,7 @@ def processData(context, sqlObject, data,  fkeyValue):
 
             if (sqlObject.get('idGeneratorTableName', None) and (sqlObject.get('generateId', None))):
                 updateLastId(context, sqlObject, data)
-    # details = data.pop(details, None)
-    details = data.get('details', None)
+
     if (details):
         if (type(details) is list):
             for detailsItem in details:
