@@ -1,4 +1,4 @@
-import { useAppGraphql, appGraphqlStrings, Box, Button, SqlObject, showSuccessMessage } from '../../../common/misc/redirect'
+import { useAppGraphql, appGraphqlStrings, Box, Button, SqlObject, showSuccessMessage } from '../../common/misc/redirect'
 function DemoMasterDetails() {
     const { mutateGraphql } = useAppGraphql()
     return (<Box sx={{ display: 'flex', columnGap: '1rem' }}>

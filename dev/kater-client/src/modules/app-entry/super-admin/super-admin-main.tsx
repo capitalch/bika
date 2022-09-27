@@ -1,5 +1,5 @@
 import { Box, Tab, TabContext, TabList, TabPanel, useState } from '../../../common/misc/redirect'
-import { DemoMasterDetails } from './demo-master-details';
+import { DemoMasterDetails } from '../../demo/demo-master-details';
 import { SuperAdminClients } from './super-admin-clients'
 
 function SuperAdminMain() {
