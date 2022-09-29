@@ -1,3 +1,0 @@
-function ReactForm() {}
-
-export { ReactForm }
