@@ -230,11 +230,11 @@ def processData(context, sqlObject, xData,  fkeyValue):
                 updateLastId(context, sqlObject, xData)
 
     if (xDetails):
-        if (type(xDetails) is list):
-            for item in xDetails:
-                execSqlObjectWorker(context, item, id)
-        else:
-            execSqlObjectWorker(context, xDetails, id)
+        # if (type(xDetails) is list):
+        for item in xDetails:
+            execSqlObjectWorker(context, item, id)
+        # else:
+        #     execSqlObjectWorker(context, xDetails, id)
     return (id)
 
 
