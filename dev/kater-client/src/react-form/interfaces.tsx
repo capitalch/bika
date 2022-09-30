@@ -1,5 +1,6 @@
 interface ReactFormType {
     jsonForm: any
+    store: any
 }
 
 interface FormComponentType{
