@@ -4,7 +4,7 @@ import { ReactFormType } from "./interfaces";
 
 function ReactForm({ jsonForm, store }: ReactFormType) {
 
-    return (<Box>
+    return (<Box sx={jsonForm.sx || undefined}>
         {
             jsonForm.items.map((item: any, index: number) => {
                 const Tag = formComponents[item.type]

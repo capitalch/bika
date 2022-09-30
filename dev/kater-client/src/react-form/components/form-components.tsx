@@ -3,18 +3,18 @@ import { FormComponentType } from "../interfaces"
 
 const formComponents: FormComponentType = {
 
-    TextMaterial: ({item, store}:any) => {
+    TextMaterial: ({ item, store }: any) => {
         return (<>
             <TextField variant='outlined'
-                sx={{mt:2}}
+                sx={item?.sx || undefined}
                 label={item.label}
-                size="small" 
-                value = {store[item.name].value}
+                size="small"
+                value={store[item.name].value}
                 onChange={handleOnChange}
-                />
+            />
         </>)
 
-        function handleOnChange(e:any){
+        function handleOnChange(e: any) {
             store[item.name].value = e.target.value
         }
     }

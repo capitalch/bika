@@ -1,9 +1,32 @@
+import { SxProps } from "@mui/material"
+
 interface ReactFormType {
-    jsonForm: any
-    store: any
+    jsonForm: JsonFormType
+    store: StoreItemType
 }
 
-interface FormComponentType{
-    [key:string]: React.FC<any>
+interface JsonFormType {
+    items: JsonFormItemType[]
+    sx?: SxProps
+}
+
+interface JsonFormItemType {
+    label: string
+    name: string
+    sx?: SxProps
+    type: string
+    validations?: JsonFormValidationType[]
+}
+
+interface JsonFormValidationType{
+    [key:string]: string
+}
+
+interface FormComponentType {
+    [key: string]: React.FC<any>
+}
+
+interface StoreItemType {
+    [key: string]: any
 }
 export { type FormComponentType, type ReactFormType }
