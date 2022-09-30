@@ -4,9 +4,6 @@ import { store } from '../store/global-store'
 
 
 function SignalCounter() {
-
-
-
     return (<div>
         <span><b>Signals counter</b></span>
         <br></br>
@@ -18,6 +15,7 @@ function SignalCounter() {
         <store.currentComponent.value />
         <button onClick={toggleComponent}>Toggle</button>
         <div>{store.arr.value.length}</div>
+        <SignalInc />
     </div>)
 
     function toggleComponent() {
@@ -47,7 +45,7 @@ function BComponent() {
             store.arr.value = produce(store.arr.value, (draft:any)=>{
                 draft.push({})
             })
-            // store.arr.value.push({})
+            store.arr.value.push({})
             console.log(store.arr.value)
         }}>Increase arr</button>
     </div>)
