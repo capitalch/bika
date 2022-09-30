@@ -2,14 +2,13 @@ import { Box } from "@mui/system";
 import { formComponents } from "./components/form-components";
 import { ReactFormType } from "./interfaces";
 
-function ReactForm({ jsonForm }: ReactFormType) {
-    // const jsonForm = JSON.parse(jsonText)
+function ReactForm({ jsonForm, store }: ReactFormType) {
 
     return (<Box>
         {
             jsonForm.items.map((item: any, index: number) => {
                 const Tag = formComponents[item.type]
-                const Comp = <Tag key={index} />
+                const Comp = <Tag key={index} item={item} store = {store} />
                 return (Comp)
             })
         }

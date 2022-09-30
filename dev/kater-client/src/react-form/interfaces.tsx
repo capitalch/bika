@@ -1,12 +1,9 @@
 interface ReactFormType {
-    jsonForm: FormType
-}
-
-interface FormType{
-    items:any[]
+    jsonForm: any
+    store: any
 }
 
 interface FormComponentType{
-    [key:string]: React.FC
+    [key:string]: React.FC<any>
 }
 export { type FormComponentType, type ReactFormType }

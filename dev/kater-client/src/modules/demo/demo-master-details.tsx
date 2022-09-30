@@ -1,5 +1,7 @@
 import { useAppGraphql, appGraphqlStrings, Box, Button, SqlObject, showSuccessMessage } from '../../common/misc/redirect'
 import { ReactForm } from '../../react-form/react-form'
+import { DemoReactForm } from './demo-react-form'
+import { sampleJsonForm } from './sample-json-form'
 function DemoMasterDetails() {
     const { mutateGraphql } = useAppGraphql()
     return (<Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -8,9 +10,9 @@ function DemoMasterDetails() {
             <Button variant='contained' onClick={handleButtonMasterDetailsEntry}>Master details entry</Button>
             <Button variant='contained' onClick={handleButtonMasterDetailDetailsEntry}>Master details details entry</Button>
             <Button variant='contained' onClick={handleButtonOneMasterMultipleDetailsEntry}>one master multiple details entry</Button>
-            <Button variant='contained' onClick={handleButtonOneMasterMultipleDetailsDetailsEntry}>one master multiple details details entry</Button>
+            <Button variant='contained' onClick={handleButtonOneMasterMultipleDetailsDetailsEntry}>one master multiple details details entry</Button>            
         </Box>
-        <ReactForm jsonForm={sampleForm} />
+        <DemoReactForm />
     </Box>)
     function handleButtonMasterEntry() {
         const sqlObject: SqlObject = {
@@ -139,14 +141,3 @@ function DemoMasterDetails() {
     }
 }
 export { DemoMasterDetails }
-
-const sampleForm = {
-    items: [
-        {
-            label: 'Address1',
-            name: 'address1',
-            type: 'TextMaterial'
-        }
-
-    ]
-}
