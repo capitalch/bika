@@ -1,6 +1,6 @@
 import { signal } from '@preact/signals-react'
 import produce from 'immer'
-import { store } from '../store/global-store'
+import { store } from '../../store/global-store'
 
 
 function SignalCounter() {

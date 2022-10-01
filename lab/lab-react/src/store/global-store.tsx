@@ -1,5 +1,5 @@
 import { signal } from "@preact/signals-react"
-import { AComponent } from "../components/signal-counter"
+import { AComponent } from "../components/signals/signal-counter"
 
 const store: any = {
     count: signal(0),

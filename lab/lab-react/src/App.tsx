@@ -2,8 +2,9 @@ import './App.css';
 import { Comp1Immer } from './components/comp1-immer';
 import { ImmerUnderstand } from './components/immer-understand';
 import { ObjectCounter } from './components/object-counter';
-import { SignalCounter,  } from './components/signal-counter';
-import { SignalDynamic } from './components/signal-dynamic/signal-dynamic';
+import { SignalCounter,  } from './components/signals/signal-counter';
+import { SignalDynamic } from './components/signals/signal-dynamic';
+import { SignalsNestedObject } from './components/signals/signals-nested-object';
 import { ValitoCounter2 } from './components/valito-counter2';
 import { ValitoCounterReader, ValtioCounter } from './components/valtio-counter';
 
@@ -15,9 +16,10 @@ function App() {
       {/* <ValitoCounterReader /> */}
       {/* <ValitoCounter2 /> */}
       {/* <ObjectCounter /> */}
-      <ImmerUnderstand />
+      {/* <ImmerUnderstand />
       <SignalCounter />
-      <SignalDynamic />
+      <SignalDynamic /> */}
+      <SignalsNestedObject />
     </div>
   );
 }
