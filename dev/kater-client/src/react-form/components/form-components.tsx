@@ -11,6 +11,7 @@ const formComponents: FormComponentType = {
                 size="small"
                 value={store[item.name].value}
                 onChange={handleOnChange}
+                helperText={store.errors[item.name].value}
             />
         </>)
 

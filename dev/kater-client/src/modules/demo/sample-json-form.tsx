@@ -17,6 +17,15 @@ const sampleJsonForm = {
             },
             type: 'TextMaterial',
         },
+        {
+            label: 'Address2',
+            name: 'address2',
+            sx: {
+                mt: 2,
+                ml: 1
+            },
+            type: 'TextMaterial',
+        },
     ],
     sx: {
         mt: 2, mb: 2

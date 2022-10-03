@@ -10,6 +10,7 @@ function DemoReactForm() {
             <ReactForm jsonForm={sampleJsonForm} store = {demoStore} />
             <Button variant='contained' size='small' onClick={handleSubmit}>Submit</Button>
             <Button variant='contained' size='small' onClick={handleReset}>Reset</Button>
+            <Button variant='contained' size='small' onClick={handleGenerateError}>Generate error</Button>
         </Box>
     )
 
@@ -23,7 +24,11 @@ function DemoReactForm() {
         for(const item of sampleJsonForm.items){
             demoStore[item.name].value= ''
         }
-        demoStore['address1']['value'] = ''
+        // demoStore['address1']['value'] = ''
+    }
+
+    function handleGenerateError(){
+        demoStore.errors.address1.value = 'abcd'
     }
 }
 export { DemoReactForm }
