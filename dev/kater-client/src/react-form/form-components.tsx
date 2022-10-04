@@ -5,7 +5,8 @@ import { validateItem } from './react-form'
 
 const formComponents: FormComponentType = {
     TextMaterial: ({ item, store }: any) => {
-        const errorString = Object.values(store.errors[item.name]).toString()
+        const errorString = store[item.name].errors.value
+        // const errorString = Object.values(store.errors[item.name].value).toString()
         return (
             <>
                 <TextField
@@ -30,22 +31,22 @@ const formComponents: FormComponentType = {
                         </>
                     }
                     size="small"
-                    value={store[item.name].value}
+                    value={store[item.name].data.value}
                     onChange={handleOnChange}
                     onBlur={handleOnBlur}
-                    // helperText={store.errors[item.name].value}
+                    // helperText={store.errors[item.name].required.value}
                     helperText={errorString}
                 />
             </>
         )
 
         function handleOnBlur() {
-            // validateItem(item, store)
+            validateItem(item, store)
         }
 
         function handleOnChange(e: any) {
-            store[item.name].value = e.target.value
-            // validateItem(item, store)
+            store[item.name].data.value = e.target.value
+            validateItem(item, store)
         }
     },
 }

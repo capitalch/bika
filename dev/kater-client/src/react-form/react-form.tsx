@@ -5,11 +5,6 @@ import { JsonFormItemType, ReactFormType } from './interfaces'
 import { validationsMap } from './react-form-validations'
 
 function ReactForm({ jsonForm, store }: ReactFormType) {
-    useEffect(() => {
-        // for (const er in store.errors) {
-        //     store.errors[er] = {}
-        // }
-    }, [])
     return (
         <Box sx={jsonForm.sx || undefined}>
             {jsonForm.items.map((item: any, index: number) => {
