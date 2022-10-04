@@ -1,3 +1,5 @@
+import { JsonFormItemType } from "../../react-form/interfaces"
+
 const sampleJsonForm = {
     items: [
         {
@@ -7,6 +9,7 @@ const sampleJsonForm = {
                 mt: 2
             },
             type: 'TextMaterial',
+            validations:['required']
         },
         {
             label: 'Address1',
@@ -16,6 +19,7 @@ const sampleJsonForm = {
                 ml: 1
             },
             type: 'TextMaterial',
+            validations:['required']
         },
         {
             label: 'Address2',

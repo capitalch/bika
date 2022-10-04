@@ -1,28 +1,36 @@
-import { signal } from '@preact/signals-react'
+// import { signal } from '@preact/signals-react'
 import { deepSignal } from 'preact-signal-store'
 import _ from 'lodash'
 
-const demo = {
-    personName: signal(''),
-    address1: signal(''),
-    address2: signal('')
-}
-const demo1 = {
-    personName: '',
-    address1: '',
-    address2: '',
+const demoObject:any= {
+    personName:'',
+    address1:'',
+    address2:'',
     errors: {
-        personName: '',
-        address1: '',
-        address2: ''
+        personName: { required: '' },
+        address1: { required: '' },
+        address2: { required: '' },   
     }
 }
-let demoClone: any = _.cloneDeep(demo1)
+function adjust(obj: any) {
+    obj.personName = ''
+    obj.address1 = ''
+    obj.address2 = ''
+    obj.errors = {
+        personName: { required: '' },
+        address1: { required: '' },
+        address2: { required: '' },
+    }
+}
+// adjust(demoObject)
+let demoClone: any = _.cloneDeep(demoObject)
+let demoStore:any = deepSignal(demoObject)
+const x = 1
+export { adjust, demoObject, demoStore}
+// let demoClone: any = _.cloneDeep(demo1)
 // let demoStore = demoClone // deepSignal(demoClone)
-let demoStore:any = deepSignal(demoClone)
+// let demoStore: any = deepSignal(demoClone)
 // function resetDemoStore() {
 //     demoStore = _.cloneDeep(demo)
 //     demoStore.personName.value = ''
 // }
-
-export { demoStore }

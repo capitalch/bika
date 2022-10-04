@@ -15,12 +15,12 @@ interface JsonFormItemType {
     name: string
     sx?: SxProps
     type: string
-    validations?: JsonFormValidationType[]
+    validations?: string[]
 }
 
-interface JsonFormValidationType{
-    [key:string]: string
-}
+// interface JsonFormValidationType{
+//     [key:string]: string
+// }
 
 interface FormComponentType {
     [key: string]: React.FC<any>
@@ -29,4 +29,4 @@ interface FormComponentType {
 interface StoreItemType {
     [key: string]: any
 }
-export { type FormComponentType, type ReactFormType }
+export { type FormComponentType, type JsonFormItemType, type ReactFormType }

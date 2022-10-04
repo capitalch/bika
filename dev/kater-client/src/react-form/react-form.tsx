@@ -1,25 +1,32 @@
-import { Box } from "@mui/system";
-import { formComponents } from "./components/form-components";
-import { ReactFormType } from "./interfaces";
+import { Box } from '@mui/system'
+import { useEffect } from 'react'
+import { formComponents } from './form-components'
+import { JsonFormItemType, ReactFormType } from './interfaces'
+import { validationsMap } from './react-form-validations'
 
 function ReactForm({ jsonForm, store }: ReactFormType) {
-
-    return (<Box sx={jsonForm.sx || undefined}>
-        {
-            jsonForm.items.map((item: any, index: number) => {
+    useEffect(() => {
+        // for (const er in store.errors) {
+        //     store.errors[er] = {}
+        // }
+    }, [])
+    return (
+        <Box sx={jsonForm.sx || undefined}>
+            {jsonForm.items.map((item: any, index: number) => {
                 const Tag = formComponents[item.type]
-                const Comp = <Tag key={index} item={item} store = {store} />
-                return (Comp)
-            })
+                const Comp = <Tag key={index} item={item} store={store} />
+                return Comp
+            })}
+        </Box>
+    )
+}
+
+function validateItem(item: JsonFormItemType, store: any) {
+    if (item.validations) {
+        for (const validation of item.validations) {
+            validationsMap[validation](item, store)
         }
-    </Box>)
+    }
 }
 
-function ReactFormComponents({ items }: any) {
-    return (items.map((item: any, index: number) => {
-        return (formComponents[item.type])
-    }))
-}
-
-export { ReactForm }
-
+export { ReactForm, validateItem }

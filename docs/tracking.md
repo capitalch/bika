@@ -1,3 +1,15 @@
+## React-Form plans
+@. Create validations array in jsonForm and give its effect in Interface
+@. Implement validateItem and validateItems in utils. Parms are (item, store). For each validation in item's validations array call corresponding validator and set store errors against that item
+@. From onChange and onBlur events of formComponent call validateItem
+@. At react form level export validateItems. Think whether to provide this in utils file. At external submit this will be available
+@. A message map for all form level messages
+@. Typescript enumerator for all validatiors
+@. Provide Typescript types for all 'any' keyword
+
+
+
+
 ## Provide in XX-grid
 																									.. Add method and logic for its display
 .. Search logic

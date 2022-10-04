@@ -1,10 +1,17 @@
 import { Button } from '@mui/material'
 import { Box } from '@mui/system'
+// import _ from 'lodash'
+// import { deepSignal } from 'preact-signal-store'
 import { ReactForm } from '../../react-form/react-form'
-import { demoStore } from './demo-store-signals'
+import {adjust, demoObject, demoStore } from './demo-store-signals'
 import { sampleJsonForm } from './sample-json-form'
 
+// const demo = {}
 function DemoReactForm() {
+    // demoStore.errors['personName'] = ''
+    // adjust(demoObject)
+    // const demoClone:any = _.cloneDeep(demoObject)
+    // const demoStore:any = deepSignal(demoClone)
     return (
         <Box>
             <ReactForm jsonForm={sampleJsonForm} store = {demoStore} />
