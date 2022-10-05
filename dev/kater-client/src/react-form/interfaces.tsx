@@ -2,7 +2,7 @@ import { SxProps } from "@mui/material"
 
 interface ReactFormType {
     jsonForm: JsonFormType
-    store: StoreItemType
+    // store: StoreItemType
 }
 
 interface JsonFormType {

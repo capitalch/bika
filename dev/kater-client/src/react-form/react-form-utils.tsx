@@ -1,5 +1,5 @@
-function validateItems() {}
+function getErrorsMarkup(errors:string[]){
 
-function validateItem() {}
+}
 
-export { validateItem, validateItems }
+export { getErrorsMarkup}

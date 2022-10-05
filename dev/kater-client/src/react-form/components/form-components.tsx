@@ -1,12 +1,13 @@
 import { TextField, Typography } from '@mui/material'
 import { If, Then } from 'react-if'
-import { FormComponentType } from './interfaces'
-import { validateItem } from './react-form'
+import { FormComponentType } from '../interfaces'
+import { validateItem } from '../react-form'
+import { ItemErrors } from './item-errors'
 
 const formComponents: FormComponentType = {
     TextMaterial: ({ item, store }: any) => {
-        const errorString = store[item.name].errors.value
-        // const errorString = Object.values(store.errors[item.name].value).toString()
+        // const errorString = store[item.name].errors.value.toString()
+        const errors = store[item.name].errors.value
         return (
             <>
                 <TextField
@@ -35,7 +36,8 @@ const formComponents: FormComponentType = {
                     onChange={handleOnChange}
                     onBlur={handleOnBlur}
                     // helperText={store.errors[item.name].required.value}
-                    helperText={errorString}
+                    // helperText={errorString}
+                    helperText={<ItemErrors errors={errors} />}
                 />
             </>
         )
