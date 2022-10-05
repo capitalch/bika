@@ -9,7 +9,7 @@ const sampleJsonForm = {
                 mt: 2
             },
             type: 'TextMaterial',
-            validations:['required']
+            validations:['alphanumericOnly', 'required']
         },
         {
             label: 'Address1',
