@@ -1,52 +1,51 @@
 import { JsonFormItemType } from "./interfaces"
 
 function alphabetsOnly(item: JsonFormItemType, store: any) {
-    const regExp = /[a-zA-Z]/
+    const invRegExp = /[^a-zA-Z]/
     const conditionName = 'alphabetsOnly'
     checkWithRegExp({
-        item, store, regExp, conditionName
+        item, store, invRegExp, conditionName
     })
 }
 
 function alphanumericAndSpace(item: JsonFormItemType, store: any) {
-    const regExp = /[a-zA-Z0-9 ]/
+    const invRegExp = /[^a-zA-Z0-9 ]/
     const conditionName = 'alphanumericAndSpace'
     checkWithRegExp({
-        item, store, regExp, conditionName
+        item, store, invRegExp, conditionName
     })
 }
 
 function alphanumericOnly(item: JsonFormItemType, store: any) {
-    const regExp = /[a-zA-Z0-9]/
+    const invRegExp = /[^a-zA-Z0-9]/
     const conditionName = 'alphanumericOnly'
     checkWithRegExp({
-        item, store, regExp, conditionName
+        item, store, invRegExp, conditionName
     })
 }
 
 function validPassword(item: JsonFormItemType, store: any) {
-    const regExp = /(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$/
+    const invRegExp = /(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$/
     const conditionName = 'validPassword'
     checkWithRegExp({
-        item, store, regExp, conditionName
+        item, store, invRegExp, conditionName
     })
 }
 
 function numbersOnly(item: JsonFormItemType, store: any) {
-    const regExp = /[0-9]/
+    const invRegExp = /[^0-9]/
     const conditionName = 'numbersOnly'
     checkWithRegExp({
-        item, store, regExp, conditionName
+        item, store, invRegExp, conditionName
     })
 }
 
-type CheckType = { item: JsonFormItemType; store: any; regExp: RegExp; conditionName: string }
-function checkWithRegExp({ item, store, regExp, conditionName }: CheckType) {
+type CheckType = { item: JsonFormItemType; store: any; invRegExp: RegExp; conditionName: string }
+function checkWithRegExp({ item, store, invRegExp, conditionName }: CheckType) {
     const val = store[item.name].data.value
     let arr = getStrippedArray(item, store, conditionName)
-    arr.push(conditionName)
-    if (regExp.test(val)) {
-        arr.pop()
+    if (invRegExp.test(val)) {
+        arr.push(conditionName)
     }
     store[item.name].errors.value = arr
 }
@@ -75,4 +74,14 @@ const validationsMap: any = {
     validPassword: validPassword,
 }
 
-export { validationsMap }
+enum EnumValidators {
+    alphabetsOnly = 'alphabetsOnly',
+    alphanumericAndSpace = 'alphanumericAndSpace',
+    alphanumericOnly = 'alphanumericOnly',
+    numbersOnly = 'numbersOnly',
+    required = 'required',
+}
+
+type ValidatorsType = Array<'required' | 'alphabets'> //Array<EnumValidators>
+
+export { EnumValidators, validationsMap,type ValidatorsType }

@@ -1,8 +1,8 @@
 import { SxProps } from "@mui/material"
+import { EnumValidators } from "./react-form-validations"
 
 interface ReactFormType {
     jsonForm: JsonFormType
-    // store: StoreItemType
 }
 
 interface JsonFormType {
@@ -18,10 +18,6 @@ interface JsonFormItemType {
     validations?: string[]
 }
 
-// interface JsonFormValidationType{
-//     [key:string]: string
-// }
-
 interface FormComponentType {
     [key: string]: React.FC<any>
 }
@@ -29,4 +25,5 @@ interface FormComponentType {
 interface StoreItemType {
     [key: string]: any
 }
-export { type FormComponentType, type JsonFormItemType, type ReactFormType }
+
+export { type FormComponentType, type JsonFormItemType, type ReactFormType, }

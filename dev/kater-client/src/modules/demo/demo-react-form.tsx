@@ -6,7 +6,6 @@ import { demoObject } from './demo-store-signals'
 import { sampleJsonForm } from './sample-json-form'
 
 function DemoReactForm() {
-    // const demoStore: any = useDeepSignal(getStoreObject())
     return (
         <Box>
             <ReactForm jsonForm={sampleJsonForm} />
@@ -32,23 +31,13 @@ function DemoReactForm() {
     }
 }
 
-function getStoreObject() {
-    const obj: any = {}
-    for (const item of sampleJsonForm.items) {
-        obj[item.name] = { data: '', errors: [] }
-    }
-    return obj
-}
 export { DemoReactForm }
 
-{
-    /* <TextField
-                sx={{ mt: 2 }}
-                size='small'
-                value={localStore.firstName.value}
-                label='abcd'
-                onChange={(e: any) => {
-                    localStore.firstName.value = e.target.value
-                }}
-            /> */
-}
+
+// function getStoreObject() {
+//     const obj: any = {}
+//     for (const item of sampleJsonForm.items) {
+//         obj[item.name] = { data: '', errors: [] }
+//     }
+//     return obj
+// }

@@ -1,4 +1,6 @@
 import { JsonFormItemType } from "../../react-form/interfaces"
+// import { ValidatorsType } from "../../react-form/interfaces"
+import { ValidatorsType } from "../../react-form/react-form-validations"
 
 const sampleJsonForm = {
     items: [
@@ -9,7 +11,8 @@ const sampleJsonForm = {
                 mt: 2
             },
             type: 'TextMaterial',
-            validations:['alphanumericOnly', 'required']
+            // Validations: 
+            // validations:['numbersOnly', 'required']
         },
         {
             label: 'Address1',
