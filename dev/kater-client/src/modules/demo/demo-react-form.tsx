@@ -1,8 +1,8 @@
 import { Button, TextField } from '@mui/material'
 import { Box } from '@mui/system'
-import {  useDeepSignal } from './preact-deepsignal'
+// import {  useDeepSignal } from './preact-deepsignal'
 import { ReactForm } from '../../react-form/react-form'
-import { demoObject } from './demo-store-signals'
+// import { demoObject } from './demo-store-signals'
 import { sampleJsonForm } from './sample-json-form'
 
 function DemoReactForm() {

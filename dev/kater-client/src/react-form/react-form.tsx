@@ -1,10 +1,10 @@
 import { Box } from '@mui/system'
 import { useDeepSignal } from '../modules/demo/preact-deepsignal'
 import { formComponents } from './components/form-components'
-import { JsonFormItemType, ReactFormType } from './interfaces'
+import { JsonFormType, JsonFormItemType, ReactFormType } from './interfaces'
 import { validationsMap } from './react-form-validations'
 
-function ReactForm({ jsonForm }: ReactFormType) {
+function ReactForm({jsonForm}: ReactFormType) {
     const store = useDeepSignal(getStoreObject(jsonForm))
     return (
         <Box sx={jsonForm.sx || undefined}>
