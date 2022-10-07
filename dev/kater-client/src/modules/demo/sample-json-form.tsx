@@ -1,18 +1,15 @@
-// import { JsonFormItemType } from "../../react-form/interfaces"
-// import { ValidatorsType } from "../../react-form/interfaces"
-// import { ValidatorsType } from "../../react-form/react-form-validations"
-
 import { JsonFormType } from '../../react-form/interfaces'
 
 const sampleJsonForm: JsonFormType = {
     items: [
         {
+            // defaultValue:'Sush',
             label: 'Name',
             name: 'personName',
             sx: {
                 mt: 2,
             },
-            type: 'TextMaterial',
+            typeName: 'TextMaterial',
             validations: ['email', 'oneSpecialChar', 'required'],
         },
         {
@@ -22,7 +19,7 @@ const sampleJsonForm: JsonFormType = {
                 mt: 2,
                 ml: 1,
             },
-            type: 'TextMaterial',
+            typeName: 'TextMaterial',
             validations: ['required'],
         },
         {
@@ -32,8 +29,33 @@ const sampleJsonForm: JsonFormType = {
                 mt: 2,
                 ml: 1,
             },
-            type: 'TextMaterial',
+            typeName: 'TextMaterial',
+            validations: ['required'],
         },
+        {
+            label: 'Options',
+            name: 'options',
+            options: [
+                { label: '---select---', value: '' },
+                { label: 'one', value: '1' },
+                { label: 'two', value: '2' },
+            ],
+            sx: { m: 2, minWidth: 120 },
+            typeName: 'SelectMaterial',
+            validations: ['required'],
+        },
+        {
+            label: 'Options common',
+            name: 'optionsCommon',
+            options: [
+                { label: '---select---', value: '' },
+                { label: 'one', value: '1' },
+                { label: 'two', value: '2' },
+            ],
+            sx: { display:'inline-block'},
+            typeName: 'SelectCommon',
+            validations: ['required'],
+        }
     ],
     sx: {
         mt: 2,
