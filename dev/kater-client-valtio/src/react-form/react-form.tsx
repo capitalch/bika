@@ -1,15 +1,25 @@
 import { Box } from '@mui/system'
-import { useDeepSignal } from '../modules/demo/preact-deepsignal'
+import { useEffect } from 'react'
+import _ from 'lodash'
+import { deepSignal, useDeepSignal } from '../modules/demo/preact-deepsignal'
 import { formComponents } from './components/form-components'
 import { JsonFormType, JsonFormItemType, ReactFormType } from './interfaces'
 import { validationsMap } from './react-form-validations'
 
-function ReactForm({jsonForm}: ReactFormType) {
-    const store = useDeepSignal(getStoreObject(jsonForm))
+function ReactForm({ jsonForm, store }: ReactFormType) {
+
+    if (_.isEmpty(store)) {
+        store = deepSignal(getStoreObject(jsonForm))
+    }
+    // setDefaultValues(jsonForm, store)
+    // const store = useDeepSignal(getStoreObject(jsonForm))
+    useEffect(() => {
+        setDefaultValues(jsonForm, store)
+    }, [])
     return (
         <Box sx={jsonForm.sx || undefined}>
             {jsonForm.items.map((item: any, index: number) => {
-                const Tag = formComponents[item.type]
+                const Tag = formComponents[item.typeName]
                 const Comp = <Tag key={index} item={item} store={store} />
                 return Comp
             })}
@@ -25,7 +35,15 @@ function getStoreObject(jsonForm: any) {
     return obj
 }
 
-function validateItem(item: JsonFormItemType, store: any) {
+function setDefaultValues(jsonForm: JsonFormType, store: any) {
+    for (const item of jsonForm.items) {
+        if (item.defaultValue) {
+            store[item.name].data.value = store[item.name].data.value || item.defaultValue
+        }
+    }
+}
+
+function validateItem(item: JsonFormItemType, store: any): void {
     if (item.validations) {
         for (const validation of item.validations) {
             validationsMap[validation](item, store)
@@ -33,4 +51,10 @@ function validateItem(item: JsonFormItemType, store: any) {
     }
 }
 
-export { ReactForm, validateItem }
+function validateItems(jsonForm: JsonFormType, store: any): void {
+    for (const item of jsonForm.items) {
+        validateItem(item, store)
+    }
+}
+
+export { ReactForm, validateItem, validateItems }

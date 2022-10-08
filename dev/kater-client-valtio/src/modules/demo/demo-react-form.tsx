@@ -1,14 +1,19 @@
-import { Button, TextField } from '@mui/material'
+import { Button } from '@mui/material'
 import { Box } from '@mui/system'
+import { JsonFormType } from '../../react-form/interfaces'
 // import {  useDeepSignal } from './preact-deepsignal'
-import { ReactForm } from '../../react-form/react-form'
+import { ReactForm, validateItems } from '../../react-form/react-form'
+import { deepSignal, useDeepSignal } from './preact-deepsignal'
 // import { demoObject } from './demo-store-signals'
 import { sampleJsonForm } from './sample-json-form'
 
+const store = deepSignal(getStoreObject(sampleJsonForm))
+
 function DemoReactForm() {
+    // const store = useDeepSignal(getStoreObject(sampleJsonForm))
     return (
         <Box>
-            <ReactForm jsonForm={sampleJsonForm} />
+            <ReactForm jsonForm={sampleJsonForm} store = {store} />
             <Button variant="contained" size="small" onClick={handleSubmit}>
                 Submit
             </Button>
@@ -19,6 +24,7 @@ function DemoReactForm() {
     )
 
     function handleSubmit() {
+        // validateItems(sampleJsonForm, )
         // const data = JSON.parse(JSON.stringify(demoStore.value))
         // console.log(data)
         // console.log(demoStore)
@@ -29,6 +35,14 @@ function DemoReactForm() {
             // demoStore[item.name].value = ''
         }
     }
+}
+
+function getStoreObject(jsonForm: JsonFormType) {
+    const obj: any = {}
+    for (const item of jsonForm.items) {
+        obj[item.name] = { data: '', errors: [] }
+    }
+    return obj
 }
 
 export { DemoReactForm }
