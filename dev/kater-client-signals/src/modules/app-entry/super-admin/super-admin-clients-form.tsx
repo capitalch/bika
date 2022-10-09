@@ -3,16 +3,29 @@ import {
     Button,
     Checkbox,
     FormControlLabel,
-    // useSnapshot,
     TextField,
     Typography,
 } from '../../../common/misc/redirect'
+import { JsonFormType } from '../../../react-form/interfaces'
+import { ReactForm } from '../../../react-form/react-form'
 import { superAdminStore } from '../../../stores/super-admin-store'
 import { useSuperAdminClientsForm } from './super-admin-clients-form-hook'
 
+function SuperAdminClientForm1() {
+    jsonFormClient.onSubmit = handleOnSubmit
+    return (
+        <ReactForm jsonForm={jsonFormClient} />
+    )
+
+    function handleOnSubmit(store: any) {
+        console.log(store)
+        store.serverError.value = 'abcd'
+    }
+}
+
 function SuperAdminClientForm() {
     const { checkErrors, getSxStyles, onCancel, onSubmit } = useSuperAdminClientsForm()
-    const clientForm:any = superAdminStore.clients.form
+    const clientForm: any = superAdminStore.clients.form
     const { checkClientName, checkShortCode } = checkErrors()
     return (
         <Box sx={getSxStyles()}>
@@ -78,4 +91,15 @@ function SuperAdminClientForm() {
         </Box>
     )
 }
-export { SuperAdminClientForm }
+export { SuperAdminClientForm, SuperAdminClientForm1 }
+
+const jsonFormClient: JsonFormType = {
+    items: [{
+        name: 'clientName',
+        label: 'Client name',
+        typeName: 'TextMaterial',
+        validations: ['required']
+    },],
+    onSubmit: (store: any) => { },
+    sx: { mt: .7 }
+}

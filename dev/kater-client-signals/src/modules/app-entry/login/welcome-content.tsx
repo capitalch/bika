@@ -11,16 +11,15 @@ import {
     PasswordIcon,
     PersonIcon,
     useEffect,
-    useSnapshot,
     useTheme,
 } from '../../../common/misc/redirect'
 import { resetGlobalStore } from '../../../stores/global-store'
 
 function WelcomeContent() {
     const theme = useTheme()
-    const snapLoginInfo = useSnapshot(globalStore.loginInfo)
+    const loginInfo = globalStore.loginInfo
     useEffect(() => {
-        globalStore.dialog.title = `Welcome ${snapLoginInfo.uid}`
+        globalStore.dialog.title.value = `Welcome ${loginInfo.uid.value}`
     })
     return (
         <Box sx={getStyles()}>
@@ -75,8 +74,8 @@ function WelcomeContent() {
     }
     // logout
     function handleSubmit() {
-        globalStore.resetLoginInfo()
-        globalStore.dialog.showDialog = false
+        globalStore.value.resetLoginInfo()
+        globalStore.dialog.showDialog.value = false
         resetGlobalStore()
     }
 }

@@ -61,7 +61,7 @@ function useXXGrid(xxGridOptions: XXGridOptions) {
 
     async function fetchData() {
         const gridState = xxGridOptions.xxGridState
-        globalStore.misc.showLoadingDialog = true
+        globalStore.misc.showLoadingDialog.value = true
         const rowsViewLimit = gridState.rowsViewLimit.value
         const q = appGraphqlStrings['genericView']({
             sqlKey: xxGridOptions.sqlKey,
@@ -75,7 +75,7 @@ function useXXGrid(xxGridOptions: XXGridOptions) {
         const rows: any = getRowsWithSwappedId(data)
         gridState.rows.value = rows
         requestSearch()
-        globalStore.misc.showLoadingDialog = false
+        globalStore.misc.showLoadingDialog.value = false
     }
 
     function preProcess() {

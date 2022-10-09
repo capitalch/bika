@@ -6,19 +6,13 @@ import {
     ibukiMessages,
     showDialog,
 } from '../../../common/misc/redirect'
-import { SuperAdminClientForm } from './super-admin-clients-form'
+import { SuperAdminClientForm, SuperAdminClientForm1 } from './super-admin-clients-form'
 import { superAdminStore } from '../../../stores/super-admin-store'
 
 function SuperAdminClients() {
     const xxGridState = superAdminStore.clients.xxGridState
     return (
         <Box>
-            <Button
-                onClick={() => {
-                    emit(ibukiMessages.superAdminClientsXXGridFetchData, '')
-                }}>
-                Fetch data
-            </Button>
             <XXGrid
                 columns={getColumns()}
                 addMethod={addMethod}
@@ -45,7 +39,7 @@ function SuperAdminClients() {
         superAdminStore.clients.form.isEditMode.value= false
         showDialog({
             title:'New client',
-            content:SuperAdminClientForm
+            content:SuperAdminClientForm1
         })
     }
 

@@ -4,13 +4,11 @@ import {
     InMemoryCache,
     HttpLink,
 } from '@apollo/client'
-import { Exception } from 'sass'
 import { globalStore, messages, showErrorMessage, urlJoin } from '../common/misc/redirect'
-// import _ from 'lodash'
 
 function useAppGraphql() {
     function getClient() {
-        const token = globalStore.loginInfo.token
+        const token = globalStore.loginInfo.token.value
         const url: any =
             process.env.NODE_ENV === 'development'
                 ? process.env.REACT_APP_LOCAL_SERVER_URL
@@ -43,7 +41,7 @@ function useAppGraphql() {
 
     function handleError(error: any) {
         if (error?.networkError?.statusCode === 1007) {
-            globalStore.resetLoginInfo()
+            globalStore.value.resetLoginInfo()
         }
         error.message =
             error?.networkError?.result?.message ||

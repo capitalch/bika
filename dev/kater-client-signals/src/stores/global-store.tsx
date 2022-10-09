@@ -1,5 +1,4 @@
-import { proxy } from 'valtio'
-import _ from 'lodash'
+import { deepSignal } from "../common/misc/preact-deepsignal"
 import { sideBarMainMenu } from '../common/navigation/side-bar/app-navigation-side-bar-menus'
 
 const appStore = {
@@ -18,10 +17,10 @@ const appStore = {
     },
 
     resetDialog: () => {
-        globalStore.dialog.content = () => <></>
-        globalStore.dialog.isClosable = true
-        globalStore.dialog.showDialog = false
-        globalStore.dialog.title = ''
+        globalStore.dialog.content.value = () => <></>
+        globalStore.dialog.isClosable.value = true
+        globalStore.dialog.showDialog.value = false
+        globalStore.dialog.title.value = ''
     },
 
     errorMessage: {
@@ -37,10 +36,10 @@ const appStore = {
     },
 
     resetLoginInfo: () => {
-        globalStore.loginInfo.isLoggedIn = false
-        globalStore.loginInfo.token = ''
-        globalStore.loginInfo.userType = ''
-        globalStore.loginInfo.uid = ''
+        globalStore.loginInfo.isLoggedIn.value = false
+        globalStore.loginInfo.token.value = ''
+        globalStore.loginInfo.userType.value = ''
+        globalStore.loginInfo.uid.value = ''
     },
 
     misc: {
@@ -59,14 +58,12 @@ const appStore = {
         message: 'Operation successful',
     },
 }
-let appStoreClone = _.cloneDeep(appStore)
 
-let globalStore = proxy(appStoreClone)
-
+let globalStore:any = deepSignal(appStore)
 function resetGlobalStore() {
-    appStoreClone = _.cloneDeep(appStore)
-    globalStore = proxy(appStoreClone)
-    globalStore.resetLoginInfo()
+    // appStoreClone = _.cloneDeep(appStore)
+    globalStore = deepSignal(appStore)
+    globalStore.value.resetLoginInfo()
 }
 
-export { globalStore, resetGlobalStore }
+export {globalStore, resetGlobalStore}

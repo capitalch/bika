@@ -1,4 +1,4 @@
-import { AppMaterialDialog, globalStore, styled, useSnapshot } from '../../misc/redirect'
+import { AppMaterialDialog, globalStore, styled, } from '../../misc/redirect'
 import { AppErrorMessage } from '../../components/app-error-message'
 import { AppSuccessMessage } from '../../components/app-success-message'
 
@@ -32,15 +32,15 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     justifyContent: 'flex-end',
 }))
 function AppNavigationMain({ open }: any) {
-    const snapMisc = useSnapshot(globalStore.misc)
-    const snapDialog = useSnapshot(globalStore.dialog)
-    const snapDialog1 = useSnapshot(globalStore.dialog1) // 2nd dialog
+    const misc = globalStore.misc
+    const dialog = globalStore.dialog
+    const dialog1 = globalStore.dialog1 // 2nd dialog
     return (
-        <Main open={snapMisc.open}>
+        <Main open={misc.open.value}>
             <DrawerHeader />
-            <globalStore.misc.currentComponent />
-            <AppMaterialDialog Content={snapDialog.content} isClosable={snapDialog.isClosable} showDialog={snapDialog.showDialog} title={snapDialog.title} />
-            <AppMaterialDialog Content={snapDialog1.content} isClosable={snapDialog1.isClosable} showDialog={snapDialog1.showDialog} title={snapDialog1.title} />
+            <globalStore.misc.currentComponent.value />
+            <AppMaterialDialog Content={dialog.content.value} isClosable={dialog.isClosable.value} showDialog={dialog.showDialog.value} title={dialog.title.value} />
+            <AppMaterialDialog Content={dialog1.content.value} isClosable={dialog1.isClosable.value} showDialog={dialog1.showDialog.value} title={dialog1.title.value} />
             <AppErrorMessage />
             <AppSuccessMessage />
         </Main>

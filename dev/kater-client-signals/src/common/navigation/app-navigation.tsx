@@ -3,7 +3,6 @@ import {
     CssBaseline,
     useGlobalMediaQuery,
     useEffect,
-    useSnapshot,
     globalStore,
 } from '../misc/redirect'
 import { AppNavigationMain } from './main/app-navigation-main'
@@ -14,11 +13,12 @@ import { AppLoadingIndicator } from '../components/app-loading-indicator'
 function AppNavigation() {
     
     const { isExtraLargeSizeUp } = useGlobalMediaQuery()
-    const snapLoginInfo = useSnapshot(globalStore.loginInfo)
+    // const snapLoginInfo = useSnapshot(globalStore.loginInfo)
+    const loginInfo = globalStore.loginInfo
     useEffect(() => {
         //By default if xl size and user already logged in then show side menu
-        if (snapLoginInfo.isLoggedIn && (!isSuperAdmin()))
-            globalStore.misc.open = (isExtraLargeSizeUp)
+        if (loginInfo.isLoggedIn.value && (!isSuperAdmin()))
+            globalStore.misc.open.value = (isExtraLargeSizeUp)
     })
 
     return (
@@ -32,7 +32,7 @@ function AppNavigation() {
     )
 
     function isSuperAdmin() {
-        return (snapLoginInfo.userType === 'S')
+        return (loginInfo.userType.value === 'S')
     }
 }
 export { AppNavigation }

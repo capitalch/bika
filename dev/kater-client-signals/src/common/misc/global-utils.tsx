@@ -11,7 +11,7 @@ function changeState(state: any, setState: any, changeObj: any) {
 }
 
 function closeDialog() {
-    globalStore.dialog.showDialog = false
+    globalStore.dialog.showDialog.value = false
 }
 
 function cryptoEncrypt(text: string) {
@@ -43,7 +43,7 @@ function getRowsWithSwappedId(rows: any[]) {
 }
 
 function loadComponent(component: () => any) {
-    globalStore.misc.currentComponent = component
+    globalStore.misc.currentComponent.value = component
 }
 
 function showDialog({
@@ -55,19 +55,19 @@ function showDialog({
     isClosable?: boolean
     content: () => any
 }) {
-    globalStore.dialog.title = title
-    globalStore.dialog.isClosable = isClosable
-    globalStore.dialog.content = content
-    globalStore.dialog.showDialog = true
+    globalStore.dialog.title.value = title
+    globalStore.dialog.isClosable.value = isClosable
+    globalStore.dialog.content.value = content
+    globalStore.dialog.showDialog.value = true
 }
 
 function showErrorMessage(errorMessage: ErrorMessage) {
-    globalStore.errorMessage.message = errorMessage.message
-    globalStore.errorMessage.show = true
+    globalStore.errorMessage.message.value = errorMessage.message
+    globalStore.errorMessage.show.value = true
 }
 
-function showSuccessMessage(){
-    globalStore.successMessage.show=true
+function showSuccessMessage() {
+    globalStore.successMessage.show.value = true
 }
 
 export {

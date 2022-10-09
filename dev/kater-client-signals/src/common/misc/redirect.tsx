@@ -110,7 +110,7 @@ export const {
 export { globalValidators } from './global-validators'
 export { useGlobalMediaQuery } from './global-media-query-hook'
 export { If, Then, Else, Switch } from 'react-if'
-export { useHookstate } from '@hookstate/core'
+// export { useHookstate } from '@hookstate/core'
 export { useAppGraphql } from '../../graphql/app-graphql-hook'
 export { appGraphqlStrings } from '../../graphql/app-graphql-strings'
 export { gql } from '@apollo/client'
@@ -127,7 +127,7 @@ export {
     showSuccessMessage,
 } from './global-utils'
 export { globalStore } from '../../stores/global-store'
-export { proxy, useSnapshot } from 'valtio'
+// export { proxy, useSnapshot } from 'valtio'
 export {
     type ErrorMessage,
     type MaterialDialog,

@@ -17,7 +17,7 @@ function AppNavigation() {
     const snapLoginInfo = useSnapshot(globalStore.loginInfo)
     useEffect(() => {
         //By default if xl size and user already logged in then show side menu
-        if (snapLoginInfo.isLoggedIn && (!isSuperAdmin()))
+        if (snapLoginInfo.isLoggedIn) // && (!isSuperAdmin()))
             globalStore.misc.open = (isExtraLargeSizeUp)
     })
 

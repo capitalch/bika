@@ -1,23 +1,23 @@
-import { Alert, globalStore, Snackbar,  useSnapshot } from '../misc/redirect'
+import { Alert, globalStore, Snackbar, } from '../misc/redirect'
 function AppSuccessMessage() {
-    const snapSuccessMessage = useSnapshot(globalStore.successMessage)
+    const successMessage = globalStore.successMessage
     return (<Snackbar
         anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'right',
         }}
         autoHideDuration={5000}
-        open={snapSuccessMessage.show}
+        open={successMessage.show.value}
         onClose={handleClose}>
         <Alert variant='filled'
             onClose={handleClose}
             severity='success'>
-            {snapSuccessMessage.message}
+            {successMessage.message.value}
         </Alert>
     </Snackbar>)
 
     function handleClose() {
-        globalStore.successMessage.show = false
+        globalStore.successMessage.show.value = false
     }
 }
 export { AppSuccessMessage }

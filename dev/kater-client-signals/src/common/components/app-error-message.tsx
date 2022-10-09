@@ -1,24 +1,24 @@
-import { Alert, globalStore, Snackbar,useSnapshot } from '../misc/redirect'
+import { Alert, globalStore, Snackbar } from '../misc/redirect'
 function AppErrorMessage() {
 
-    const snapErrorMessage = useSnapshot(globalStore.errorMessage)
+    const errorMessage = globalStore.errorMessage
     return (<Snackbar
         anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'right',
         }}
-        open={snapErrorMessage.show}
+        open={errorMessage.show.value}
         onClose={handleClose}>
         <Alert variant='filled'
             onClose={handleClose}
             severity='error'>
-            {snapErrorMessage.message}
+            {errorMessage.message.value}
         </Alert>
     </Snackbar>)
 
     function handleClose() {
-        globalStore.errorMessage.message = ''
-        globalStore.errorMessage.show = false
+        globalStore.errorMessage.message.value = ''
+        globalStore.errorMessage.show.value = false
     }
 }
 export { AppErrorMessage }

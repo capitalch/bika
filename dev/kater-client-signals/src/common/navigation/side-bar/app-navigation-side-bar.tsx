@@ -17,9 +17,8 @@ import {
     MenuItem,
     styled,
     Typography,
+    useDeepSignal,
     useGlobalMediaQuery,
-    useHookstate,
-    useSnapshot,
     useTheme,
 } from '../../misc/redirect'
 
@@ -38,12 +37,13 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 function AppNavigationSideBar() {
     const theme = useTheme()
     const { isExtraLargeSizeUp } = useGlobalMediaQuery()
-    const snapMisc = useSnapshot(globalStore.misc)
-    const sideBarLocalState = useHookstate({
+    const misc = globalStore.misc
+    
+    const sideBarLocalState = useDeepSignal({
         selectedControlId: 0,
         expandedControlId: 0,
     })
-    const menu = snapMisc.sideBarMenu
+    const menu = misc.sideBarMenu.value
 
     return (
         <Drawer
@@ -63,7 +63,7 @@ function AppNavigationSideBar() {
             variant="persistent"
             anchor="left"
             transitionDuration={300}
-            open={snapMisc.open}>
+            open={misc.open.value}>
             <DrawerHeader
                 sx={{
                     display: 'flex',
@@ -113,7 +113,7 @@ function AppNavigationSideBar() {
                         disableGutters
                         sx={{ pt: 0, pb: 0 }}
                         selected={
-                            sideBarLocalState.selectedControlId.get() ===
+                            sideBarLocalState.selectedControlId.value ===
                             item.controlId
                         }>
                         <ListItemButton
@@ -140,7 +140,7 @@ function AppNavigationSideBar() {
                         <Collapse
                             key={item.controlId}
                             in={
-                                sideBarLocalState.expandedControlId.get() ===
+                                sideBarLocalState.expandedControlId.value ===
                                 item.controlId
                             }
                             timeout="auto"
@@ -164,7 +164,7 @@ function AppNavigationSideBar() {
         let ret = undefined
         if (item.children) {
             ret =
-                item.controlId === sideBarLocalState.expandedControlId.get() ? (
+                item.controlId === sideBarLocalState.expandedControlId.value ? (
                     <ArrowDropUpIcon />
                 ) : (
                     <ArrowDropDownIcon />
@@ -175,26 +175,26 @@ function AppNavigationSideBar() {
 
     function handleDrawerCloseIfRequired() {
         if (!isExtraLargeSizeUp) {
-            if (snapMisc.open) {
-                globalStore.misc.open = false
+            if (misc.open.value) {
+                globalStore.misc.open.value = false
             }
         }
     }
 
     function handleDrawerClose() {
-        globalStore.misc.open = false
+        globalStore.misc.open.value = false
     }
 
     function handleListItemButtonclick(item: any) {
         if (item.children) {
             const expandedControlId =
-                sideBarLocalState.expandedControlId.get() === item.controlId
+                sideBarLocalState.expandedControlId.value === item.controlId
                     ? 0
                     : item.controlId
-            sideBarLocalState.expandedControlId.set(expandedControlId)
+            sideBarLocalState.expandedControlId.value = expandedControlId
         } else {
-            sideBarLocalState.selectedControlId.set(item.controlId)
-            globalStore.misc.currentComponentName = item.componentName
+            sideBarLocalState.selectedControlId.value = item.controlId
+            globalStore.misc.currentComponentName.value = item.componentName
             handleDrawerCloseIfRequired()
         }
     }

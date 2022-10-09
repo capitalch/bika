@@ -1,6 +1,7 @@
 import { JsonFormType } from '../../react-form/interfaces'
 
 const sampleJsonForm: JsonFormType = {
+
     items: [
         {
             label: 'Name',
@@ -8,7 +9,7 @@ const sampleJsonForm: JsonFormType = {
             sx: {
                 mt: 2,
             },
-            type: 'TextMaterial',
+            typeName: 'TextMaterial',
             validations: ['email', 'oneSpecialChar', 'required'],
         },
         {
@@ -18,7 +19,7 @@ const sampleJsonForm: JsonFormType = {
                 mt: 2,
                 ml: 1,
             },
-            type: 'TextMaterial',
+            typeName: 'TextMaterial',
             validations: ['required'],
         },
         {
@@ -28,7 +29,7 @@ const sampleJsonForm: JsonFormType = {
                 mt: 2,
                 ml: 1,
             },
-            type: 'TextMaterial',
+            typeName: 'TextMaterial',
         },
     ],
     sx: {

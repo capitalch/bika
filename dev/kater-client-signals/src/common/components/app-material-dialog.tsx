@@ -41,7 +41,7 @@ function AppMaterialDialog({ Content, isClosable, showDialog, title }: MaterialD
     )
 
     function handleClose() {
-        globalStore.dialog.showDialog = false
+        globalStore.dialog.showDialog.value = false
     }
 }
 

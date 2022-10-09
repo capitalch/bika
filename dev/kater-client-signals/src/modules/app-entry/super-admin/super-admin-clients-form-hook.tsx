@@ -1,4 +1,4 @@
-import { appGraphqlStrings, closeDialog, emit, globalValidators, ibukiMessages, showSuccessMessage, SqlObject, SxProps, useAppGraphql, useSnapshot, useTheme } from '../../../common/misc/redirect'
+import { appGraphqlStrings, closeDialog, emit, globalValidators, ibukiMessages, showSuccessMessage, SqlObject, SxProps, useAppGraphql, useTheme } from '../../../common/misc/redirect'
 import { superAdminStore } from '../../../stores/super-admin-store'
 function useSuperAdminClientsForm() {
     const theme = useTheme()
@@ -26,7 +26,7 @@ function useSuperAdminClientsForm() {
     }
 
     function onCancel() {
-        superAdminStore.clients.resetForm()
+        superAdminStore.clients.value.resetForm()
         closeDialog()
     }
 
@@ -55,7 +55,7 @@ function useSuperAdminClientsForm() {
             console.log(ret)
             showSuccessMessage()
             emit(ibukiMessages.superAdminClientsXXGridFetchData,'')
-            superAdminStore.clients.resetForm()
+            superAdminStore.clients.value.resetForm()
             closeDialog()
         }
     }

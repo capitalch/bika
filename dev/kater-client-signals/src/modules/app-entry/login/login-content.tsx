@@ -5,7 +5,6 @@ import {
     Button,
     CloseIcon,
     cryptoEncrypt,
-    deepSignal,
     getPayloadFromGraphqlObject,
     globalStore,
     globalValidators,
@@ -38,7 +37,7 @@ function LoginContent() {
     const { checkPwdError, checkUidError } = globalValidators()
 
     useEffect(() => {
-        globalStore.dialog.title = 'User login'
+        globalStore.dialog.title.value = 'User login'
     })
 
     const isSubmitDisabled =
@@ -166,11 +165,11 @@ function LoginContent() {
             localStore.uidError.value.length === 0 &&
             localStore.pwdError.value.length === 0
         ) {
-            globalStore.misc.showLoadingDialog = true
+            globalStore.misc.showLoadingDialog.value = true
             const utcTime = new Date().getTime().toString()
             const encryptedUtcTime = cryptoEncrypt(utcTime)
 
-            globalStore.loginInfo.token = encryptedUtcTime
+            globalStore.loginInfo.token.value = encryptedUtcTime
             const cred = localStore.uid.value.concat(':', localStore.pwd.value)
             const credentials = Buffer.from(cred).toString('base64')
 
@@ -184,7 +183,7 @@ function LoginContent() {
                 resetAllStates()
                 localStore.serverError.value = e.message
             } finally {
-                globalStore.misc.showLoadingDialog = false
+                globalStore.misc.showLoadingDialog.value = false
             }
         }
 
@@ -192,13 +191,13 @@ function LoginContent() {
             if (ret) {
                 const payload = getPayloadFromGraphqlObject(ret, 'doLogin')
                 if (payload.isSuccess) {
-                    globalStore.loginInfo.isLoggedIn = true
-                    globalStore.loginInfo.token = payload.token
-                    globalStore.loginInfo.uid = localStore.uid.value
-                    globalStore.loginInfo.userType = payload.userType
+                    globalStore.loginInfo.isLoggedIn.value = true
+                    globalStore.loginInfo.token.value = payload.token
+                    globalStore.loginInfo.uid.value = localStore.uid.value
+                    globalStore.loginInfo.userType.value = payload.userType
 
-                    globalStore.dialog.showDialog = false
-                    if (globalStore.loginInfo.userType === 'S') {
+                    globalStore.dialog.showDialog.value = false
+                    if (globalStore.loginInfo.userType.value === 'S') {
                         loadComponent(SuperAdminMain)
                     }
                 } else {
@@ -222,12 +221,11 @@ function LoginContent() {
     }
 
     function resetAllStates() {
-        // localStore = deepSignal(storeObject)
         localStore.uid.value = ''
         localStore.pwd.value = ''
         localStore.uidError.value = ''
         localStore.pwdError.value = ''
-        globalStore.resetLoginInfo()
+        globalStore.value.resetLoginInfo()
     }
 }
 export { LoginContent }
