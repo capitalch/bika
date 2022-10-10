@@ -1,10 +1,19 @@
 import {
+    appGraphqlStrings,
     Box,
     Button,
     Checkbox,
+    closeDialog,
+    emit,
     FormControlLabel,
+    ibukiMessages,
+    messages,
+    showErrorMessage,
+    showSuccessMessage,
+    SqlObject,
     TextField,
     Typography,
+    useAppGraphql,
 } from '../../../common/misc/redirect'
 import { JsonFormType } from '../../../react-form/interfaces'
 import { ReactForm } from '../../../react-form/react-form'
@@ -12,11 +21,42 @@ import { superAdminStore } from '../../../stores/super-admin-store'
 import { useSuperAdminClientsForm } from './super-admin-clients-form-hook'
 
 function SuperAdminClientForm1() {
+    const clientForm = superAdminStore.clients.form
+     if(clientForm.isEditMode){
+        jsonFormClient.items[0].defaultValue = clientForm.clientName.value
+        jsonFormClient.items[1].defaultValue = clientForm.shortCode.value
+        jsonFormClient.items[2].defaultValue = clientForm.remarks.value
+        jsonFormClient.items[3].defaultValue = clientForm.isActive.value
+    }
     jsonFormClient.submit.onSubmit = handleOnSubmit
+    const { mutateGraphql } = useAppGraphql()
     return <ReactForm jsonForm={jsonFormClient} />
 
-    function handleOnSubmit(store: any) {
-        store.serverError.value = 'abcd'
+    async function handleOnSubmit(store: any) {
+        const sqlObject: SqlObject = {
+            tableName: 'ClientM',
+            generateId: clientForm.id.value ? false : true,
+            idGeneratorTableName: 'IdGeneratorTable',
+            xData: {
+                id: clientForm.id.value,
+                clientName: store.clientName.data.value,
+                remarks: store.remarks.data.value,
+                shortCode: store.shortCode.data.value,
+                isActive: store.isActive.data.value,
+            }
+        }
+        if (!clientForm.isEditMode.value) {
+            sqlObject.xData.dbName = store.shortCode.data.value.concat('_db')
+        }
+        const q = appGraphqlStrings.genericUpdate(sqlObject)
+        try {
+        const ret = await mutateGraphql(q)
+        showSuccessMessage()
+        emit(ibukiMessages.superAdminClientsXXGridFetchData, '')
+        closeDialog()
+        } catch(e: any){
+            showErrorMessage(e.message || messages.errFetch)
+        }
     }
 }
 
@@ -129,16 +169,20 @@ const jsonFormClient: JsonFormType = {
             validations: ['required'],
         },
         {
+            name: 'remarks',
+            label: 'Remarks',
+            typeName: 'TextMaterial',
+        },
+        {
             name: 'isActive',
             label: 'Active',
             typeName: 'CheckBoxMaterial',
-            validations:[],
-            sx:{mt:1}
+            // sx:{mt:1}
         }
     ],
-    sx: { mt: 0.7, display:'flex', flexDirection:'column'},
+    sx: {width:350, mt: 0.7, display: 'flex', flexDirection: 'column', rowGap: 2 },
     submit: {
         isFullWidthSubmitButton: true,
-        onSubmit: (store: any) => {},
+        onSubmit: (store: any) => { },
     },
 }

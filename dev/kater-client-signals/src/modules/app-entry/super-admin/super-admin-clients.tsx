@@ -52,9 +52,10 @@ function SuperAdminClients() {
         clientForm.clientName.value = row.clientName
         clientForm.shortCode.value = row.shortCode
         clientForm.remarks.value = row.remarks
+        clientForm.isActive.value = row.isActive
         showDialog({
             title:'Edit client',
-            content:SuperAdminClientForm
+            content:SuperAdminClientForm1
         })
     }
 

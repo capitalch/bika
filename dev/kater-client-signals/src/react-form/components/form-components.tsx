@@ -7,15 +7,16 @@ import { ItemErrors } from './item-errors'
 const formComponents: FormComponentType = {
 
     CheckBoxMaterial: ({ item, store }: JsonFormComponentParmType) => {
-        const val = store[item.name].data.value
+        let val = store[item.name].data.value  //? true : false
+        val = ((val === '') || (val === null) || (val === undefined)) ? false : true
         return (
             <FormControlLabel sx={item.sx || undefined}
                 control={
                     <Checkbox
-                        checked={!val ? false : true}
+                        checked={val}
                         name={item.name}
                         onChange={handleOnChange}
-                        
+
                         value={val}
                     />
                 }
@@ -23,14 +24,14 @@ const formComponents: FormComponentType = {
             />
         )
 
-        function handleOnChange(e:any){
+        function handleOnChange(e: any) {
             store[item.name].data.value = e.target.checked
             if (item.onChange) {
                 item.onChange(e)
             }
         }
     },
-    
+
     SelectCommon: ({ item, store }: JsonFormComponentParmType) => {
         const errors = store[item.name].errors.value
         return (
@@ -61,11 +62,11 @@ const formComponents: FormComponentType = {
     SelectMaterial: ({ item, store }: JsonFormComponentParmType) => {
         const errors = store[item.name].errors.value
         return (
-            <FormControl sx={item.sx || { m: 2, minWidth: 120 }}>
+            <FormControl sx={item.sx || { minWidth: 120 }}>
                 <InputLabel sx={{ mt: -1 }} id='abc'>{item.label}</InputLabel>
                 <Select
                     autoWidth={true}
-                    error={errors && (errors.length > 0)}
+                    // error={errors && (errors.length > 0)}
                     labelId='abc'
                     label={item.label}
                     size='small'
@@ -95,7 +96,7 @@ const formComponents: FormComponentType = {
         return (
             <>
                 <TextField
-                    error={errors && (errors.length > 0)}
+                    // error={errors && (errors.length > 0)}
                     helperText={<ItemErrors errors={errors} />}
                     label={
                         <>

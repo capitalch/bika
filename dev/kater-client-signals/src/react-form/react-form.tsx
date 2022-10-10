@@ -39,7 +39,7 @@ function ReactForm({ jsonForm, store }: ReactFormType) {
             })}
 
             {/* Submit button */}
-            <Typography component="div" sx={{ mt: 1 }}>
+            <Typography component="div" >
                 <Button
                     fullWidth={jsonForm.submit.isFullWidthSubmitButton}
                     variant="contained"
@@ -95,9 +95,10 @@ function getStoreObject(jsonForm: any) {
 
 function setDefaultValues(jsonForm: JsonFormType, store: any) {
     for (const item of jsonForm.items) {
+        const x = store[item.name].data.value
         if (item.defaultValue) {
             store[item.name].data.value =
-                store[item.name].data.value || item.defaultValue
+                 item.defaultValue
         }
     }
 }

@@ -16,7 +16,7 @@ const superAdmin = {
             serverError: '',
             shortCode: '',
             shortCodeError: '',
-            isActive: true,
+            isActive: false,
         },
         resetForm: () => {
             const temp = superAdminStore.clients.form
