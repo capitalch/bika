@@ -10,10 +10,9 @@ import { errorMessages } from './error-messages'
 import { If, Then } from 'react-if'
 import { ItemErrors } from './components/item-errors'
 
-
 function ReactForm({ jsonForm, store }: ReactFormType) {
     const meta: any = useRef({
-        store: undefined
+        store: undefined,
     })
 
     if (store) {
@@ -21,8 +20,9 @@ function ReactForm({ jsonForm, store }: ReactFormType) {
     } else if (_.isEmpty(meta.current.store)) {
         meta.current.store = deepSignal(getStoreObject(jsonForm))
     }
-
-    // const isFormError: boolean = hasFormError(meta.current.store)
+    if (!jsonForm.submit.isFullWidthSubmitButton) {
+        jsonForm.submit.isFullWidthSubmitButton = true
+    }
 
     useEffect(() => {
         setDefaultValues(jsonForm, meta.current.store)
@@ -32,39 +32,40 @@ function ReactForm({ jsonForm, store }: ReactFormType) {
         <Box sx={jsonForm.sx || undefined}>
             {jsonForm.items.map((item: any, index: number) => {
                 const Tag = formComponents[item.typeName]
-                const Comp = <Tag key={index} item={item} store={meta.current.store} />
+                const Comp = (
+                    <Tag key={index} item={item} store={meta.current.store} />
+                )
                 return Comp
             })}
-            {/* form error */}
-            {/* <If condition={isFormError}>
-                <Then>
-                    <Typography sx={{ mt: 2 }} component='li' variant='caption'>{errorMessages.formError}</Typography>
-                </Then>
-            </If> */}
 
             {/* Submit button */}
-            <Typography component='div' sx={{ mt: 2 }}>
-                <Button fullWidth={true} variant='contained' onClick={handleOnSubmit}>Submit</Button>
+            <Typography component="div" sx={{ mt: 2 }}>
+                <Button
+                    fullWidth={jsonForm.submit.isFullWidthSubmitButton}
+                    variant="contained"
+                    onClick={handleOnSubmit}>
+                    Submit
+                </Button>
             </Typography>
 
             {/* Server error */}
             <If condition={meta.current.store.serverError.value}>
                 <Then>
-                    <Typography variant='caption' component='div' sx={{ mt: 2 }}>
+                    <Typography
+                        variant="caption"
+                        component="div"
+                        sx={{ mt: 2 }}>
                         {errorMessages.serverError}
                     </Typography>
                 </Then>
             </If>
-
         </Box>
     )
 
     function handleOnSubmit() {
         validateItems(jsonForm, meta.current.store)
         if (!hasFormError(meta.current.store)) {
-            if (jsonForm.onSubmit) {
-                jsonForm.onSubmit(meta.current.store)
-            }
+            jsonForm.submit.onSubmit(meta.current.store)
         }
     }
 }
@@ -80,7 +81,7 @@ function hasFormError(store: any): boolean {
             break
         }
     }
-    return (ret)
+    return ret
 }
 
 function getStoreObject(jsonForm: any) {
@@ -95,7 +96,8 @@ function getStoreObject(jsonForm: any) {
 function setDefaultValues(jsonForm: JsonFormType, store: any) {
     for (const item of jsonForm.items) {
         if (item.defaultValue) {
-            store[item.name].data.value = store[item.name].data.value || item.defaultValue
+            store[item.name].data.value =
+                store[item.name].data.value || item.defaultValue
         }
     }
 }

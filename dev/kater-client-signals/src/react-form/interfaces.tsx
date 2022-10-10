@@ -14,8 +14,14 @@ interface JsonFormComponentParmType {
 interface JsonFormType {
     // hasSubmitButton?: boolean
     items: JsonFormItemType[]
+    submit:SubmitType
     onSubmit?: (store:any) =>void
     sx?: SxProps
+}
+
+interface SubmitType{
+    isFullWidthSubmitButton?:boolean
+    onSubmit:(store:any)=>void
 }
 
 interface JsonFormItemType {

@@ -12,13 +12,12 @@ import { superAdminStore } from '../../../stores/super-admin-store'
 import { useSuperAdminClientsForm } from './super-admin-clients-form-hook'
 
 function SuperAdminClientForm1() {
-    jsonFormClient.onSubmit = handleOnSubmit
+    jsonFormClient.submit.onSubmit = handleOnSubmit
     return (
         <ReactForm jsonForm={jsonFormClient} />
     )
 
     function handleOnSubmit(store: any) {
-        console.log(store)
         store.serverError.value = 'abcd'
     }
 }
@@ -100,6 +99,9 @@ const jsonFormClient: JsonFormType = {
         typeName: 'TextMaterial',
         validations: ['required']
     },],
-    onSubmit: (store: any) => { },
-    sx: { mt: .7 }
+    sx: { mt: .7 },
+    submit:{
+        isFullWidthSubmitButton:true,
+        onSubmit:(store: any) => { },
+    }
 }

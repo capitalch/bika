@@ -1,7 +1,6 @@
 import { JsonFormType } from '../../react-form/interfaces'
 
 const sampleJsonForm: JsonFormType = {
-
     items: [
         {
             label: 'Name',
@@ -35,6 +34,10 @@ const sampleJsonForm: JsonFormType = {
     sx: {
         mt: 2,
         mb: 2,
+    },
+    submit: {
+        isFullWidthSubmitButton: false,
+        onSubmit: (store: any) => {},
     },
 }
 
