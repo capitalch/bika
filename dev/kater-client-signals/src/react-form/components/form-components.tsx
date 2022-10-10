@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material'
+import { Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material'
 import { If, Then } from 'react-if'
 import { FormComponentType, JsonFormComponentParmType } from '../interfaces'
 import { validateItem } from '../react-form'
@@ -6,6 +6,31 @@ import { ItemErrors } from './item-errors'
 
 const formComponents: FormComponentType = {
 
+    CheckBoxMaterial: ({ item, store }: JsonFormComponentParmType) => {
+        const val = store[item.name].data.value
+        return (
+            <FormControlLabel sx={item.sx || undefined}
+                control={
+                    <Checkbox
+                        checked={!val ? false : true}
+                        name={item.name}
+                        onChange={handleOnChange}
+                        
+                        value={val}
+                    />
+                }
+                label={item.label}
+            />
+        )
+
+        function handleOnChange(e:any){
+            store[item.name].data.value = e.target.checked
+            if (item.onChange) {
+                item.onChange(e)
+            }
+        }
+    },
+    
     SelectCommon: ({ item, store }: JsonFormComponentParmType) => {
         const errors = store[item.name].errors.value
         return (
@@ -64,23 +89,6 @@ const formComponents: FormComponentType = {
             }
         }
     },
-
-    // SubmitMaterial: ({ item, store }: JsonFormComponentParmType) => {
-    //     return (
-            // <Typography component='div'>
-            //     <Button sx={item.sx || { m: 2, minWidth: 120 }} variant='contained' onClick={handleOnClick}>Submit</Button>
-            // </Typography>
-    //     )
-
-    //     function handleOnClick() {
-    //         // if not any error then execute onSubmit method passed from parent
-    //         if (!hasFormError(store)) {
-    //             if (item.onSubmit) {
-    //                 item.onSubmit(store)
-    //             }
-    //         }
-    //     }
-    // },
 
     TextMaterial: ({ item, store }: JsonFormComponentParmType) => {
         const errors = store[item.name].errors.value

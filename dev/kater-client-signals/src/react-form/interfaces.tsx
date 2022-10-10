@@ -37,7 +37,7 @@ interface JsonFormItemType {
 
 type selectOption = { label: string; value: string }
 
-type ItemTypeNameType = 'SelectCommon' | 'SelectMaterial' | 'SubmitMaterial' | 'TextMaterial'
+type ItemTypeNameType = 'CheckBoxMaterial' | 'SelectCommon' | 'SelectMaterial' | 'SubmitMaterial' | 'TextMaterial'
 
 interface FormComponentType {
     [key: string]: React.FC<any>

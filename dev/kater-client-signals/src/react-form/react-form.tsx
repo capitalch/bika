@@ -39,7 +39,7 @@ function ReactForm({ jsonForm, store }: ReactFormType) {
             })}
 
             {/* Submit button */}
-            <Typography component="div" sx={{ mt: 2 }}>
+            <Typography component="div" sx={{ mt: 1 }}>
                 <Button
                     fullWidth={jsonForm.submit.isFullWidthSubmitButton}
                     variant="contained"
