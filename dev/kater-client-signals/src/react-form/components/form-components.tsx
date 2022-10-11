@@ -8,7 +8,8 @@ const formComponents: FormComponentType = {
 
     CheckBoxMaterial: ({ item, store }: JsonFormComponentParmType) => {
         let val = store[item.name].data.value  //? true : false
-        val = ((val === '') || (val === null) || (val === undefined)) ? false : true
+        val = !!val
+        // val = ((val === '') || (val === null) || (val === undefined)) ? false : true
         return (
             <FormControlLabel sx={item.sx || undefined}
                 control={

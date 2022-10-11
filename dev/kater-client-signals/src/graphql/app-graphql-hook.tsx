@@ -33,7 +33,7 @@ function useAppGraphql() {
             defaultOptions: {
                 query: {
                     fetchPolicy: 'network-only',
-                },
+                }, 
             },
         })
         return client
