@@ -1,4 +1,4 @@
-import { deepSignal } from '../common/misc/preact-deepsignal'
+import { deepSignal } from '../common/misc/redirect'
 
 const superAdmin = {
     clients: {

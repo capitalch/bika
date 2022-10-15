@@ -1,4 +1,4 @@
-import { deepSignal } from "../common/misc/preact-deepsignal"
+import { deepSignal } from "../common/misc/redirect"
 import { sideBarMainMenu } from '../common/navigation/side-bar/app-navigation-side-bar-menus'
 
 const appStore = {

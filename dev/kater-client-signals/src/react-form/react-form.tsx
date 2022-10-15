@@ -1,7 +1,7 @@
 import { Box } from '@mui/system'
 import { useEffect, useRef } from 'react'
 import _ from 'lodash'
-import { deepSignal, useDeepSignal } from './preact-deepsignal'
+import { deepSignal, useDeepSignal } from '@deepsignal/react'
 import { formComponents } from './components/form-components'
 import { JsonFormType, JsonFormItemType, ReactFormType } from './interfaces'
 import { validationsMap } from './react-form-validations'
