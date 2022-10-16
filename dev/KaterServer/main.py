@@ -13,12 +13,12 @@ logger.info('Started server..')
 @app.errorhandler(GenericException)
 def handle_generic_exception(e):    
     logger.error(f'Error code:{e.code} - {e.message}, Called from: {hostNameAndIP}')
-    return jsonify(code=e.code, name=e.name, message=e.message), e.code
+    return jsonify(code=e.code, name=e.name, message=e.message), 500
 
 @app.errorhandler(exceptions.HTTPException)
 def handle_http_exception(e):
     logger.error(f'Error code:{e.code} - {e.message}, Called from: {hostNameAndIP}')
-    return jsonify(code=e.code, name=e.name, message=e.message), e.code
+    return jsonify(code=e.code, name=e.name, message=e.message), 500
 
 @app.errorhandler(Exception)
 def handle_http_exception(e):

@@ -1,0 +1,7 @@
+type Mutation {
+    appServer: AppServerMutation
+}
+
+type AppServerMutation {
+    genericUpdate(value:Generic): Generic
+}

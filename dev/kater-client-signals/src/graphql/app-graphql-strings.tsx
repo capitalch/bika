@@ -44,6 +44,15 @@ const appGraphqlStrings: any = {
         }
     `
     },
+
+    testComments: () => gql`
+        subscription onTestComments(){
+            commentAdded(){
+                id
+                content
+            }
+        }
+    `
 }
 
 function encodeObj(obj: any) {

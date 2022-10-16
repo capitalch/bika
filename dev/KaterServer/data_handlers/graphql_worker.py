@@ -8,11 +8,11 @@ def context_value(request):
     auth = request.headers.get('AUTHORIZATION')
     if ((auth is None) or (auth == '')):
         raiseGenericException('errMissingToken')
+        # pass
     elif (operationName is None):
         raiseGenericException('errOperationMissing')
     elif (operationName == 'login'):
         diff = getClientServerTimeDiff(auth)
-        # return {}
         if (diff > 1):
             raiseGenericException('errTimeDiff')
         else:

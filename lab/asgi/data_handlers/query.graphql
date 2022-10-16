@@ -1,0 +1,9 @@
+type Query {
+    appServer: AppServerQuery
+    hello: String
+}
+
+type AppServerQuery {
+    genericViewTest: Generic
+}
+scalar Generic
