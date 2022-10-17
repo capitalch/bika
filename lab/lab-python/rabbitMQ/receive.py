@@ -2,7 +2,7 @@ import pika, sys, os
 
 def main():
     # connection = pika.BlockingConnection(pika.ConnectionParameters(host='queue.cloudjiffy.net',  credentials=pika.PlainCredentials('guest','guest')))
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host='rattlesnake.rmq.cloudamqp.com/rfnortyg',   credentials=pika.PlainCredentials('rfnortyg','PVWhYAeWfb8kMPR2m38g2NycelEHftSO')))
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host='103.217.220.30',  credentials=pika.PlainCredentials('guest','guest')))
     channel = connection.channel()
 
     channel.queue_declare(
