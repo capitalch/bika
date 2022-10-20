@@ -2,7 +2,11 @@ import pika, sys, os
 
 def main():
     # connection = pika.BlockingConnection(pika.ConnectionParameters(host='queue.cloudjiffy.net',  credentials=pika.PlainCredentials('guest','guest')))
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host='103.217.220.30',  credentials=pika.PlainCredentials('guest','guest')))
+    # connection = pika.BlockingConnection(pika.ConnectionParameters(host='queue.cloudjiffy.net', port='11374',  credentials=pika.PlainCredentials('guest','guest')))
+    url = os.environ.get('amqps://rfnortyg:PVWhYAeWfb8kMPR2m38g2NycelEHftSO@rattlesnake.rmq.cloudamqp.com/rfnortyg', 'amqp://guest:guest@localhost:5672/%2f')
+    params = pika.URLParameters(url)
+    connection = pika.BlockingConnection(params)
+
     channel = connection.channel()
 
     channel.queue_declare(
