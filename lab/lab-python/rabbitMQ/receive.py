@@ -2,10 +2,15 @@ import pika, sys, os
 
 def main():
     # connection = pika.BlockingConnection(pika.ConnectionParameters(host='queue.cloudjiffy.net',  credentials=pika.PlainCredentials('guest','guest')))
-    # connection = pika.BlockingConnection(pika.ConnectionParameters(host='queue.cloudjiffy.net', port='11374',  credentials=pika.PlainCredentials('guest','guest')))
-    url = os.environ.get('amqps://rfnortyg:PVWhYAeWfb8kMPR2m38g2NycelEHftSO@rattlesnake.rmq.cloudamqp.com/rfnortyg', 'amqp://guest:guest@localhost:5672/%2f')
-    params = pika.URLParameters(url)
-    connection = pika.BlockingConnection(params)
+    # Following works. I changed default user/ pwd to guest1/guest1
+    # connection = pika.BlockingConnection(pika.ConnectionParameters(host='queue.cloudjiffy.net', port='11374',  credentials=pika.PlainCredentials('guest1','guest1')))
+    # url = os.environ.get('amqps://rfnortyg:PVWhYAeWfb8kMPR2m38g2NycelEHftSO@rattlesnake.rmq.cloudamqp.com/rfnortyg', 'amqp://guest:guest@localhost:5672/%2f') # works
+    # params = pika.URLParameters(url)
+    # connection = pika.BlockingConnection(params)
+
+    # connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost', port='5672',  credentials=pika.PlainCredentials('guest','guest')))
+
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host='ubuntu-rabbit.cloudjiffy.net', port='11379', credentials=pika.PlainCredentials('guest','guest') )) # not working when rabbitMQ installed on ubuntu
 
     channel = connection.channel()
 
