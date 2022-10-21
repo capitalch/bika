@@ -10,7 +10,7 @@ def main():
 
     # connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost', port='5672',  credentials=pika.PlainCredentials('guest','guest')))
 
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host='ubuntu-rabbit.cloudjiffy.net', port='11379', credentials=pika.PlainCredentials('guest','guest') )) # not working when rabbitMQ installed on ubuntu
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host='ubuntu-rabbit.cloudjiffy.net', port='11379', credentials=pika.PlainCredentials('guest1','guest1') )) # not working when rabbitMQ installed on ubuntu
 
     channel = connection.channel()
 
