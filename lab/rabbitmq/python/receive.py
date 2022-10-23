@@ -1,5 +1,8 @@
 import traceback
-import pika, sys, os
+import pika
+import sys
+import os
+
 
 def main():
     # connection = pika.BlockingConnection(pika.ConnectionParameters(host='queue.cloudjiffy.net',  credentials=pika.PlainCredentials('guest','guest')))
@@ -11,25 +14,28 @@ def main():
 
     # connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost', port='5672',  credentials=pika.PlainCredentials('guest','guest')))
 
-    while(True):
+    while (True):
         try:
-            connection = pika.BlockingConnection(pika.ConnectionParameters(host='ubuntu-rabbit.cloudjiffy.net', port='11379', credentials=pika.PlainCredentials('guest1','guest1') )) # not working when rabbitMQ installed on ubuntu
+            connection = pika.BlockingConnection(pika.ConnectionParameters(host='ubuntu-rabbit.cloudjiffy.net', port='11379',
+                                                 credentials=pika.PlainCredentials('guest1', 'guest1')))  # not working when rabbitMQ installed on ubuntu
 
             channel = connection.channel()
 
             channel.queue_declare(
-                queue='hello'
+                queue='test', durable=True
             )
 
             def callback(ch, method, properties, body):
                 print(f'Received {body}')
 
-            channel.basic_consume(queue='hello', auto_ack=True, on_message_callback=callback)
+            channel.basic_consume(
+                queue='test', auto_ack=True, on_message_callback=callback)
 
             print(' [*] Waiting for messages. To exit press CTRL+C')
             channel.start_consuming()
         except Exception:
             traceback.print_exc()
+
 
 if __name__ == '__main__':
     try:
