@@ -1,5 +1,6 @@
 import { useEffect } from "react"
 import io from 'socket.io-client'
+import moment from 'moment'
 
 function SocketIOConnect() {
     const url = 'http://ubuntu-rabbit.cloudjiffy.net:11382'
@@ -12,11 +13,11 @@ function SocketIOConnect() {
             transports: ['websocket']
         })
         socket.on('connect', () => {
-            console.log('socket.io connected')
+            console.log(`${moment().format('YYYY-MM-DD HH:mm:ss')} socket.io connected`)
         })
 
         socket.on('disconnect', () => {
-            console.log('socket.io disconnected')
+            console.log(`${moment().format('YYYY-MM-DD HH:mm:ss')} socket.io disconnected`)
         })
     }, [])
     return (<div>
