@@ -11,3 +11,6 @@ Password: SxoiVtcv0I
 # Ubuntu vps in RabbitMQ
 Login: root
 Password: NCLbco29934
+
+# Websocket libraries 2022
+https://www.atatus.com/blog/websocket-libraries-for-nodejs/
