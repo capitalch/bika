@@ -10,7 +10,8 @@ function SocketIOConnect() {
             autoConnect: true,
             reconnection: true,
             reconnectionAttempts: 50,
-            transports: ['websocket']
+            transports: ['websocket'],
+            
         })
         socket.on('connect', () => {
             console.log(`${moment().format('YYYY-MM-DD HH:mm:ss')} socket.io connected`)
