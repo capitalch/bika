@@ -16,7 +16,7 @@ def main():
 
     while (True):
         try:
-            connection = pika.BlockingConnection(pika.ConnectionParameters(host='ubuntu-rabbit.cloudjiffy.net', port='11379',
+            connection = pika.BlockingConnection(pika.ConnectionParameters(host='trace-link.cloudjiffy.net', port='11362',
                                                  credentials=pika.PlainCredentials('guest1', 'guest1')))  # not working when rabbitMQ installed on ubuntu
 
             channel = connection.channel()
