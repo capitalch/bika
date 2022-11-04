@@ -7,7 +7,6 @@ import {
 } from '@apollo/client'
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions'
 import { getMainDefinition } from '@apollo/client/utilities'
-import { createClient } from 'graphql-ws'
 import { globalStore, messages, showErrorMessage, urlJoin } from '../common/misc/redirect'
 
 function useAppGraphql() {
@@ -31,21 +30,21 @@ function useAppGraphql() {
             return forward(operation)
         })
 
-        const wsLink = new GraphQLWsLink(createClient({
-            url: urlJoin(url, 'graphql')
-        }))
+        // const wsLink = new GraphQLWsLink(createClient({
+        //     url: urlJoin(url, 'graphql')
+        // }))
 
-        const splitLink = split(({ query }) => {
-            const definition = getMainDefinition(query)
-            return (
-                definition.kind === 'OperationDefinition' &&
-                definition.operation === 'subscription'
-            )
-        }, wsLink, authLink.concat(link))
+        // const splitLink = split(({ query }) => {
+        //     const definition = getMainDefinition(query)
+        //     return (
+        //         definition.kind === 'OperationDefinition' &&
+        //         definition.operation === 'subscription'
+        //     )
+        // }, wsLink, authLink.concat(link))
 
         const client = new ApolloClient({
             cache: new InMemoryCache(),
-            link: splitLink, //authLink.concat(link)
+            // link: splitLink, //authLink.concat(link)
             defaultOptions: {
                 query: {
                     fetchPolicy: 'network-only',
